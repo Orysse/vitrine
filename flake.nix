@@ -1,5 +1,5 @@
 {
-  description = "vitrine.abe.lc: Abel Chartier's showcase, printed as a psychedelic underground magazine";
+  description = "vitrine.abe.lc: Abel Chartier's site (Astro), served from a NixOS homelab";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -12,33 +12,39 @@
       ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
 
-      # Printed in the footer of every page: which commit is being served.
+      # The version lives in package.json; the footer shows it with the commit.
+      version = (builtins.fromJSON (builtins.readFile ./package.json)).version;
       rev = self.shortRev or self.dirtyShortRev or "dev";
 
       mkSite =
-        pkgs: baseUrl:
-        pkgs.stdenvNoCC.mkDerivation {
+        pkgs: siteUrl:
+        pkgs.buildNpmPackage {
           pname = "vitrine";
-          version = rev;
+          inherit version;
           src = pkgs.lib.fileset.toSource {
             root = ./.;
             fileset = pkgs.lib.fileset.unions [
-              ./config.toml
-              ./content
-              ./templates
-              ./static
+              ./package.json
+              ./package-lock.json
+              ./astro.config.mjs
+              ./tsconfig.json
+              ./src
+              ./public
             ];
           };
-          nativeBuildInputs = [ pkgs.zola ];
-          # Zola builds an HTTP client at startup (for load_data) and panics without CA certs.
-          SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
-          buildPhase = ''
-            runHook preBuild
-            zola build --base-url ${baseUrl} --output-dir $out
-            find $out -name '*.html' -exec sed -i 's/@BUILD_REV@/${rev}/g' {} +
-            runHook postBuild
+          # Update after changing package-lock.json: nix run nixpkgs#prefetch-npm-deps package-lock.json
+          npmDepsHash = "sha256-gqt4FWMrGPmx2J0cf1fiM6tPwDWdAFixaWzQgpQ7q4Y=";
+          nodejs = pkgs.nodejs;
+          env = {
+            SITE_URL = siteUrl;
+            PUBLIC_VERSION = "${version} (${rev})";
+            ASTRO_TELEMETRY_DISABLED = "1";
+          };
+          installPhase = ''
+            runHook preInstall
+            cp -r dist $out
+            runHook postInstall
           '';
-          dontInstall = true;
         };
 
       mkNginxConf =
@@ -58,14 +64,11 @@
           inherit site;
           default = site;
 
-          # Same site with links pointing at localhost, to try the image locally.
-          site-local = mkSite pkgs "http://localhost:8080";
-
           nginx-conf = mkNginxConf pkgs site;
 
           image = pkgs.dockerTools.buildLayeredImage {
             name = "ghcr.io/orysse/vitrine";
-            tag = rev;
+            tag = version;
             contents = [ pkgs.dockerTools.fakeNss ];
             extraCommands = "mkdir -m 1777 tmp";
             config = {
@@ -80,24 +83,18 @@
               ];
               User = "65534:65534";
               ExposedPorts."8080/tcp" = { };
-              Labels."org.opencontainers.image.source" = "https://github.com/Orysse/vitrine";
+              Labels = {
+                "org.opencontainers.image.source" = "https://github.com/Orysse/vitrine";
+                "org.opencontainers.image.version" = version;
+                "org.opencontainers.image.revision" = rev;
+              };
             };
           };
         }
       );
 
       apps = forAllSystems (pkgs: {
-        # Live preview with reload: nix run .#serve
-        serve = {
-          type = "app";
-          program = toString (
-            pkgs.writeShellScript "vitrine-serve" ''
-              exec ${pkgs.zola}/bin/zola serve "$@"
-            ''
-          );
-        };
-
-        # Serves the production build with the image's nginx config on :8080.
+        # Production build behind the image's nginx config, on http://localhost:8080
         preview = {
           type = "app";
           program = toString (
@@ -106,33 +103,15 @@
             ''
           );
         };
-
-        # Re-downloads and subsets the fonts into static/fonts (output is committed).
-        fetch-fonts = {
-          type = "app";
-          program = toString (
-            pkgs.writeShellApplication {
-              name = "fetch-fonts";
-              runtimeInputs = [
-                (pkgs.python3.withPackages (p: [
-                  p.fonttools
-                  p.brotli
-                ]))
-                pkgs.curl
-                pkgs.git
-              ];
-              text = builtins.readFile ./scripts/fetch-fonts.sh;
-            }
-          ) + "/bin/fetch-fonts";
-        };
       });
 
+      # nix develop, then: npm install && npm run dev
       devShells = forAllSystems (pkgs: {
-        default = pkgs.mkShell { packages = [ pkgs.zola ]; };
+        default = pkgs.mkShell { packages = [ pkgs.nodejs ]; };
       });
 
       checks = forAllSystems (pkgs: {
-        site = self.packages.${pkgs.system}.site;
+        site = self.packages.${pkgs.stdenv.hostPlatform.system}.site;
       });
 
       formatter = forAllSystems (pkgs: pkgs.nixfmt);

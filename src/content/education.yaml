@@ -1,0 +1,20 @@
+- id: epita
+  org: EPITA
+  role: { fr: "Diplôme d'ingénieur, majeure Systèmes, Réseaux et Sécurité", en: "Engineering degree, Systems, Networks and Security major" }
+  start: "2022"
+  end: null
+  location: Le Kremlin-Bicêtre
+  points:
+    - fr: "Réseau avancé (OSI/TCP-IP, OSPF, BGP, conception LAN/WAN multi-sites), administration Linux et Windows."
+      en: "Advanced networking (OSI/TCP-IP, OSPF, BGP, multi-site LAN/WAN design), Linux and Windows administration."
+    - fr: "Durcissement Windows/AD, sécurité offensive (analyse de malware, reverse engineering, exploitation de binaires, pentest), cryptographie appliquée et PKI."
+      en: "Windows/AD hardening, offensive security (malware analysis, reverse engineering, binary exploitation, pentesting), applied cryptography and PKI."
+    - fr: "SOC/SIEM et réponse à incident, guerre de l'information, politique de sécurité et conformité."
+      en: "SOC/SIEM and incident response, information warfare, security policy and compliance."
+
+- id: its
+  org: Institut Teknologi Sepuluh Nopember (ITS)
+  role: { fr: Semestre d'échange, en: Exchange semester }
+  start: "2024-02"
+  end: "2024-07"
+  location: Surabaya

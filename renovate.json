@@ -2,5 +2,12 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "nix": { "enabled": true },
-  "lockFileMaintenance": { "enabled": true }
+  "lockFileMaintenance": { "enabled": true },
+  "packageRules": [
+    {
+      "description": "Fonts change rarely and never break the build: group them.",
+      "matchPackageNames": ["@fontsource/**", "@fontsource-variable/**"],
+      "groupName": "fonts"
+    }
+  ]
 }

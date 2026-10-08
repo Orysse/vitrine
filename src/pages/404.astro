@@ -1,0 +1,15 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ground from "../components/Ground.astro";
+import { t } from "../i18n";
+---
+
+<Layout lang="fr" title="404 · Abel Chartier" description={t("fr", "notfound")} alternates={{ fr: "/", en: "/en/" }}>
+  <Ground kind="liquid">
+    <div class="grid min-h-[60vh] place-items-center content-center gap-6 text-center">
+      <h1 class="m-0 font-display text-[clamp(120px,26vw,300px)] leading-[.8] text-yellow [filter:url(#warp)] [text-shadow:6px_6px_0_var(--color-magenta),12px_12px_0_var(--color-ink)]">404</h1>
+      <p class="box m-0">{t("fr", "notfound")} · {t("en", "notfound")}</p>
+      <p class="box m-0 bg-yellow"><a href="/">Abel Chartier</a> · <a href="/en/">English</a></p>
+    </div>
+  </Ground>
+</Layout>

@@ -1,0 +1,47 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Ground from "./Ground.astro";
+import Halftone from "./Halftone.astro";
+import { home, projectUrl, t, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  lang: Lang;
+  slug: string;
+}
+const { project, lang, slug } = Astro.props;
+const p = project.data;
+const { Content } = await render(project);
+---
+
+<Layout lang={lang} title={`${p.title} · ${profile.name}`} description={p.summary} alternates={{ fr: projectUrl("fr", slug), en: projectUrl("en", slug) }}>
+  <Ground kind="waves">
+    <p class="label m-0"><a class="inline-block bg-ink px-2.5 py-1 text-yellow no-underline hover:bg-yellow hover:text-ink" href={`${home(lang)}#projects`}>← {t(lang, "project.back")}</a></p>
+    <h1 class="title mt-6 text-paper [text-shadow:5px_5px_0_var(--color-ink),-2px_-2px_0_var(--color-magenta)]">{p.title}</h1>
+    <div class="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+      <div class="grid gap-6">
+        <figure class="relative m-0 -rotate-2 bg-paper p-2.5 shadow-[0_14px_26px_rgba(0,0,0,.35)]">
+          <Halftone art={p.art} paper={p.paper} width={560} height={380} label={p.title} />
+        </figure>
+        <dl class="box m-0 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2 text-[14.5px]">
+          {p.facts.map(([k, v]) => (
+            <>
+              <dt class="label pt-0.5 text-[11px]">{k}</dt>
+              <dd class="m-0">{v}</dd>
+            </>
+          ))}
+        </dl>
+        <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0" aria-label={t(lang, "project.stack")}>
+          {p.stack.map((s) => <li class="chip">{s}</li>)}
+        </ul>
+        {p.repo && <p class="label m-0"><a class="inline-block bg-paper px-3 py-2 no-underline shadow-print-sm hover:bg-yellow" href={p.repo}>{t(lang, "project.repo")} : {p.repo.replace("https://", "")} ↗</a></p>}
+      </div>
+      <article class="box prose-print max-w-[760px]">
+        <p class="m-0 mb-4 font-serif text-[22px] leading-snug italic">{p.summary}</p>
+        <Content />
+      </article>
+    </div>
+  </Ground>
+</Layout>

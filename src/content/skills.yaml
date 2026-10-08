@@ -1,0 +1,29 @@
+- id: languages
+  order: 1
+  label: { fr: Langages, en: Languages }
+  items: [Python, Java, JavaScript / TypeScript, C, Bash, SQL, Nix]
+
+- id: infra
+  order: 2
+  label: { fr: Infrastructure, en: Infrastructure }
+  items: [Kubernetes, k3s, Helm, Argo CD, Flux, Terraform, Ansible, Docker, Podman, Proxmox, Rancher]
+
+- id: nix
+  order: 3
+  label: { fr: Écosystème Nix, en: Nix ecosystem }
+  items: [NixOS, flakes, flake-parts, disko, sops-nix, lanzaboote, microvm.nix, impermanence]
+
+- id: ci
+  order: 4
+  label: { fr: CI/CD, en: CI/CD }
+  items: [GitLab CI, GitHub Actions, Renovate]
+
+- id: observability
+  order: 5
+  label: { fr: Observabilité, en: Observability }
+  items: [Prometheus, Grafana, Loki, Datadog]
+
+- id: network-security
+  order: 6
+  label: { fr: Réseau et sécurité, en: Networking and security }
+  items: [WireGuard, pfSense, Palo Alto (PAN-OS), Stormshield (SNS), Windows Server, Active Directory]

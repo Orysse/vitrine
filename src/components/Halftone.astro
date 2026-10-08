@@ -1,0 +1,16 @@
+---
+// A one-ink halftone "photo" on coloured paper, drawn by src/scripts/halftone.ts.
+// art: a procedural drawing; src: a real photo in public/, used instead when set.
+interface Props {
+  art: "nuc" | "laptop" | "key" | "flake" | "page" | "bust";
+  paper: "yellow" | "green" | "pink" | "blue";
+  width: number;
+  height: number;
+  label: string;
+  src?: string;
+  class?: string;
+}
+const { art, paper, width, height, label, src, class: cls = "" } = Astro.props;
+---
+
+<canvas class:list={["block h-auto w-full", `paper-${paper}`, cls]} width={width} height={height} data-ht={art} data-src={src} role="img" aria-label={label}></canvas>

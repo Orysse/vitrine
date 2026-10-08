@@ -1,0 +1,46 @@
+- id: la-forge
+  org: La Forge
+  orgDetail: EPITA
+  role: { fr: Contributeur étudiant, en: Student contributor }
+  start: "2026-02"
+  end: null
+  location: Le Kremlin-Bicêtre
+  stack: [NixOS, netboot, Java, Kubernetes, Argo CD]
+  points:
+    - fr: "Développement et maintenance de l'intranet de l'EPITA, utilisé notamment pendant la piscine et les workshops."
+      en: "Build and maintain EPITA's intranet, used notably during the piscine (first-year bootcamp) and workshops."
+    - fr: "Support interne des outils de l'école, pour les équipes pédagogiques et les étudiants."
+      en: "Internal support for the school's tools, for teaching staff and students."
+    - fr: "Microservices Java internes, déployés sur Kubernetes en GitOps avec Argo CD."
+      en: "Internal Java microservices, deployed on Kubernetes through GitOps with Argo CD."
+    - fr: "Images NixOS en infrastructure as code, déployées en netboot sur le parc des salles machines étudiantes."
+      en: "NixOS images as infrastructure as code, netbooted across the student lab machines."
+
+- id: cea
+  org: CEA Saclay
+  orgDetail: DES/ISAS/DM2S/SGLS/LCAN
+  role: { fr: Stagiaire, en: Intern }
+  start: "2025-09"
+  end: "2026-01"
+  location: Gif-sur-Yvette
+  stack: [GitLab CI, GitLab Runner, MinIO, Prometheus, Grafana]
+  points:
+    - fr: "Pipelines CI/CD GitLab pour TRUST, plateforme de simulation thermohydraulique utilisée par les chercheurs du CEA."
+      en: "GitLab CI/CD pipelines for TRUST, a thermohydraulics simulation platform used by CEA researchers."
+    - fr: "Infrastructure associée déployée en code : runners GitLab, cache d'artefacts S3 MinIO, supervision Prometheus/Grafana."
+      en: "Supporting infrastructure deployed as code: GitLab runners, a MinIO S3 artifact cache, Prometheus/Grafana monitoring."
+    - fr: "Intégration des suites de tests de non-régression des projets satellites de TRUST (Baltiks) dans le pipeline principal."
+      en: "Integrated the non-regression test suites of TRUST's satellite projects (Baltiks) into the main pipeline."
+
+- id: redpill
+  org: RedPill Group
+  role: { fr: Stagiaire, en: Intern }
+  start: "2024-07"
+  end: "2024-08"
+  location: Paris
+  stack: [Kubernetes, OVHcloud, Terraform, Helm, Kind]
+  points:
+    - fr: "Participation à la migration de l'infrastructure vers un cluster Kubernetes hébergé chez OVHcloud, déployé avec Terraform et Helm."
+      en: "Contributed to migrating the infrastructure to a Kubernetes cluster hosted on OVHcloud, deployed with Terraform and Helm."
+    - fr: "Environnements de preuve de concept locaux avec Kind pour valider les choix avant déploiement."
+      en: "Local proof-of-concept environments with Kind to validate approaches before rollout."

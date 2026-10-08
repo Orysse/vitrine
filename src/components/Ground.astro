@@ -1,0 +1,20 @@
+---
+// A section printed on a funky ground. Static CSS without JS, animated canvas with it.
+interface Props {
+  kind: "liquid" | "riley" | "waves" | "split" | "moire";
+  id?: string;
+  class?: string;
+  label?: string;
+}
+const { kind, id, class: cls = "", label } = Astro.props;
+// split and moire are pure CSS; the others get a canvas painted by src/scripts/grounds.ts.
+const painted = kind === "liquid" || kind === "riley" || kind === "waves";
+---
+
+<section id={id} aria-label={label} class:list={["ground", `ground-${kind}`, cls]} data-ground={painted ? kind : undefined}>
+  {painted && <canvas class="ground-canvas" aria-hidden="true" />}
+  <div class="relative z-10 mx-auto max-w-[1280px] px-4 py-10 sm:px-8 sm:py-14">
+    <slot />
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+</section>

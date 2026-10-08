@@ -1,0 +1,107 @@
+/* Fonts are bundled from Fontsource (latin + latin-ext only): no third-party requests. */
+@import "@fontsource/shrikhand/latin.css";
+@import "@fontsource/shrikhand/latin-ext.css";
+@import "@fontsource/instrument-serif/latin-400.css";
+@import "@fontsource/instrument-serif/latin-400-italic.css";
+@import "@fontsource-variable/familjen-grotesk/wght.css";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
+@import "@fontsource/special-elite/latin.css";
+@import "tailwindcss";
+
+/* One fixed palette: the site is a print object and does not follow the OS theme. */
+@theme {
+  --color-night: #1a0b2e;
+  --color-ink: #1d1813;
+  --color-paper: #f6eedb;
+  --color-rule: #cbbd9f;
+  --color-yellow: #ffe23a;
+  --color-gold: #ffcf5a;
+  --color-magenta: #e2135f;
+  --color-pink: #ff4fb0;
+  --color-orange: #ff7a1a;
+  --color-teal: #18b39b;
+  --color-green: #3dff8a;
+  --color-blue: #18b3e0;
+  --color-violet: #7b2ff7;
+
+  --font-display: "Shrikhand", "Cooper Black", Georgia, serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-sans: "Familjen Grotesk Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --font-type: "Special Elite", "Courier New", monospace;
+
+  --shadow-print: 6px 6px 0 var(--color-ink);
+  --shadow-print-sm: 4px 4px 0 var(--color-ink);
+}
+
+@layer base {
+  :root { color-scheme: dark; }
+  html { background: var(--color-night); scroll-padding-top: 4.5rem; }
+  body { @apply bg-night font-sans text-[16px] leading-normal text-ink antialiased; }
+  h1, h2, h3 { text-wrap: balance; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--color-yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+}
+
+@layer components {
+  /* A block of printed text: solid paper and a hard offset shadow. */
+  .box { @apply relative z-10 bg-paper p-4 shadow-print sm:p-5; }
+  .box-ink { @apply bg-ink text-gold; box-shadow: 6px 6px 0 var(--color-magenta); }
+
+  /* Small mono caps used for dates, labels and metadata. */
+  .label { @apply font-mono text-[12px] font-medium tracking-[.12em] uppercase; }
+
+  /* Section titles in the melted display face. */
+  .title { @apply relative z-10 m-0 font-display text-[clamp(48px,7vw,104px)] leading-[.86]; filter: url(#warp); }
+
+  .chip { @apply rounded-full border-2 border-ink bg-paper px-2.5 py-0.5 font-mono text-[12.5px]; }
+  .chip:nth-child(3n + 1) { @apply bg-yellow; }
+  .chip:nth-child(3n + 2) { @apply bg-teal; }
+  .chip:nth-child(3n) { @apply bg-pink; }
+
+  /* A section printed on a "funky" ground. The CSS backgrounds are what shows without JS;
+     the script paints a moving version on the canvas. */
+  .ground { @apply relative isolate overflow-hidden; }
+  .ground-canvas { @apply absolute inset-0 z-0 h-full w-full; }
+  .ground-liquid { background:
+    radial-gradient(circle at 20% 30%, var(--color-magenta), transparent 40%),
+    radial-gradient(circle at 75% 25%, var(--color-orange), transparent 38%),
+    radial-gradient(circle at 60% 80%, var(--color-teal), transparent 40%),
+    radial-gradient(circle at 25% 80%, var(--color-violet), transparent 42%), var(--color-night); }
+  .ground-riley { background: repeating-linear-gradient(170deg, var(--color-gold) 0 22px, var(--color-magenta) 22px 44px, var(--color-gold) 44px 66px, var(--color-violet) 66px 88px, var(--color-gold) 88px 110px, var(--color-teal) 110px 132px); }
+  .ground-waves { background: repeating-linear-gradient(175deg, var(--color-orange) 0 14px, var(--color-ink) 14px 28px, var(--color-pink) 28px 42px, var(--color-ink) 42px 56px, var(--color-yellow) 56px 70px, var(--color-ink) 70px 84px, var(--color-blue) 84px 98px, var(--color-ink) 98px 112px); }
+  .ground-split { background: linear-gradient(115deg, #ff2a6d, var(--color-orange) 18%, var(--color-yellow) 34%, var(--color-green) 50%, var(--color-blue) 66%, var(--color-violet) 82%, #ff2a6d); }
+  .ground-split::before { content: ""; position: absolute; inset: 0; z-index: 1; opacity: .35; mix-blend-mode: multiply; background: repeating-radial-gradient(circle at 28% 45%, var(--color-ink) 0 3px, transparent 3px 14px); }
+  .ground-moire { background: repeating-linear-gradient(0deg, var(--color-ink) 0 3px, var(--color-green) 3px 9px); }
+  .ground-moire::before { content: ""; position: absolute; inset: -20%; z-index: 1; mix-blend-mode: multiply; background: repeating-linear-gradient(0deg, var(--color-pink) 0 3px, transparent 3px 9px); animation: drift 18s ease-in-out infinite alternate; }
+
+  /* Paper grain over everything printed. */
+  .grain { position: absolute; inset: 0; z-index: 30; pointer-events: none; opacity: .22; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .9 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>"); }
+
+  /* Halftone canvases: the paper colour shows before (or without) the script. */
+  .paper-yellow { @apply bg-yellow; }
+  .paper-green { @apply bg-green; }
+  .paper-pink { @apply bg-pink; }
+  .paper-blue { @apply bg-blue; }
+
+  .rings { background: repeating-radial-gradient(circle, var(--color-gold) 0 12px, var(--color-magenta) 12px 24px, var(--color-teal) 24px 36px, var(--color-violet) 36px 48px, var(--color-orange) 48px 60px); animation: spin 40s linear infinite; }
+
+  /* Markdown bodies of project pages. */
+  .prose-print h2 { @apply mt-6 mb-2 font-display text-[26px] leading-none text-magenta first:mt-0; }
+  .prose-print p, .prose-print ul, .prose-print ol { @apply mb-3; }
+  .prose-print ul { @apply list-disc pl-5; }
+  .prose-print ol { @apply list-decimal pl-5; }
+  .prose-print li { @apply mb-1; }
+  .prose-print code { @apply rounded-sm bg-ink/10 px-1 font-mono text-[.88em]; }
+}
+
+@keyframes spin { to { rotate: 360deg; } }
+@keyframes drift { from { rotate: 4deg; } to { rotate: -4deg; } }
+
+.calm .rings, .calm .ground-moire::before { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .rings, .ground-moire::before { animation: none; }
+}

@@ -1,0 +1,13 @@
+- id: atelier
+  org: L'Atelier
+  orgDetail: EPITA
+  role: { fr: "Vice-trésorier, tech lead", en: "Vice-treasurer, tech lead" }
+  start: "2024"
+  end: null
+  location: Le Kremlin-Bicêtre
+  stack: [Proxmox, Kubernetes]
+  points:
+    - fr: "Gestion de l'infrastructure de VMs de l'association sous Proxmox."
+      en: "Manage the association's VM infrastructure on Proxmox."
+    - fr: "Déploiement et maintenance des services de l'association sur Kubernetes."
+      en: "Deploy and maintain the association's services on Kubernetes."

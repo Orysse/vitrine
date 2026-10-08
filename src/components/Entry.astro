@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { l, period, type Lang } from "../i18n";
+
+interface Props {
+  entry: CollectionEntry<"experience" | "education" | "associations">;
+  lang: Lang;
+  tone?: "paper" | "yellow" | "ink";
+}
+const { entry, lang, tone = "paper" } = Astro.props;
+const e = entry.data;
+---
+
+<article class:list={["box grid gap-3", { "bg-yellow": tone === "yellow", "box-ink": tone === "ink" }]}>
+  <header class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+    <h3 class="m-0 font-display text-[28px] leading-none">
+      {e.org}{e.orgDetail && <span class="ml-2 font-mono text-[12px] font-medium tracking-wide opacity-75">{e.orgDetail}</span>}
+    </h3>
+    <p class="label m-0">{period(e.start, e.end, lang)} · {e.location}</p>
+  </header>
+  <p class="m-0 font-serif text-[21px] leading-tight italic">{l(e.role, lang)}</p>
+  {e.points.length > 0 && (
+    <ul class="m-0 grid list-disc gap-1.5 pl-5">
+      {e.points.map((p) => <li>{l(p, lang)}</li>)}
+    </ul>
+  )}
+  {e.stack.length > 0 && (
+    <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0 text-ink" aria-label="Stack">
+      {e.stack.map((s) => <li class="chip">{s}</li>)}
+    </ul>
+  )}
+</article>

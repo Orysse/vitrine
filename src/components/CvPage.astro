@@ -1,0 +1,128 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Ground from "./Ground.astro";
+import Entry from "./Entry.astro";
+import ProjectCard from "./ProjectCard.astro";
+import Halftone from "./Halftone.astro";
+import Smiley from "./Smiley.astro";
+import Acid303 from "./Acid303.astro";
+import { home, l, t, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// Most recent first. Ongoing entries (end: null) sort as "now".
+const byDate = <T extends { data: { start: string; end: string | null } }>(a: T, b: T) =>
+  (b.data.end ?? "9999").localeCompare(a.data.end ?? "9999") || b.data.start.localeCompare(a.data.start);
+
+const experience = (await getCollection("experience")).sort(byDate);
+const education = (await getCollection("education")).sort(byDate);
+const associations = (await getCollection("associations")).sort(byDate);
+const byOrder = <T extends { data: { order: number } }>(a: T, b: T) => a.data.order - b.data.order;
+const skills = (await getCollection("skills")).sort(byOrder);
+const interests = (await getCollection("interests")).sort(byOrder);
+const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang}/`))).sort((a, b) => a.data.order - b.data.order);
+
+const light = "title text-paper [text-shadow:5px_5px_0_var(--color-ink),-2px_-2px_0_var(--color-magenta)]";
+const dark = "title text-ink [text-shadow:4px_4px_0_var(--color-paper)]";
+const tones = ["paper", "yellow", "paper", "ink"] as const;
+---
+
+<Layout lang={lang} title={`${profile.name} · ${l(profile.major, lang)}`} description={`${l(profile.status, lang)}. ${l(profile.major, lang)}. ${l(profile.looking, lang)}.`} alternates={{ fr: home("fr"), en: home("en") }} sections>
+  <Ground kind="liquid" label={profile.name}>
+    <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+      <div class="grid gap-5">
+        <p class="label m-0 self-start justify-self-start bg-ink px-2.5 py-1 text-yellow">vitrine.abe.lc</p>
+        <h1 class="m-0 font-display text-[clamp(72px,11vw,168px)] leading-[.82] text-yellow [filter:url(#warp)] [text-shadow:5px_5px_0_var(--color-magenta),10px_10px_0_var(--color-ink)]">
+          Abel<br />Chartier
+        </h1>
+        <div class="box grid max-w-[620px] gap-1">
+          <p class="m-0 text-[20px] font-semibold">{l(profile.status, lang)}</p>
+          <p class="m-0">{l(profile.major, lang)} · {profile.location}</p>
+        </div>
+        <p class="box m-0 max-w-[620px] bg-teal sm:ml-[6%]">{l(profile.now, lang)}.</p>
+        <p class="box m-0 max-w-[620px] bg-pink">{l(profile.looking, lang)}.</p>
+        <p class="label m-0 flex flex-wrap gap-x-5 gap-y-2 self-start bg-paper px-3 py-2 shadow-print-sm">
+          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.links.github}>GitHub ↗</a>
+          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.cv.fr}>{t(lang, "cv.fr")} ↓</a>
+          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.cv.en}>{t(lang, "cv.en")} ↓</a>
+        </p>
+      </div>
+      <div class="relative mx-auto aspect-square w-full max-w-[520px]">
+        <div class="rings absolute inset-0 rounded-full" aria-hidden="true"></div>
+        <div class="absolute inset-[22%] overflow-hidden rounded-full shadow-[0_0_0_8px_var(--color-ink)]">
+          <Halftone art="bust" paper="blue" width={400} height={400} label={profile.name} class="h-full" />
+          <Smiley class="absolute top-[18%] left-1/2 w-[34%] -translate-x-1/2 -rotate-6" />
+        </div>
+      </div>
+    </div>
+  </Ground>
+
+  <Ground kind="waves" id="experience">
+    <h2 class={light}>{t(lang, "section.experience")}</h2>
+    <div class="mt-8 grid max-w-[920px] gap-6">
+      {experience.map((e, i) => (
+        <div class:list={[{ "sm:ml-[6%]": i % 2 === 1 }]}>
+          <Entry entry={e} lang={lang} tone={tones[i % tones.length]} />
+        </div>
+      ))}
+    </div>
+  </Ground>
+
+  <Ground kind="riley" id="projects">
+    <h2 class={dark}>{t(lang, "section.projects")}</h2>
+    <div class="mt-8 grid gap-7 md:grid-cols-2">
+      {projects.map((p) => <ProjectCard project={p} lang={lang} slug={p.id.split("/")[1]} />)}
+    </div>
+  </Ground>
+
+  <Ground kind="split" id="education">
+    <div class="grid gap-10 lg:grid-cols-2">
+      <div class="grid content-start gap-6">
+        <h2 class={dark}>{t(lang, "section.education")}</h2>
+        {education.map((e, i) => <Entry entry={e} lang={lang} tone={i === 0 ? "paper" : "yellow"} />)}
+      </div>
+      <div class="grid content-start gap-6">
+        <h2 class={dark}>{t(lang, "section.associations")}</h2>
+        {associations.map((e) => <Entry entry={e} lang={lang} tone="ink" />)}
+      </div>
+    </div>
+  </Ground>
+
+  <Ground kind="moire" id="skills">
+    <h2 class="title text-yellow [text-shadow:5px_5px_0_var(--color-ink)]">{t(lang, "section.skills")}</h2>
+    <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {skills.map((s) => (
+        <section class="box grid content-start gap-3">
+          <h3 class="label m-0">{l(s.data.label, lang)}</h3>
+          <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
+            {s.data.items.map((item) => <li class="chip">{item}</li>)}
+          </ul>
+        </section>
+      ))}
+      <section class="box box-ink grid content-start gap-2">
+        <h3 class="label m-0 text-pink">{t(lang, "section.spoken")}</h3>
+        <p class="m-0 text-paper">{l(profile.spoken, lang)}</p>
+      </section>
+    </div>
+  </Ground>
+
+  <Ground kind="liquid" id="interests">
+    <h2 class={light}>{t(lang, "section.interests")}</h2>
+    <div class="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div class="grid content-start gap-5">
+        {interests.map((i, n) => (
+          <section class:list={["box grid gap-1", { "bg-yellow": n === 1, "sm:ml-[6%]": n % 2 === 1 }]}>
+            <h3 class="label m-0 text-magenta">{l(i.data.label, lang)}</h3>
+            <p class="m-0">{l(i.data.text, lang)}</p>
+          </section>
+        ))}
+      </div>
+      <Acid303 lang={lang} />
+    </div>
+  </Ground>
+</Layout>
