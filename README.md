@@ -29,7 +29,6 @@ src/
 public/cv/                CV PDFs, copied from the CV repository
 public/audio/             VTR-303 voice (AudioWorklet, plain JS: served as is)
 nginx.conf                image server config: CSP, /healthz
-deploy/                   Kubernetes manifests (copied to homelab-cluster/apps/vitrine)
 ```
 
 Content edits are in `src/content/` and `src/profile.ts`; the schemas reject a missing
