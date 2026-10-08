@@ -98,6 +98,37 @@
   .prose-print code { @apply rounded-sm bg-ink/10 px-1 font-mono text-[.88em]; }
 }
 
+/* VTR-303 front panel. */
+@layer components {
+  .knob { --r: 0deg; @apply relative size-[52px] cursor-ns-resize touch-none rounded-full;
+    background: radial-gradient(circle at 40% 35%, #4a4740, #1b1a17 70%); box-shadow: 0 3px 0 rgba(0,0,0,.3), 0 0 0 4px #b3ad9f; }
+  .knob::after { content: ""; position: absolute; left: 50%; top: 5px; width: 3px; height: 16px; margin-left: -1.5px; border-radius: 2px; background: #f2efe6; transform-origin: 50% 21px; rotate: var(--r); }
+  .knob-sm { @apply size-[40px]; }
+  .knob-sm::after { height: 12px; transform-origin: 50% 15px; }
+  .knob:focus-visible { outline: 3px solid var(--color-magenta); outline-offset: 4px; }
+
+  .vtr-btn { @apply cursor-pointer rounded-sm bg-[#e9e5dc] px-3 py-2 font-sans text-[12px] font-bold tracking-[.08em] text-ink uppercase shadow-[0_3px_0_rgba(0,0,0,.25)]; }
+  .vtr-btn:active { translate: 0 2px; box-shadow: 0 1px 0 rgba(0,0,0,.25); }
+  .vtr-btn[aria-pressed="true"] { @apply bg-ink text-yellow; }
+  .vtr-btn[data-transport][aria-pressed="true"] { @apply bg-ink text-white; }
+
+  .step { @apply rounded-sm p-0.5 transition-colors; }
+  .step.is-selected { @apply bg-ink/15; }
+  .step.is-off { @apply opacity-35; }
+  .step-head { @apply cursor-pointer rounded-sm bg-[#e9e5dc] py-1 text-center shadow-[0_2px_0_rgba(0,0,0,.25)]; }
+  .step.is-selected .step-head { @apply bg-yellow; }
+  .step.is-playing .step-head { @apply bg-[#ff2a1a] text-white; }
+  .step-flag { @apply cursor-pointer rounded-sm bg-[#d8d3c8] py-0.5 font-mono text-[10px] font-medium text-ink/55; }
+  .step-flag[aria-pressed="true"] { @apply bg-ink text-yellow; }
+  .step-flag[data-flag="accent"][aria-pressed="true"] { @apply bg-[#e8b100] text-ink; }
+  .step-flag[data-flag="slide"][aria-pressed="true"] { @apply bg-teal text-ink; }
+
+  .key-white { @apply flex-1 cursor-pointer rounded-b-sm bg-[#f8f7f4] shadow-[0_3px_0_rgba(0,0,0,.25)]; }
+  .key-black { @apply absolute top-0 z-10 h-[62%] w-[8%] cursor-pointer rounded-b-sm bg-ink shadow-[0_3px_0_rgba(0,0,0,.4)]; }
+  .key-white[aria-pressed="true"] { @apply bg-yellow; }
+  .key-black[aria-pressed="true"] { @apply bg-magenta; }
+}
+
 @keyframes spin { to { rotate: 360deg; } }
 @keyframes drift { from { rotate: 4deg; } to { rotate: -4deg; } }
 

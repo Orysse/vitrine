@@ -1,0 +1,81 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ground from "./Ground.astro";
+import Vtr303 from "./Vtr303.astro";
+import { home, synthUrl, t, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const details = {
+  fr: [
+    ["Voix", "oscillateur dents de scie ou carré (polyBLEP), filtre passe-bas 4 pôles à rétroaction résonante avec saturation tanh, suréchantillonné 2×"],
+    ["Enveloppes", "filtre (decay de 200 ms à 2 s), VCA, accent qui s'accumule sur les accents consécutifs, slide en legato (~60 ms)"],
+    ["Séquenceur", "16 pas : note, octave, accent, slide, silence ; tempo 60–200 BPM ; longueur 1–16 pas ; kick et charley optionnels"],
+    ["Moteur", "Web Audio, la voix tourne dans un AudioWorklet ; aucun fichier son"],
+    ["Motif", "enregistré dans l'URL : copier le lien partage le motif et le tempo"],
+  ],
+  en: [
+    ["Voice", "sawtooth or square oscillator (polyBLEP), 4-pole low-pass filter with resonant feedback and tanh saturation, 2× oversampled"],
+    ["Envelopes", "filter (200 ms to 2 s decay), VCA, accent that builds up on consecutive accents, legato slide (~60 ms)"],
+    ["Sequencer", "16 steps: note, octave, accent, slide, rest; 60–200 BPM; 1–16 step length; optional kick and hi-hat"],
+    ["Engine", "Web Audio, the voice runs in an AudioWorklet; no sound files"],
+    ["Pattern", "stored in the URL: copying the link shares the pattern and tempo"],
+  ],
+}[lang];
+
+const help = {
+  fr: [
+    ["Potards", "glisser verticalement, molette ou flèches ; Maj pour un réglage fin ; double-clic = valeur par défaut"],
+    ["Pas", "cliquer un pas pour le sélectionner ; ▲ ▼ octave, AC accent, SL slide (lie au pas suivant), — silence"],
+    ["Clavier", "a w s e d f t g y h u j k = notes sur le pas sélectionné, puis passe au suivant ; ← → change de pas ; - ou 0 = silence ; espace = lecture"],
+  ],
+  en: [
+    ["Knobs", "drag vertically, scroll or use the arrow keys; Shift for fine control; double-click = default value"],
+    ["Steps", "click a step to select it; ▲ ▼ octave, AC accent, SL slide (ties into the next step), — rest"],
+    ["Keyboard", "a w s e d f t g y h u j k = notes on the selected step, then moves to the next; ← → change step; - or 0 = rest; space = play"],
+  ],
+}[lang];
+---
+
+<Layout lang={lang} title={`VTR-303 · ${profile.name}`} description={t(lang, "vtr.lead")} alternates={{ fr: synthUrl("fr"), en: synthUrl("en") }}>
+  <Ground kind="riley">
+    <p class="label m-0"><a class="inline-block bg-ink px-2.5 py-1 text-yellow no-underline hover:bg-yellow hover:text-ink" href={`${home(lang)}#interests`}>← {t(lang, "project.back")}</a></p>
+    <h1 class="title mt-6 text-ink [text-shadow:4px_4px_0_var(--color-paper)]">VTR-303</h1>
+    <p class="box mt-6 mb-0 max-w-[720px] font-serif text-[22px] leading-snug italic">{t(lang, "vtr.lead")}</p>
+
+    <div class="mt-8">
+      <noscript><p class="box m-0">{t(lang, "vtr.nojs")}</p></noscript>
+      <Vtr303 lang={lang} />
+    </div>
+
+    <div class="mt-8 grid items-start gap-6 lg:grid-cols-2">
+      <dl class="box m-0 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2 text-[14.5px]">
+        {details.map(([k, v]) => (
+          <>
+            <dt class="label pt-0.5 text-[11px]">{k}</dt>
+            <dd class="m-0">{v}</dd>
+          </>
+        ))}
+      </dl>
+      <dl class="box box-ink m-0 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2 text-[14.5px] text-paper">
+        {help.map(([k, v]) => (
+          <>
+            <dt class="label pt-0.5 text-[11px] text-pink">{k}</dt>
+            <dd class="m-0">{v}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+    <p class="label mt-6 mb-0"><a class="inline-block bg-paper px-3 py-2 no-underline shadow-print-sm hover:bg-yellow" href={`${profile.links.source}/blob/main/public/audio/vtr303-worklet.js`}>{t(lang, "vtr.source")} ↗</a></p>
+  </Ground>
+
+  <script>
+    import { vtr303 } from "../scripts/vtr303";
+    const root = document.querySelector<HTMLElement>("[data-vtr]");
+    if (root) vtr303(root);
+  </script>
+</Layout>

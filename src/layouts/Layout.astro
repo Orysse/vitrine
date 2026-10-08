@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { home, t, type Lang } from "../i18n";
+import { home, synthUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 
 interface Props {
@@ -51,6 +51,7 @@ const nav = [
       <nav aria-label="Sections" class="flex flex-wrap gap-x-5 gap-y-1 text-[13px] font-bold tracking-[.08em] uppercase">
         {nav.map(([id, label]) => <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={anchor(id)}>{label}</a>)}
         <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={profile.cv[lang]}>{t(lang, "nav.cv")}</a>
+        <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={synthUrl(lang)}>{t(lang, "vtr.nav")}</a>
         <a class="py-1 text-pink no-underline hover:text-yellow" href={alternates[other]} hreflang={other} lang={other}>{t(lang, "nav.lang")}</a>
       </nav>
       <div class="label flex items-center gap-3 text-paper" data-js-only hidden>

@@ -21,12 +21,13 @@ src/
     skills.yaml           skill groups  │
     interests.yaml        outside work  ┘
     projects/{fr,en}/*.md one Markdown file per project and language (card + detail page)
-  components/             CvPage, ProjectPage, Entry, ProjectCard, Ground, Halftone
+  components/             CvPage, ProjectPage, Vtr303Page, Vtr303, Entry, ProjectCard, Ground, Halftone
   layouts/Layout.astro    head, header, SVG filter
-  scripts/                grounds, halftones, trip slider (TypeScript)
+  scripts/                grounds, halftones, trip slider, VTR-303 panel (TypeScript)
   styles/global.css       Tailwind theme (palette, fonts) and the print primitives
-  pages/                  / and /en/, /projets/<slug>/ and /en/projects/<slug>/, 404
+  pages/                  / and /en/, /projets/<slug>/ and /en/projects/<slug>/, /303/ and /en/303/, 404
 public/cv/                CV PDFs, copied from the CV repository
+public/audio/             VTR-303 voice (AudioWorklet, plain JS: served as is)
 nginx.conf                image server config: CSP, /healthz
 deploy/                   Kubernetes manifests (copied to homelab-cluster/apps/vitrine)
 ```
@@ -58,6 +59,9 @@ All of them are optional: without JavaScript, grounds are static CSS patterns an
 - **Grounds**: canvas light show and op-art bands behind each section.
 - **Halftones**: `<Halftone art="nuc" … />` draws a procedural picture; pass
   `src="/img/photo.jpg"` (a file in `public/`) to halftone a real photo instead.
+- **VTR-303** (`/303/`): a TB-303 emulation. The voice (polyBLEP oscillator, 4-pole
+  resonant ladder, envelopes, accent, slide) runs in an AudioWorklet; the panel has a
+  16-step sequencer, presets, a generator and drums, and stores the pattern in the URL.
 - **Trip slider**: sets the title distortion (SVG displacement filter) and the ground speed.
   `prefers-reduced-motion` starts paused; the reader's choice is kept in localStorage.
 

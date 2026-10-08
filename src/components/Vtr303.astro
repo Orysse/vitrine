@@ -1,0 +1,112 @@
+---
+import { t, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const voice = [
+  { p: "tune", label: "tune", min: -12, max: 12, step: 0.1, def: 0 },
+  { p: "cutoff", label: "cutoff", min: 0, max: 1, step: 0.01, def: 0.35 },
+  { p: "resonance", label: "reso", min: 0, max: 1, step: 0.01, def: 0.7 },
+  { p: "envMod", label: "env mod", min: 0, max: 1, step: 0.01, def: 0.6 },
+  { p: "decay", label: "decay", min: 0, max: 1, step: 0.01, def: 0.4 },
+  { p: "accent", label: "accent", min: 0, max: 1, step: 0.01, def: 0.6 },
+  { p: "drive", label: "drive", min: 0, max: 1, step: 0.01, def: 0.3 },
+  { p: "volume", label: "volume", min: 0, max: 1, step: 0.01, def: 0.7 },
+];
+const seq = [
+  { p: "bpm", label: "tempo", min: 60, max: 200, step: 1, def: 138 },
+  { p: "length", label: t(lang, "vtr.length"), min: 1, max: 16, step: 1, def: 16 },
+];
+// One octave, C to C. Black keys sit on the boundaries between white keys (8 whites).
+const whites = [0, 2, 4, 5, 7, 9, 11, 12];
+const blacks = [
+  { n: 1, cls: "left-[8.5%]" },
+  { n: 3, cls: "left-[21%]" },
+  { n: 6, cls: "left-[46%]" },
+  { n: 8, cls: "left-[58.5%]" },
+  { n: 10, cls: "left-[71%]" },
+];
+const names = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B", "C"];
+const presets = ["squelch", "rolling", "minor", "stabs", "hypnotic"];
+---
+
+<div class="vtr grid gap-5 rounded-md bg-[#c9c4b8] p-4 text-ink shadow-[0_14px_30px_rgba(0,0,0,.45),inset_0_2px_0_rgba(255,255,255,.5)] sm:p-6" data-vtr>
+  <div class="flex flex-wrap items-baseline justify-between gap-3">
+    <p class="m-0 text-[12px] font-bold tracking-[.08em] uppercase">Computer controlled · bass line</p>
+    <p class="m-0 font-sans text-[28px] font-extrabold tracking-tight text-[#b0140f] [font-stretch:80%]">VTR-303</p>
+  </div>
+
+  <div class="grid grid-cols-4 gap-x-3 gap-y-4 sm:grid-cols-8" role="group" aria-label={t(lang, "vtr.voice")}>
+    {voice.map((k) => (
+      <div class="flex flex-col items-center gap-1.5">
+        <div class="knob" role="slider" tabindex="0" aria-label={k.label} aria-valuemin={k.min} aria-valuemax={k.max} aria-valuenow={k.def} data-knob={k.p} data-min={k.min} data-max={k.max} data-inc={k.step} data-default={k.def}></div>
+        <span class="text-[11px] font-bold tracking-[.1em] uppercase">{k.label}</span>
+        <output class="font-mono text-[11px]" data-for={k.p}></output>
+      </div>
+    ))}
+  </div>
+
+  <div class="relative overflow-hidden rounded-sm bg-[#0b1408] shadow-[inset_0_0_0_2px_#2d2b26]">
+    <canvas class="block h-[110px] w-full" data-scope aria-hidden="true"></canvas>
+  </div>
+
+  <div class="flex flex-wrap items-end gap-x-5 gap-y-4">
+    <button type="button" class="vtr-btn bg-[#b0140f] px-5 text-white" aria-pressed="false" data-transport data-label-play={t(lang, "vtr.play")} data-label-stop={t(lang, "vtr.stop")}>{t(lang, "vtr.play")}</button>
+    {seq.map((k) => (
+      <div class="flex items-center gap-2">
+        <div class="knob knob-sm" role="slider" tabindex="0" aria-label={k.label} aria-valuemin={k.min} aria-valuemax={k.max} aria-valuenow={k.def} data-knob={k.p} data-min={k.min} data-max={k.max} data-inc={k.step} data-default={k.def}></div>
+        <div class="grid">
+          <span class="text-[11px] font-bold tracking-[.1em] uppercase">{k.label}</span>
+          <output class="font-mono text-[11px]" data-for={k.p}></output>
+        </div>
+      </div>
+    ))}
+    <button type="button" class="vtr-btn" aria-pressed="false" data-wave data-label-saw={t(lang, "vtr.saw")} data-label-square={t(lang, "vtr.square")}>{t(lang, "vtr.saw")}</button>
+    <button type="button" class="vtr-btn" aria-pressed="true" data-drum="kick">kick</button>
+    <button type="button" class="vtr-btn" aria-pressed="false" data-drum="hat">hat</button>
+  </div>
+
+  <div class="-mx-1 overflow-x-auto px-1 pb-1">
+    <div class="grid min-w-[760px] grid-cols-16 gap-1" role="group" aria-label={t(lang, "vtr.steps")}>
+      {Array.from({ length: 16 }, (_, i) => (
+        <div class="step grid gap-1" data-step={i}>
+          <button type="button" class="step-head" data-select aria-label={`${t(lang, "vtr.step")} ${i + 1}`}>
+            <span class="block font-mono text-[10px] opacity-70">{i + 1}</span>
+            <span class="block font-mono text-[13px] font-medium" data-name>C</span>
+          </button>
+          <button type="button" class="step-flag" data-flag="up" aria-pressed="false" title={t(lang, "vtr.up")}>▲</button>
+          <button type="button" class="step-flag" data-flag="down" aria-pressed="false" title={t(lang, "vtr.down")}>▼</button>
+          <button type="button" class="step-flag" data-flag="accent" aria-pressed="false" title="accent">AC</button>
+          <button type="button" class="step-flag" data-flag="slide" aria-pressed="false" title="slide">SL</button>
+          <button type="button" class="step-flag" data-flag="rest" aria-pressed="false" title={t(lang, "vtr.rest")}>—</button>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="grid items-end gap-5 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+    <div class="relative h-[120px] select-none" role="group" aria-label={t(lang, "vtr.keyboard")}>
+      <div class="flex h-full gap-[2px]">
+        {whites.map((n) => <button type="button" class="key-white" data-key={n} aria-label={names[n] + (n === 12 ? "′" : "")} aria-pressed="false"></button>)}
+      </div>
+      {blacks.map((b) => <button type="button" class:list={["key-black", b.cls]} data-key={b.n} aria-label={names[b.n]} aria-pressed="false"></button>)}
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <label class="flex items-center gap-2 text-[11px] font-bold tracking-[.1em] uppercase">
+        preset
+        <select class="vtr-btn normal-case" data-preset>
+          <option value="">—</option>
+          {presets.map((p) => <option value={p}>{p}</option>)}
+        </select>
+      </label>
+      <button type="button" class="vtr-btn" data-random>{t(lang, "vtr.random")}</button>
+      <button type="button" class="vtr-btn" data-clear>{t(lang, "vtr.clear")}</button>
+      <button type="button" class="vtr-btn" data-share data-label-done={t(lang, "vtr.copied")}>{t(lang, "vtr.share")}</button>
+    </div>
+  </div>
+
+  <p class="m-0 text-[13px] font-semibold text-[#b0140f]" data-status hidden>{t(lang, "vtr.unsupported")}</p>
+</div>

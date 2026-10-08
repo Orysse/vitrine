@@ -6,7 +6,7 @@ import Entry from "./Entry.astro";
 import ProjectCard from "./ProjectCard.astro";
 import Halftone from "./Halftone.astro";
 import Smiley from "./Smiley.astro";
-import { home, l, t, type Lang } from "../i18n";
+import { home, l, synthUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 
 interface Props {
@@ -119,6 +119,11 @@ const tones = ["paper", "yellow", "paper", "ink"] as const;
           <p class="m-0">{l(i.data.text, lang)}</p>
         </section>
       ))}
+      <a class="box box-ink grid content-start gap-2 no-underline hover:-translate-y-0.5 md:col-span-2" href={synthUrl(lang)}>
+        <span class="label text-pink">VTR-303</span>
+        <span class="text-paper">{t(lang, "vtr.card")}</span>
+        <span class="label text-yellow">{t(lang, "vtr.open")} →</span>
+      </a>
     </div>
   </Ground>
 </Layout>
