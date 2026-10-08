@@ -1,0 +1,37 @@
+name: Build
+
+# Every push and PR builds the site and the image.
+# A tag vX.Y.Z publishes ghcr.io/orysse/vitrine:X.Y.Z (and :X.Y); Renovate then
+# opens the bump in homelab-cluster.
+on:
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - name: Check the flake (builds the site)
+        run: nix flake check
+      - name: Build the image
+        run: nix build .#image
+      - name: Push to ghcr.io
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          REGISTRY_AUTH: ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          for tag in "$version" "${version%.*}"; do
+            nix run nixpkgs#skopeo -- copy --dest-creds "$REGISTRY_AUTH" \
+              docker-archive:result "docker://ghcr.io/orysse/vitrine:$tag"
+          done

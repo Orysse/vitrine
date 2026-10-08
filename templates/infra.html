@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block main %}
+<article class="spread s-report ground ground-waves" data-ground="waves">
+  <canvas class="ground-canvas" aria-hidden="true"></canvas>
+  <div class="left">
+    <p class="kicker lbl">{{ page.extra.kicker }} · {{ trans(key="page", lang=lang) }} {{ page.extra.num }}</p>
+    <h1 class="warp">{% for l in page.extra.heading %}{{ l }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
+    <figure class="photo tilt-l">
+      <span class="tape" aria-hidden="true"></span>
+      {{<halftone art="nuc" paper="pink" w={560} h={400} label="nuc1" />}}
+      <figcaption>{{ page.extra.caption }}</figcaption>
+    </figure>
+    <blockquote class="box yel pullquote">{{ page.extra.pullquote }}</blockquote>
+  </div>
+  <div class="right">
+    <p class="box stand">{{ page.extra.stand }}</p>
+    <div class="box prose cols">{{ page.content | safe }}</div>
+    <figure class="box ink fig">
+      <pre>{{ page.extra.topology | trim_start(pat="\n") }}</pre>
+      <figcaption>{{ page.extra.topology_caption }}</figcaption>
+    </figure>
+    <ul class="stack" aria-label="Stack">
+      {%- for s in page.extra.stack %}<li>{{ s }}</li>{% endfor %}
+    </ul>
+    <p class="box folio"><span>Vitrine · {{ trans(key="issue", lang=lang) }} {{ config.extra.issue }}</span><span>{{ trans(key="sources", lang=lang) }} : <a href="{{ config.extra.homelab_nix }}">homelab-nix</a> · <a href="{{ config.extra.homelab_cluster }}">homelab-cluster</a></span></p>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+</article>
+{% endblock main %}

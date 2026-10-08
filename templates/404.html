@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="spread s-lost ground ground-liquid" data-ground="liquid">
+  <canvas class="ground-canvas" aria-hidden="true"></canvas>
+  <div class="lost">
+    <h1 class="warp">404</h1>
+    <p class="box">Cette page n'est pas dans ce numéro. · This page is not in this issue.</p>
+    <p class="box yel"><a href="{{ get_url(path='@/_index.md') }}">Vitrine</a> · <a href="{{ get_url(path='@/_index.md', lang='en') }}">English</a></p>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+</div>
+{% endblock main %}
