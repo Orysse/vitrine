@@ -1,6 +1,5 @@
 // Everything here is an enhancement: without it the pages are complete (static grounds,
-// flat coloured "photos", no sound).
-import { acid } from "./acid";
+// flat coloured "photos").
 import { grounds } from "./grounds";
 import { halftones } from "./halftone";
 import { save, state } from "./state";
@@ -40,7 +39,6 @@ applyRunning();
 
 halftones();
 const scenes = grounds();
-const player = acid();
 
 // One loop at ~30 fps; idle when the tab is hidden, when paused, or when nothing is on screen.
 let last = performance.now();
@@ -53,10 +51,9 @@ function loop(now: number) {
   if (acc < 1 / 30 || document.hidden) return;
   const stepDt = acc;
   acc = 0;
-  if (!state.running && !player?.playing()) return;
+  if (!state.running) return;
   for (const s of scenes) if (s.visible) s.draw(stepDt);
-  if (player?.visible) player.draw(stepDt);
-  if (state.running && warpT) {
+  if (warpT) {
     const k = (now / 1000) * (0.5 + state.trip);
     warpT.setAttribute("baseFrequency", `${(0.006 + 0.003 * Math.sin(k * 0.35)).toFixed(4)} ${(0.022 + 0.008 * Math.sin(k * 0.27)).toFixed(4)}`);
   }

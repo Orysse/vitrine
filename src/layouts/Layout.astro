@@ -16,7 +16,6 @@ interface Props {
 const { lang, title, description, alternates, sections = false } = Astro.props;
 const other: Lang = lang === "fr" ? "en" : "fr";
 const canonical = new URL(alternates[lang], Astro.site);
-const version = import.meta.env.PUBLIC_VERSION ?? "dev";
 const anchor = (id: string) => (sections ? `#${id}` : `${home(lang)}#${id}`);
 const nav = [
   ["experience", t(lang, "nav.experience")],
@@ -25,8 +24,6 @@ const nav = [
   ["skills", t(lang, "nav.skills")],
   ["interests", t(lang, "nav.interests")],
 ] as const;
-// nginx server-side include: replaced by the pod name when served from the cluster.
-const servedBy = '<!--# echo var="hostname" default="localhost" -->';
 ---
 
 <!doctype html>
@@ -65,15 +62,6 @@ const servedBy = '<!--# echo var="hostname" default="localhost" -->';
     <main id="main">
       <slot />
     </main>
-
-    <footer class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t-[3px] border-yellow bg-ink px-4 py-4 font-mono text-[12px] text-[#b9ab95] sm:px-8">
-      <span>{t(lang, "footer.served")} <b class="font-medium text-yellow" set:html={servedBy} /> · {t(lang, "footer.version")} <b class="font-medium text-yellow">{version}</b></span>
-      <span>{t(lang, "footer.notracker")}</span>
-      <span>
-        <a class="hover:text-yellow" href={profile.links.github}>github.com/Orysse</a> · {t(lang, "footer.sources")} :
-        <a class="hover:text-yellow" href={profile.links.source}>vitrine</a>, <a class="hover:text-yellow" href={profile.links.homelabNix}>homelab-nix</a>, <a class="hover:text-yellow" href={profile.links.homelabCluster}>homelab-cluster</a>
-      </span>
-    </footer>
 
     <svg class="absolute h-0 w-0" aria-hidden="true" focusable="false">
       <filter id="warp" x="-5%" y="-15%" width="110%" height="140%">

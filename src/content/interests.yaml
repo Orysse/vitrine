@@ -1,19 +1,12 @@
-- id: music
-  order: 1
-  label: { fr: Musique, en: Music }
-  text:
-    fr: "Piano. J'écoute surtout de la techno underground (acid, tribe, hardcore). Matériel audio."
-    en: "Piano. I mostly listen to underground techno (acid, tribe, hardcore). Audio gear."
-
 - id: beer
-  order: 2
+  order: 1
   label: { fr: Zythologie, en: Zythology }
   text:
     fr: "Membre de LATEB, le club de dégustation de bière de l'EPITA."
     en: "Member of LATEB, EPITA's beer tasting club."
 
 - id: homelab
-  order: 3
+  order: 2
   label: { fr: Homelab, en: Homelab }
   text:
     fr: "Linux, Nix, microvm.nix. Le cluster qui sert ce site est décrit plus haut."

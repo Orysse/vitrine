@@ -12,7 +12,7 @@
       ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
 
-      # The version lives in package.json; the footer shows it with the commit.
+      # The version lives in package.json and tags the image.
       version = (builtins.fromJSON (builtins.readFile ./package.json)).version;
       rev = self.shortRev or self.dirtyShortRev or "dev";
 
@@ -32,12 +32,12 @@
               ./public
             ];
           };
-          # Update after changing package-lock.json: nix run nixpkgs#prefetch-npm-deps package-lock.json
-          npmDepsHash = "sha256-gqt4FWMrGPmx2J0cf1fiM6tPwDWdAFixaWzQgpQ7q4Y=";
+          # Dependencies come from the integrity hashes in package-lock.json: no hash to update.
+          npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
+          npmConfigHook = pkgs.importNpmLock.npmConfigHook;
           nodejs = pkgs.nodejs;
           env = {
             SITE_URL = siteUrl;
-            PUBLIC_VERSION = "${version} (${rev})";
             ASTRO_TELEMETRY_DISABLED = "1";
           };
           installPhase = ''

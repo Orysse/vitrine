@@ -6,7 +6,6 @@ import Entry from "./Entry.astro";
 import ProjectCard from "./ProjectCard.astro";
 import Halftone from "./Halftone.astro";
 import Smiley from "./Smiley.astro";
-import Acid303 from "./Acid303.astro";
 import { home, l, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 
@@ -113,16 +112,13 @@ const tones = ["paper", "yellow", "paper", "ink"] as const;
 
   <Ground kind="liquid" id="interests">
     <h2 class={light}>{t(lang, "section.interests")}</h2>
-    <div class="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-      <div class="grid content-start gap-5">
-        {interests.map((i, n) => (
-          <section class:list={["box grid gap-1", { "bg-yellow": n === 1, "sm:ml-[6%]": n % 2 === 1 }]}>
-            <h3 class="label m-0 text-magenta">{l(i.data.label, lang)}</h3>
-            <p class="m-0">{l(i.data.text, lang)}</p>
-          </section>
-        ))}
-      </div>
-      <Acid303 lang={lang} />
+    <div class="mt-8 grid gap-5 md:grid-cols-2">
+      {interests.map((i, n) => (
+        <section class:list={["box grid content-start gap-1", { "bg-yellow": n % 2 === 1 }]}>
+          <h3 class="label m-0 text-magenta">{l(i.data.label, lang)}</h3>
+          <p class="m-0">{l(i.data.text, lang)}</p>
+        </section>
+      ))}
     </div>
   </Ground>
 </Layout>

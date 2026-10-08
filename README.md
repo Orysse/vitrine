@@ -21,13 +21,13 @@ src/
     skills.yaml           skill groups  │
     interests.yaml        outside work  ┘
     projects/{fr,en}/*.md one Markdown file per project and language (card + detail page)
-  components/             CvPage, ProjectPage, Entry, ProjectCard, Ground, Halftone, Acid303
-  layouts/Layout.astro    head, header, footer, SVG filter
-  scripts/                grounds, halftones, trip slider, VTR-303 (TypeScript)
+  components/             CvPage, ProjectPage, Entry, ProjectCard, Ground, Halftone
+  layouts/Layout.astro    head, header, SVG filter
+  scripts/                grounds, halftones, trip slider (TypeScript)
   styles/global.css       Tailwind theme (palette, fonts) and the print primitives
   pages/                  / and /en/, /projets/<slug>/ and /en/projects/<slug>/, 404
 public/cv/                CV PDFs, copied from the CV repository
-nginx.conf                image server config: CSP, SSI footer, /healthz
+nginx.conf                image server config: CSP, /healthz
 deploy/                   Kubernetes manifests (copied to homelab-cluster/apps/vitrine)
 ```
 
@@ -48,9 +48,6 @@ nix run .#preview         # production build behind the image's nginx, on :8080
 nix flake check
 ```
 
-After changing dependencies, update `npmDepsHash` in `flake.nix`:
-`nix run nixpkgs#prefetch-npm-deps package-lock.json`.
-
 To update the CV, rebuild it in the CV repository and copy the two PDFs into `public/cv/`.
 
 ## Effects
@@ -63,13 +60,11 @@ All of them are optional: without JavaScript, grounds are static CSS patterns an
   `src="/img/photo.jpg"` (a file in `public/`) to halftone a real photo instead.
 - **Trip slider**: sets the title distortion (SVG displacement filter) and the ground speed.
   `prefers-reduced-motion` starts paused; the reader's choice is kept in localStorage.
-- **VTR-303**: a one-bar acid line synthesised with Web Audio. Never plays on its own.
 
 ## Server
 
 nginx sends a strict CSP (`default-src 'none'`; scripts, styles, fonts from self only), so
 Astro is set to never inline styles or assets. HSTS and the other headers come from Traefik.
-The footer prints the pod that served the page (server-side include) and the version.
 
 ## Release
 
