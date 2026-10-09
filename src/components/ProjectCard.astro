@@ -33,7 +33,8 @@ const p = project.data;
       ))}
     </dl>
     <p class="label mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-2">
-      <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={p.page === "homelab" ? homelabUrl(lang) : projectUrl(lang, slug)}>{t(lang, "project.more")} →</a>
+      <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={projectUrl(lang, slug)}>{t(lang, "project.more")} →</a>
+      {p.map && <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={homelabUrl(lang)}>{t(lang, "hl.open")} →</a>}
       {p.repo && <a class="border-b-[3px] border-ink no-underline hover:bg-yellow" href={p.repo}>{t(lang, "project.repo")} ↗</a>}
     </p>
   </div>

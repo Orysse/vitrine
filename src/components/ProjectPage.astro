@@ -3,7 +3,7 @@ import { render, type CollectionEntry } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Ground from "./Ground.astro";
 import Halftone from "./Halftone.astro";
-import { home, projectUrl, t, type Lang } from "../i18n";
+import { home, homelabUrl, projectUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 
 interface Props {
@@ -37,6 +37,7 @@ const { Content } = await render(project);
         <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0" aria-label={t(lang, "project.stack")}>
           {p.stack.map((s) => <li class="chip">{s}</li>)}
         </ul>
+        {p.map && <p class="label m-0"><a class="inline-block bg-yellow px-3 py-2 no-underline shadow-print-sm hover:bg-paper" href={homelabUrl(lang)}>{t(lang, "hl.open")} →</a></p>}
         {p.repo && <p class="label m-0"><a class="inline-block bg-paper px-3 py-2 no-underline shadow-print-sm hover:bg-yellow" href={p.repo}>{t(lang, "project.repo")} : {p.repo.replace("https://", "")} ↗</a></p>}
       </div>
       <article class="box prose-print max-w-[760px]">

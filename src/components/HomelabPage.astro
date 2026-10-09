@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Ground from "./Ground.astro";
-import { home, homelabUrl, l, t, type Lang, type UiKey } from "../i18n";
+import { home, homelabUrl, l, projectUrl, t, type Lang, type UiKey } from "../i18n";
 import { profile } from "../profile";
 import { BLOCK_H, BLOCK_W, VIEW, blocks, frames, layers, links, paths, principles, type Block, type Zone } from "../data/homelab";
 
@@ -49,6 +49,7 @@ const zoneOf = (z: Zone) => t(lang, `hl.zone.${z}` as UiKey);
     <div class="mt-6 flex flex-wrap items-end gap-5">
       <p class="box m-0 max-w-[720px] font-serif text-[22px] leading-snug italic">{t(lang, "hl.lead")}</p>
       <p class="label m-0 flex flex-wrap gap-2">
+        <a class="inline-block bg-yellow px-3 py-2 no-underline shadow-print-sm hover:bg-paper" href={projectUrl(lang, "homelab")}>{t(lang, "hl.explain")} →</a>
         <a class="inline-block bg-paper px-3 py-2 no-underline shadow-print-sm hover:bg-yellow" href={profile.links.homelabNix}>homelab-nix ↗</a>
         <a class="inline-block bg-paper px-3 py-2 no-underline shadow-print-sm hover:bg-yellow" href={profile.links.homelabCluster}>homelab-cluster ↗</a>
       </p>
