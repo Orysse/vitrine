@@ -10,23 +10,6 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-const details = {
-  fr: [
-    ["Voix", "oscillateur dents de scie ou carré (polyBLEP), filtre passe-bas 4 pôles à rétroaction résonante avec saturation tanh, suréchantillonné 2×"],
-    ["Enveloppes", "filtre (decay de 200 ms à 2 s), VCA, accent qui s'accumule sur les accents consécutifs, slide en legato (~60 ms)"],
-    ["Séquenceur", "16 pas : note, octave, accent, slide, silence ; tempo de 60 à 200 BPM ; longueur de 1 à 16 pas ; kick et charley optionnels"],
-    ["Moteur", "Web Audio, la voix tourne dans un AudioWorklet ; aucun fichier son"],
-    ["Motif", "enregistré dans l'URL : copier le lien partage le motif et le tempo"],
-  ],
-  en: [
-    ["Voice", "sawtooth or square oscillator (polyBLEP), 4-pole low-pass filter with resonant feedback and tanh saturation, 2× oversampled"],
-    ["Envelopes", "filter (200 ms to 2 s decay), VCA, accent that builds up on consecutive accents, legato slide (~60 ms)"],
-    ["Sequencer", "16 steps: note, octave, accent, slide, rest; 60 to 200 BPM; 1 to 16 steps; optional kick and hi-hat"],
-    ["Engine", "Web Audio, the voice runs in an AudioWorklet; no sound files"],
-    ["Pattern", "stored in the URL: copying the link shares the pattern and tempo"],
-  ],
-}[lang];
-
 const help = {
   fr: [
     ["Potards", "glisser verticalement, molette ou flèches ; Maj pour un réglage fin ; double-clic = valeur par défaut"],
@@ -52,15 +35,7 @@ const help = {
       <Vtr303 lang={lang} />
     </div>
 
-    <div class="mt-8 grid items-start gap-6 lg:grid-cols-2">
-      <dl class="box m-0 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2 text-[14.5px]">
-        {details.map(([k, v]) => (
-          <>
-            <dt class="label pt-0.5 text-[11px]">{k}</dt>
-            <dd class="m-0">{v}</dd>
-          </>
-        ))}
-      </dl>
+    <div class="mt-8 max-w-[760px]">
       <dl class="box box-ink m-0 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2 text-[14.5px] text-paper">
         {help.map(([k, v]) => (
           <>
@@ -70,7 +45,6 @@ const help = {
         ))}
       </dl>
     </div>
-    <p class="label mt-6 mb-0"><a class="inline-block bg-paper px-3 py-2 no-underline shadow-print-sm hover:bg-yellow" href={`${profile.links.source}/blob/main/public/audio/vtr303-worklet.js`}>{t(lang, "vtr.source")} ↗</a></p>
   </Ground>
 
   <script>
