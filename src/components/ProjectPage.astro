@@ -23,7 +23,8 @@ const { Content } = await render(project);
     <div class="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
       <div class="grid gap-6">
         <figure class="relative m-0 -rotate-2 bg-paper p-2.5 shadow-[0_14px_26px_rgba(0,0,0,.35)]">
-          <Halftone art={p.art} paper={p.paper} width={560} height={380} label={p.title} />
+          <Halftone art={p.art} paper={p.paper} width={560} height={380} label={p.title} src={p.photo?.src} />
+          {p.photo && <figcaption class="mt-1.5 font-mono text-[10.5px] opacity-75"><a class="no-underline hover:underline" href={p.photo.url}>{p.photo.credit}, {p.photo.license}</a></figcaption>}
         </figure>
         <dl class="box m-0 grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2 text-[14.5px]">
           {p.facts.map(([k, v]) => (

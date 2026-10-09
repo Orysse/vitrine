@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Halftone from "./Halftone.astro";
-import { projectUrl, t, type Lang } from "../i18n";
+import { homelabUrl, projectUrl, t, type Lang } from "../i18n";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -13,7 +13,14 @@ const p = project.data;
 ---
 
 <article class="flex flex-col bg-paper shadow-print odd:-rotate-1 even:rotate-1">
-  <Halftone art={p.art} paper={p.paper} width={480} height={300} label={p.title} class="border-b-[3px] border-ink" />
+  <figure class="m-0 border-b-[3px] border-ink">
+    <Halftone art={p.art} paper={p.paper} width={480} height={300} label={p.title} src={p.photo?.src} />
+    {p.photo && (
+      <figcaption class="bg-paper px-3 py-1 font-mono text-[10.5px] opacity-75">
+        <a class="no-underline hover:underline" href={p.photo.url}>{p.photo.credit}, {p.photo.license}</a>
+      </figcaption>
+    )}
+  </figure>
   <div class="flex flex-1 flex-col gap-3 p-4">
     <h3 class="m-0 font-display text-[30px] leading-none">{p.title}</h3>
     <p class="m-0">{p.summary}</p>
@@ -26,7 +33,7 @@ const p = project.data;
       ))}
     </dl>
     <p class="label mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-2">
-      <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={projectUrl(lang, slug)}>{t(lang, "project.more")} →</a>
+      <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={p.page === "homelab" ? homelabUrl(lang) : projectUrl(lang, slug)}>{t(lang, "project.more")} →</a>
       {p.repo && <a class="border-b-[3px] border-ink no-underline hover:bg-yellow" href={p.repo}>{t(lang, "project.repo")} ↗</a>}
     </p>
   </div>

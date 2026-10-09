@@ -40,6 +40,10 @@ export const collections = {
       art: z.enum(["nuc", "laptop", "key", "flake", "page"]),
       paper: z.enum(["yellow", "green", "pink", "blue"]),
       repo: z.url().optional(),
+      /** A real photo for the halftone, in public/img/, with its credit. */
+      photo: z.object({ src: z.string(), credit: z.string(), license: z.string(), url: z.url() }).optional(),
+      /** Detail page elsewhere on the site (e.g. "homelab"); no /projets/<slug>/ page is generated then. */
+      page: z.enum(["homelab"]).optional(),
       stack: z.array(z.string()),
       facts: z.array(z.tuple([z.string(), z.string()])),
     }),

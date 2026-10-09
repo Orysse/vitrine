@@ -9,5 +9,5 @@
   order: 2
   label: { fr: Homelab, en: Homelab }
   text:
-    fr: "Linux, Nix, microvm.nix. Le cluster qui sert ce site est décrit plus haut."
-    en: "Linux, Nix, microvm.nix. The cluster serving this site is described above."
+    fr: "Linux, Nix, microvm.nix. La carte du cluster qui sert ce site est sur la page Homelab."
+    en: "Linux, Nix, microvm.nix. The map of the cluster serving this site is on the Homelab page."

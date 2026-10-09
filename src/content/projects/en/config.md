@@ -4,6 +4,7 @@ summary: My laptop (ThinkPad) configuration as one dendritic flake, without home
 order: 2
 art: laptop
 paper: yellow
+photo: { src: "/img/thinkpad.jpg", credit: "Edvard10 / Wikimedia Commons", license: "CC0", url: "https://commons.wikimedia.org/wiki/File:ThinkPad_T14.jpg" }
 repo: https://github.com/Orysse/config
 stack: [NixOS, flake-parts, import-tree, nix-wrapper-modules, disko, preservation, lanzaboote, sops-nix, sway]
 facts:

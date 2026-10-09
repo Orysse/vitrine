@@ -81,7 +81,7 @@ const presets = ["squelch", "rolling", "minor", "stabs", "hypnotic"];
           <button type="button" class="step-flag" data-flag="down" aria-pressed="false" title={t(lang, "vtr.down")}>▼</button>
           <button type="button" class="step-flag" data-flag="accent" aria-pressed="false" title="accent">AC</button>
           <button type="button" class="step-flag" data-flag="slide" aria-pressed="false" title="slide">SL</button>
-          <button type="button" class="step-flag" data-flag="rest" aria-pressed="false" title={t(lang, "vtr.rest")}>—</button>
+          <button type="button" class="step-flag" data-flag="rest" aria-pressed="false" title={t(lang, "vtr.rest")}>∅</button>
         </div>
       ))}
     </div>
@@ -98,7 +98,7 @@ const presets = ["squelch", "rolling", "minor", "stabs", "hypnotic"];
       <label class="flex items-center gap-2 text-[11px] font-bold tracking-[.1em] uppercase">
         preset
         <select class="vtr-btn normal-case" data-preset>
-          <option value="">—</option>
+          <option value="">…</option>
           {presets.map((p) => <option value={p}>{p}</option>)}
         </select>
       </label>

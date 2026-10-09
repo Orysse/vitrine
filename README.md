@@ -25,9 +25,11 @@ src/
   layouts/Layout.astro    head, header, SVG filter
   scripts/                grounds, halftones, trip slider, VTR-303 panel (TypeScript)
   styles/global.css       Tailwind theme (palette, fonts) and the print primitives
-  pages/                  / and /en/, /projets/<slug>/ and /en/projects/<slug>/, /303/ and /en/303/, 404
+  pages/                  / and /en/, /projets/<slug>/, /homelab/, /303/ (and /en/…), 404
 public/cv/                CV PDFs, copied from the CV repository
 public/audio/             VTR-303 voice (AudioWorklet, plain JS: served as is)
+public/img/               photos for the halftones (credits in CREDITS.md)
+src/data/homelab.ts       the homelab map: blocks, links, paths, layers, principles
 nginx.conf                image server config: CSP, /healthz
 ```
 

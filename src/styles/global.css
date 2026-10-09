@@ -129,6 +129,42 @@
   .key-black[aria-pressed="true"] { @apply bg-magenta; }
 }
 
+/* Homelab map. */
+@layer components {
+  .hl-btn { @apply cursor-pointer rounded-sm bg-[#e9e5dc] px-2.5 py-1.5 font-sans text-[12px] font-bold tracking-[.06em] text-ink uppercase shadow-[0_2px_0_rgba(0,0,0,.25)]; }
+  .hl-btn[aria-pressed="true"] { @apply bg-ink text-yellow; }
+  .box-ink .hl-btn { @apply bg-paper; }
+
+  .hl-map text { font-family: var(--font-mono); fill: var(--color-ink); }
+  .hl-frame rect { fill: none; stroke: var(--color-ink); stroke-width: 2; stroke-dasharray: 8 6; }
+  .hl-frame-cluster rect { stroke: var(--color-magenta); }
+  .hl-frame text { font-size: 15px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+  .hl-frame-cluster text { fill: var(--color-magenta); }
+  .hl-links path { fill: none; stroke: var(--color-ink); stroke-opacity: .28; stroke-width: 1.5; }
+  .hl-segs path { fill: none; stroke: var(--color-magenta); stroke-width: 5; stroke-linecap: round; opacity: 0; transition: opacity .2s; }
+  .hl-segs path.is-on, .hl-segs path.is-done { opacity: 1; }
+  .hl-segs path.is-done { stroke-opacity: .55; }
+  .hl-node { cursor: pointer; outline: none; }
+  .hl-node rect { stroke: var(--color-ink); stroke-width: 2; transition: opacity .2s, stroke-width .15s; }
+  .hl-node .hl-label { font-size: 16px; font-weight: 500; }
+  .hl-node .hl-tech { font-size: 11px; opacity: .75; }
+  .hl-node:hover rect, .hl-node:focus-visible rect, .hl-node.is-selected rect { stroke: var(--color-magenta); stroke-width: 4; }
+  .hl-node:focus-visible rect { stroke-dasharray: 6 3; }
+  .zone-external rect, .hl-swatch.zone-external { fill: var(--color-paper); background: var(--color-paper); }
+  .zone-host rect, .hl-swatch.zone-host { fill: var(--color-teal); background: var(--color-teal); }
+  .zone-cluster rect, .hl-swatch.zone-cluster { fill: var(--color-gold); background: var(--color-gold); }
+  .zone-platform rect, .hl-swatch.zone-platform { fill: var(--color-pink); background: var(--color-pink); }
+  .zone-app rect, .hl-swatch.zone-app { fill: var(--color-yellow); background: var(--color-yellow); }
+  .hl-swatch { @apply inline-block size-3.5 rounded-sm border-2 border-paper; }
+  .hl-map.is-focused .hl-node:not(.is-on) { opacity: .28; }
+  .hl-map.is-focused .hl-links { opacity: .4; }
+  .hl-dot { fill: var(--color-yellow); stroke: var(--color-ink); stroke-width: 3; opacity: 0; }
+  .hl-dot.is-on { opacity: 1; }
+  [data-panel-steps] li.is-pending { opacity: .35; }
+  [data-panel-steps] li.is-on { @apply text-yellow; }
+  .hl-entry:target { @apply -mx-2 rounded-sm bg-yellow px-2; }
+}
+
 @keyframes spin { to { rotate: 360deg; } }
 @keyframes drift { from { rotate: 4deg; } to { rotate: -4deg; } }
 

@@ -307,7 +307,7 @@ export function vtr303(root: HTMLElement): void {
       const s = pattern.steps[i];
       el.classList.toggle("is-selected", i === selected);
       el.classList.toggle("is-off", i >= pattern.length);
-      el.querySelector<HTMLElement>("[data-name]")!.textContent = s.rest ? "—" : `${NAMES[s.note]}${s.oct > 0 ? "↑" : s.oct < 0 ? "↓" : ""}`;
+      el.querySelector<HTMLElement>("[data-name]")!.textContent = s.rest ? "∅" : `${NAMES[s.note]}${s.oct > 0 ? "↑" : s.oct < 0 ? "↓" : ""}`;
       el.querySelectorAll<HTMLButtonElement>("[data-flag]").forEach((b) => {
         const f = b.dataset.flag!;
         const on = f === "down" ? s.oct === -1 : f === "up" ? s.oct === 1 : s[f as "accent" | "slide" | "rest"];
