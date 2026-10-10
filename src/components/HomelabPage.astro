@@ -60,7 +60,7 @@ const zoneOf = (z: Zone) => t(lang, `hl.zone.${z}` as UiKey);
     <div class="hl grid items-start gap-5 2xl:grid-cols-[minmax(0,1fr)_340px]" data-homelab>
       <div class="box flex flex-wrap items-center gap-2 py-3" data-js-only hidden>
         <span class="label mr-1">{t(lang, "hl.paths")}</span>
-        {paths.map((p) => <button type="button" class="hl-btn" aria-pressed="false" data-path-btn={p.id}>{l(p.title, lang)}</button>)}
+        {paths.map((p) => <button type="button" class="hl-btn" aria-pressed="false" data-path-btn={p.id} data-umami-event="homelab-path" data-umami-event-path={p.id}>{l(p.title, lang)}</button>)}
         <button type="button" class="hl-btn" data-clear>{t(lang, "hl.clear")}</button>
       </div>
       <aside class="box box-ink grid min-h-[190px] content-start gap-3 2xl:sticky 2xl:top-20 2xl:col-start-2 2xl:row-span-2 2xl:row-start-1" aria-live="polite" data-panel>
@@ -135,9 +135,9 @@ const zoneOf = (z: Zone) => t(lang, `hl.zone.${z}` as UiKey);
     <h2 class="title text-yellow [text-shadow:5px_5px_0_var(--color-ink)]">{t(lang, "hl.principles")}</h2>
     <div class="mt-8 grid gap-4 md:grid-cols-2">
       {principles.map((p, i) => (
-        <section class:list={["box grid content-start gap-1", { "box-ink": i === 3 }]}>
-          <h3 class:list={["label m-0", i === 3 ? "text-pink" : "text-magenta"]}>{l(p.title, lang)}</h3>
-          <p class:list={["m-0", { "text-paper": i === 3 }]}>{l(p.text, lang)}</p>
+        <section class:list={["box grid content-start gap-1", { "box-ink": i === principles.length - 1 }]}>
+          <h3 class:list={["label m-0", i === principles.length - 1 ? "text-pink" : "text-magenta"]}>{l(p.title, lang)}</h3>
+          <p class:list={["m-0", { "text-paper": i === principles.length - 1 }]}>{l(p.text, lang)}</p>
         </section>
       ))}
     </div>

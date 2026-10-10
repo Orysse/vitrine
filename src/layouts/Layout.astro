@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { home, homelabUrl, synthUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
+import { umami } from "../analytics";
 
 interface Props {
   lang: Lang;
@@ -42,6 +43,7 @@ const nav = [
     <link rel="alternate" hreflang="fr" href={new URL(alternates.fr, Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL(alternates.en, Astro.site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {umami.websiteId && <script is:inline defer src={`${umami.host}/script.js`} data-website-id={umami.websiteId} data-domains={umami.domains}></script>}
   </head>
   <body>
     <a href="#main" class="absolute -left-[999px] top-2 z-50 bg-yellow px-3 py-2 font-semibold focus:left-2">{t(lang, "skip")}</a>
@@ -50,7 +52,7 @@ const nav = [
       <a href={home(lang)} class="font-display text-[26px] leading-none text-yellow no-underline">{profile.name}</a>
       <nav aria-label="Sections" class="flex flex-wrap gap-x-5 gap-y-1 text-[13px] font-bold tracking-[.08em] uppercase">
         {nav.map(([id, label]) => <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={anchor(id)}>{label}</a>)}
-        <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={profile.cv[lang]}>{t(lang, "nav.cv")}</a>
+        <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={profile.cv[lang]} data-umami-event="cv-download" data-umami-event-lang={lang} data-umami-event-from="nav">{t(lang, "nav.cv")}</a>
         <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={homelabUrl(lang)}>{t(lang, "hl.nav")}</a>
         <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={synthUrl(lang)}>{t(lang, "vtr.nav")}</a>
         <a class="py-1 text-pink no-underline hover:text-yellow" href={alternates[other]} hreflang={other} lang={other}>{t(lang, "nav.lang")}</a>

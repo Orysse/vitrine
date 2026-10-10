@@ -7,10 +7,11 @@ paper: pink
 photo: { src: "/img/intel-nuc.jpg", credit: "Laserlicht / Wikimedia Commons", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Intel_NUC8.jpg" }
 map: true
 repo: https://github.com/Orysse/homelab-nix
-stack: [NixOS, microvm.nix, deploy-rs, k3s, Flux, Traefik, cert-manager, OpenBao, External Secrets, Pocket-ID, PostgreSQL, VictoriaMetrics, VictoriaLogs, Grafana, Renovate]
+stack: [NixOS, microvm.nix, deploy-rs, k3s, Cilium, Hubble, Flux, Traefik, cert-manager, OpenBao, External Secrets, Pocket-ID, PostgreSQL, VictoriaMetrics, VictoriaLogs, Grafana, Umami, Renovate]
 facts:
   - [Hôte, "NixOS, déployé avec deploy-rs et rollback automatique"]
   - [Cluster, "3 microVMs k3s jetables, état gardé sur l'hôte"]
+  - [Réseau, "Cilium en eBPF, WireGuard entre nœuds, tout refusé par défaut"]
   - [Secrets, "OpenBao et External Secrets, sops pour le démarrage"]
   - [Identité, "Pocket-ID, passkeys uniquement, droits par groupes"]
   - [Monitoring, "VictoriaMetrics et VictoriaLogs sur l'hôte, alertes par mail"]
@@ -25,7 +26,9 @@ Un seul fichier, `modules/topology/topology.nix`, décrit le réseau, les hôtes
 
 Les VMs sont générées depuis cette topologie avec microvm.nix. Elles n'ont pas d'image disque et leur racine est un tmpfs. Seules l'identité du nœud et les données k3s sont gardées, sur l'hôte.
 
-L'hôte se déploie avec deploy-rs. Si l'hôte ne répond plus après l'activation, il revient seul à la version précédente.
+Le réseau du cluster, Cilium, est installé par la base au démarrage de k3s : Flux en a besoin pour tourner, il ne peut donc pas l'installer lui-même.
+
+L'hôte se déploie avec deploy-rs. Si l'hôte ne répond plus après l'activation, il revient seul à la version précédente. Une CI GitHub lance `nix flake check` à chaque push.
 
 ## Ce qui tourne sur l'hôte
 
@@ -33,7 +36,7 @@ Tout ce qui garde un état reste hors des VMs :
 
 - les volumes des pods, en NFS sur btrfs, avec un snapshot btrbk toutes les heures ;
 - PostgreSQL, pour les applications ;
-- VictoriaMetrics et VictoriaLogs, pour les métriques et les logs ;
+- VictoriaMetrics et VictoriaLogs, pour les métriques et les logs, dont l'audit de l'API Kubernetes et les journaux des nœuds ;
 - vmalert et Alertmanager, qui envoient les alertes par mail ;
 - le VPN WireGuard, seul accès d'administration.
 
@@ -45,7 +48,7 @@ Flux applique le dépôt `homelab-cluster` dans un ordre fixé par `dependsOn` :
 
 1. `infra-controllers` : MetalLB, cert-manager, le pilote CSI NFS, External Secrets et l'opérateur de configuration d'OpenBao ;
 2. `infra-configs` : réseau, passerelles, certificats, stockage, monitoring, OpenBao, Pocket-ID et Headlamp ;
-3. `apps` : les applications, dont ce site.
+3. `apps` : ce site, la page de statut Gatus et Umami, la mesure d'audience du site.
 
 L'hôte publie ses paramètres dans une ConfigMap que Flux substitue dans les manifestes. Le réseau n'est donc défini qu'une fois, côté Nix. Images et charts sont épinglés, et Renovate ouvre les pull requests de mise à jour.
 
@@ -62,7 +65,8 @@ External Secrets copie les secrets d'OpenBao dans des Secrets Kubernetes. Une se
 ## Sécurité
 
 - Secrets Kubernetes chiffrés au repos.
-- Trafic entre les nœuds chiffré par WireGuard (flannel en `wireguard-native`).
+- Trafic entre les nœuds chiffré par WireGuard, par Cilium.
+- Network policies Cilium dans chaque namespace : tout est refusé par défaut et chaque flux permis est écrit dans git. Ce site ne joint rien, pas même le DNS. Hubble montre les flux, y compris ceux qui sont bloqués.
 - Ports du control plane ouverts aux seuls nœuds du cluster.
 - HTTPS partout, avec un certificat wildcard Let's Encrypt obtenu par DNS-01, HSTS et en-têtes de sécurité.
 - Interfaces d'administration sur une passerelle interne, joignable seulement depuis le réseau local et le VPN.

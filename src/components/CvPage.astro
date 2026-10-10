@@ -46,9 +46,9 @@ const tones = ["paper", "yellow", "paper", "ink"] as const;
         <p class="box m-0 max-w-[620px] bg-teal sm:ml-[6%]">{l(profile.now, lang)}.</p>
         <p class="box m-0 max-w-[620px] bg-pink">{l(profile.looking, lang)}.</p>
         <p class="label m-0 flex flex-wrap gap-x-5 gap-y-2 self-start bg-paper px-3 py-2 shadow-print-sm">
-          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.links.github}>GitHub ↗</a>
-          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.cv.fr}>{t(lang, "cv.fr")} ↓</a>
-          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.cv.en}>{t(lang, "cv.en")} ↓</a>
+          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.links.github} data-umami-event="github">GitHub ↗</a>
+          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.cv.fr} data-umami-event="cv-download" data-umami-event-lang="fr" data-umami-event-from="hero">{t(lang, "cv.fr")} ↓</a>
+          <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={profile.cv.en} data-umami-event="cv-download" data-umami-event-lang="en" data-umami-event-from="hero">{t(lang, "cv.en")} ↓</a>
         </p>
       </div>
       <div class="relative mx-auto aspect-square w-full max-w-[520px]">

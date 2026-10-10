@@ -33,9 +33,9 @@ const p = project.data;
       ))}
     </dl>
     <p class="label mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-2">
-      <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={projectUrl(lang, slug)}>{t(lang, "project.more")} →</a>
-      {p.map && <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={homelabUrl(lang)}>{t(lang, "hl.open")} →</a>}
-      {p.repo && <a class="border-b-[3px] border-ink no-underline hover:bg-yellow" href={p.repo}>{t(lang, "project.repo")} ↗</a>}
+      <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={projectUrl(lang, slug)} data-umami-event="project-details" data-umami-event-project={slug}>{t(lang, "project.more")} →</a>
+      {p.map && <a class="border-b-[3px] border-magenta no-underline hover:bg-yellow" href={homelabUrl(lang)} data-umami-event="homelab-map" data-umami-event-from="card">{t(lang, "hl.open")} →</a>}
+      {p.repo && <a class="border-b-[3px] border-ink no-underline hover:bg-yellow" href={p.repo} data-umami-event="repo" data-umami-event-project={slug}>{t(lang, "project.repo")} ↗</a>}
     </p>
   </div>
 </article>
