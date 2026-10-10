@@ -4,7 +4,7 @@
 // no script is added to the pages.
 export const umami = {
   host: "https://pulse.abe.lc",
-  websiteId: "",
+  websiteId: "eb0c29ae-c63e-46f0-a464-bc36858c34be",
   // Only count visits on the real domain, not local previews.
   domains: "vitrine.abe.lc",
 };
