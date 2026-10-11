@@ -42,8 +42,6 @@ export const collections = {
       repo: z.url().optional(),
       /** A real photo for the halftone, in public/img/, with its credit. */
       photo: z.object({ src: z.string(), credit: z.string(), license: z.string(), url: z.url() }).optional(),
-      /** The project also has the interactive map at /homelab/. */
-      map: z.boolean().optional(),
       stack: z.array(z.string()),
       facts: z.array(z.tuple([z.string(), z.string()])),
     }),

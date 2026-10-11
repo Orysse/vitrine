@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { home, homelabUrl, synthUrl, t, type Lang } from "../i18n";
+import { home, projectUrl, synthUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 import { umami } from "../analytics";
 
@@ -53,7 +53,7 @@ const nav = [
       <nav aria-label="Sections" class="flex flex-wrap gap-x-5 gap-y-1 text-[13px] font-bold tracking-[.08em] uppercase">
         {nav.map(([id, label]) => <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={anchor(id)}>{label}</a>)}
         <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={profile.cv[lang]} data-umami-event="cv-download" data-umami-event-lang={lang} data-umami-event-from="nav">{t(lang, "nav.cv")}</a>
-        <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={homelabUrl(lang)}>{t(lang, "hl.nav")}</a>
+        <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={projectUrl(lang, "homelab")}>{t(lang, "hl.nav")}</a>
         <a class="border-b-2 border-transparent py-1 no-underline hover:border-yellow hover:text-yellow" href={synthUrl(lang)}>{t(lang, "vtr.nav")}</a>
         <a class="py-1 text-pink no-underline hover:text-yellow" href={alternates[other]} hreflang={other} lang={other}>{t(lang, "nav.lang")}</a>
       </nav>

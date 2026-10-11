@@ -13,12 +13,12 @@ const { lang } = Astro.props;
 const help = {
   fr: [
     ["Potards", "glisser verticalement, molette ou flèches ; Maj pour un réglage fin ; double-clic = valeur par défaut"],
-    ["Pas", "cliquer un pas pour le sélectionner ; ▲ ▼ octave, AC accent, SL slide (lie au pas suivant), ∅ silence"],
+    ["Pas", "cliquer un pas pour le sélectionner, puis une note du clavier. DOWN et UP changent l'octave, ACCENT accentue, SLIDE lie au pas suivant, REST met un silence. Les LED montrent l'état du pas sélectionné."],
     ["Clavier", "a w s e d f t g y h u j k = notes sur le pas sélectionné, puis passe au suivant ; ← → change de pas ; - ou 0 = silence ; espace = lecture"],
   ],
   en: [
     ["Knobs", "drag vertically, scroll or use the arrow keys; Shift for fine control; double-click = default value"],
-    ["Steps", "click a step to select it; ▲ ▼ octave, AC accent, SL slide (ties into the next step), ∅ rest"],
+    ["Steps", "click a step to select it, then a note on the keyboard. DOWN and UP change the octave, ACCENT accents, SLIDE ties into the next step, REST makes a rest. The LEDs show the selected step."],
     ["Keyboard", "a w s e d f t g y h u j k = notes on the selected step, then moves to the next; ← → change step; - or 0 = rest; space = play"],
   ],
 }[lang];

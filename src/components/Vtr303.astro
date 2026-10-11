@@ -6,107 +6,168 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-const voice = [
-  { p: "tune", label: "tune", min: -12, max: 12, step: 0.1, def: 0 },
-  { p: "cutoff", label: "cutoff", min: 0, max: 1, step: 0.01, def: 0.35 },
-  { p: "resonance", label: "reso", min: 0, max: 1, step: 0.01, def: 0.7 },
-  { p: "envMod", label: "env mod", min: 0, max: 1, step: 0.01, def: 0.6 },
-  { p: "decay", label: "decay", min: 0, max: 1, step: 0.01, def: 0.4 },
-  { p: "accent", label: "accent", min: 0, max: 1, step: 0.01, def: 0.6 },
-  { p: "drive", label: "drive", min: 0, max: 1, step: 0.01, def: 0.3 },
-  { p: "volume", label: "volume", min: 0, max: 1, step: 0.01, def: 0.7 },
+// Front panel laid out like a TB-303: knob row on top, keys with LEDs at the bottom.
+const knobRow = [
+  { p: "tune", label: "Tune", min: -12, max: 12, step: 0.1, def: 0 },
+  { p: "cutoff", label: "Cut off freq", min: 0, max: 1, step: 0.01, def: 0.35 },
+  { p: "resonance", label: "Resonance", min: 0, max: 1, step: 0.01, def: 0.7 },
+  { p: "envMod", label: "Env mod", min: 0, max: 1, step: 0.01, def: 0.6 },
+  { p: "decay", label: "Decay", min: 0, max: 1, step: 0.01, def: 0.4 },
+  { p: "accent", label: "Accent", min: 0, max: 1, step: 0.01, def: 0.6 },
 ];
-const seq = [
-  { p: "bpm", label: "tempo", min: 60, max: 200, step: 1, def: 138 },
-  { p: "length", label: t(lang, "vtr.length"), min: 1, max: 16, step: 1, def: 16 },
+const outRow = [
+  { p: "drive", label: "Drive", min: 0, max: 1, step: 0.01, def: 0.3 },
+  { p: "volume", label: "Volume", min: 0, max: 1, step: 0.01, def: 0.7 },
 ];
-// One octave, C to C. Black keys sit on the boundaries between white keys (8 whites).
-const whites = [0, 2, 4, 5, 7, 9, 11, 12];
-const blacks = [
-  { n: 1, cls: "left-[8.5%]" },
-  { n: 3, cls: "left-[21%]" },
-  { n: 6, cls: "left-[46%]" },
-  { n: 8, cls: "left-[58.5%]" },
-  { n: 10, cls: "left-[71%]" },
+// One octave on a 16-column grid: whites take two columns, sharps sit on the boundaries.
+const whites = [
+  { n: 0, label: "C", col: "col-start-1" }, { n: 2, label: "D", col: "col-start-3" },
+  { n: 4, label: "E", col: "col-start-5" }, { n: 5, label: "F", col: "col-start-7" },
+  { n: 7, label: "G", col: "col-start-9" }, { n: 9, label: "A", col: "col-start-11" },
+  { n: 11, label: "B", col: "col-start-13" }, { n: 12, label: "C", col: "col-start-15" },
 ];
-const names = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B", "C"];
+const sharps = [
+  { n: 1, label: "C♯", col: "col-start-2" }, { n: 3, label: "D♯", col: "col-start-4" },
+  { n: 6, label: "F♯", col: "col-start-8" }, { n: 8, label: "G♯", col: "col-start-10" },
+  { n: 10, label: "A♯", col: "col-start-12" },
+];
+const fns = [
+  { f: "down", label: "Down", title: t(lang, "vtr.down") },
+  { f: "up", label: "Up", title: t(lang, "vtr.up") },
+  { f: "accent", label: "Accent", title: "accent" },
+  { f: "slide", label: "Slide", title: "slide" },
+  { f: "rest", label: "Rest", title: t(lang, "vtr.rest") },
+];
 const presets = ["squelch", "rolling", "minor", "stabs", "hypnotic"];
 ---
 
-<div class="vtr grid gap-5 rounded-md bg-[#c9c4b8] p-4 text-ink shadow-[0_14px_30px_rgba(0,0,0,.45),inset_0_2px_0_rgba(255,255,255,.5)] sm:p-6" data-vtr>
-  <div class="flex flex-wrap items-baseline justify-between gap-3">
-    <p class="m-0 text-[12px] font-bold tracking-[.08em] uppercase">Computer controlled · bass line</p>
-    <p class="m-0 font-sans text-[28px] font-extrabold tracking-tight text-[#b0140f] [font-stretch:80%]">VTR-303</p>
-  </div>
-
-  <div class="grid grid-cols-4 gap-x-3 gap-y-4 sm:grid-cols-8" role="group" aria-label={t(lang, "vtr.voice")}>
-    {voice.map((k) => (
-      <div class="flex flex-col items-center gap-1.5">
-        <div class="knob" role="slider" tabindex="0" aria-label={k.label} aria-valuemin={k.min} aria-valuemax={k.max} aria-valuenow={k.def} data-knob={k.p} data-min={k.min} data-max={k.max} data-inc={k.step} data-default={k.def}></div>
-        <span class="text-[11px] font-bold tracking-[.1em] uppercase">{k.label}</span>
-        <output class="font-mono text-[11px]" data-for={k.p}></output>
+<div class="vtr303 grid gap-0 overflow-hidden rounded-[10px] text-[#111]" data-vtr>
+  <!-- Upper panel: markings, waveform switch, knob row. -->
+  <div class="p303-top grid gap-5 px-5 pt-4 pb-6 sm:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <p class="m-0 font-sans text-[22px] font-extrabold tracking-[-.02em] italic">VTR</p>
+      <div class="text-right leading-none">
+        <p class="m-0 text-[10px] font-semibold tracking-[.18em] uppercase">Computer Controlled</p>
+        <p class="m-0 mt-1 flex items-baseline justify-end gap-3">
+          <span class="font-serif text-[30px] italic">Bass Line</span>
+          <span class="font-sans text-[24px] font-extrabold tracking-[-.01em]">VTR-303</span>
+        </p>
       </div>
-    ))}
-  </div>
+    </div>
 
-  <div class="relative overflow-hidden rounded-sm bg-[#0b1408] shadow-[inset_0_0_0_2px_#2d2b26]">
-    <canvas class="block h-[110px] w-full" data-scope aria-hidden="true"></canvas>
-  </div>
-
-  <div class="flex flex-wrap items-end gap-x-5 gap-y-4">
-    <button type="button" class="vtr-btn bg-[#b0140f] px-5 text-white" aria-pressed="false" data-transport data-umami-event="303-play" data-label-play={t(lang, "vtr.play")} data-label-stop={t(lang, "vtr.stop")}>{t(lang, "vtr.play")}</button>
-    {seq.map((k) => (
-      <div class="flex items-center gap-2">
-        <div class="knob knob-sm" role="slider" tabindex="0" aria-label={k.label} aria-valuemin={k.min} aria-valuemax={k.max} aria-valuenow={k.def} data-knob={k.p} data-min={k.min} data-max={k.max} data-inc={k.step} data-default={k.def}></div>
-        <div class="grid">
-          <span class="text-[11px] font-bold tracking-[.1em] uppercase">{k.label}</span>
-          <output class="font-mono text-[11px]" data-for={k.p}></output>
-        </div>
+    <div class="flex flex-wrap items-end gap-x-6 gap-y-5" role="group" aria-label={t(lang, "vtr.voice")}>
+      <div class="grid justify-items-center gap-1.5">
+        <span class="p303-lbl">Waveform</span>
+        <button type="button" class="p303-switch" aria-pressed="false" data-wave aria-label={`${t(lang, "vtr.saw")} / ${t(lang, "vtr.square")}`}><span></span></button>
+        <span class="flex w-[64px] justify-between font-mono text-[9px]"><span>SAW</span><span>SQR</span></span>
       </div>
-    ))}
-    <button type="button" class="vtr-btn" aria-pressed="false" data-wave data-label-saw={t(lang, "vtr.saw")} data-label-square={t(lang, "vtr.square")}>{t(lang, "vtr.saw")}</button>
-    <button type="button" class="vtr-btn" aria-pressed="true" data-drum="kick">kick</button>
-    <button type="button" class="vtr-btn" aria-pressed="false" data-drum="hat">hat</button>
-  </div>
-
-  <div class="-mx-1 overflow-x-auto px-1 pb-1">
-    <div class="grid min-w-[760px] grid-cols-16 gap-1" role="group" aria-label={t(lang, "vtr.steps")}>
-      {Array.from({ length: 16 }, (_, i) => (
-        <div class="step grid gap-1" data-step={i}>
-          <button type="button" class="step-head" data-select aria-label={`${t(lang, "vtr.step")} ${i + 1}`}>
-            <span class="block font-mono text-[10px] opacity-70">{i + 1}</span>
-            <span class="block font-mono text-[13px] font-medium" data-name>C</span>
-          </button>
-          <button type="button" class="step-flag" data-flag="up" aria-pressed="false" title={t(lang, "vtr.up")}>▲</button>
-          <button type="button" class="step-flag" data-flag="down" aria-pressed="false" title={t(lang, "vtr.down")}>▼</button>
-          <button type="button" class="step-flag" data-flag="accent" aria-pressed="false" title="accent">AC</button>
-          <button type="button" class="step-flag" data-flag="slide" aria-pressed="false" title="slide">SL</button>
-          <button type="button" class="step-flag" data-flag="rest" aria-pressed="false" title={t(lang, "vtr.rest")}>∅</button>
+      {knobRow.map((k) => (
+        <div class="grid justify-items-center gap-1.5">
+          <div class="knob" role="slider" tabindex="0" aria-label={k.label} aria-valuemin={k.min} aria-valuemax={k.max} aria-valuenow={k.def} data-knob={k.p} data-min={k.min} data-max={k.max} data-inc={k.step} data-default={k.def}></div>
+          <span class="p303-lbl">{k.label}</span>
+          <output class="font-mono text-[10px] opacity-70" data-for={k.p}></output>
         </div>
       ))}
-    </div>
-  </div>
-
-  <div class="grid items-end gap-5 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-    <div class="relative h-[120px] select-none" role="group" aria-label={t(lang, "vtr.keyboard")}>
-      <div class="flex h-full gap-[2px]">
-        {whites.map((n) => <button type="button" class="key-white" data-key={n} aria-label={names[n] + (n === 12 ? "′" : "")} aria-pressed="false"></button>)}
+      <div class="ml-auto flex items-end gap-6">
+        {outRow.map((k) => (
+          <div class="grid justify-items-center gap-1.5">
+            <div class="knob knob-sm" role="slider" tabindex="0" aria-label={k.label} aria-valuemin={k.min} aria-valuemax={k.max} aria-valuenow={k.def} data-knob={k.p} data-min={k.min} data-max={k.max} data-inc={k.step} data-default={k.def}></div>
+            <span class="p303-lbl">{k.label}</span>
+            <output class="font-mono text-[10px] opacity-70" data-for={k.p}></output>
+          </div>
+        ))}
       </div>
-      {blacks.map((b) => <button type="button" class:list={["key-black", b.cls]} data-key={b.n} aria-label={names[b.n]} aria-pressed="false"></button>)}
-    </div>
-    <div class="flex flex-wrap items-center gap-2">
-      <label class="flex items-center gap-2 text-[11px] font-bold tracking-[.1em] uppercase">
-        preset
-        <select class="vtr-btn normal-case" data-preset>
-          <option value="">…</option>
-          {presets.map((p) => <option value={p}>{p}</option>)}
-        </select>
-      </label>
-      <button type="button" class="vtr-btn" data-random>{t(lang, "vtr.random")}</button>
-      <button type="button" class="vtr-btn" data-clear>{t(lang, "vtr.clear")}</button>
-      <button type="button" class="vtr-btn" data-share data-label-done={t(lang, "vtr.copied")}>{t(lang, "vtr.share")}</button>
     </div>
   </div>
 
-  <p class="m-0 text-[13px] font-semibold text-[#b0140f]" data-status hidden>{t(lang, "vtr.unsupported")}</p>
+  <!-- Lower panel: tempo, run/stop, step LEDs, keys. -->
+  <div class="p303-bottom grid gap-5 px-5 pt-5 pb-6 sm:px-8 lg:grid-cols-[auto_minmax(0,1fr)]">
+    <div class="flex flex-wrap items-end gap-6 lg:flex-col lg:items-start">
+      <div class="grid justify-items-center gap-1.5">
+        <div class="knob knob-lg" role="slider" tabindex="0" aria-label="tempo" aria-valuemin="60" aria-valuemax="200" aria-valuenow="138" data-knob="bpm" data-min="60" data-max="200" data-inc="1" data-default="138"></div>
+        <span class="p303-lbl">Tempo</span>
+        <output class="font-mono text-[10px] opacity-70" data-for="bpm"></output>
+      </div>
+      <div class="grid justify-items-center gap-1.5">
+        <div class="knob knob-sm" role="slider" tabindex="0" aria-label={t(lang, "vtr.length")} aria-valuemin="1" aria-valuemax="16" aria-valuenow="16" data-knob="length" data-min="1" data-max="16" data-inc="1" data-default="16"></div>
+        <span class="p303-lbl">{t(lang, "vtr.length")}</span>
+        <output class="font-mono text-[10px] opacity-70" data-for="length"></output>
+      </div>
+      <div class="key303">
+        <span class="led"></span>
+        <button type="button" class="cap cap-run" aria-pressed="false" data-transport data-umami-event="303-play" aria-label={`${t(lang, "vtr.play")} / ${t(lang, "vtr.stop")}`}></button>
+        <span class="p303-lbl">Run / Stop</span>
+      </div>
+    </div>
+
+    <div class="grid min-w-0 gap-5">
+      <div class="-mx-1 overflow-x-auto px-1 pb-1">
+        <div class="p303-display grid min-w-[700px] grid-cols-16 gap-1 p-2" role="group" aria-label={t(lang, "vtr.steps")}>
+          {Array.from({ length: 16 }, (_, i) => (
+            <div class="step303" data-step={i}>
+              <button type="button" class="step303-btn" data-select aria-label={`${t(lang, "vtr.step")} ${i + 1}`}>
+                <span class="led"></span>
+                <span class="block font-mono text-[9px] opacity-60">{i + 1}</span>
+                <span class="block font-mono text-[13px] font-medium" data-name>C</span>
+                <span class="flex justify-center gap-[3px] font-mono text-[8.5px]">
+                  <i data-ind="down">↓</i><i data-ind="up">↑</i><i data-ind="accent">A</i><i data-ind="slide">S</i>
+                </span>
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-start gap-x-8 gap-y-5">
+        <div class="grid min-w-[340px] flex-1 grid-cols-16 gap-x-1 gap-y-3" role="group" aria-label={t(lang, "vtr.keyboard")}>
+          {sharps.map((k) => (
+            <div class:list={["key303 col-span-2 row-start-1", k.col]}>
+              <span class="led"></span>
+              <button type="button" class="cap cap-sharp" data-key={k.n} aria-label={k.label} aria-pressed="false"></button>
+              <span class="p303-lbl">{k.label}</span>
+            </div>
+          ))}
+          {whites.map((k, i) => (
+            <div class:list={["key303 col-span-2 row-start-2", k.col]}>
+              <span class="led"></span>
+              <button type="button" class="cap" data-key={k.n} aria-label={k.label + (i === 7 ? "′" : "")} aria-pressed="false"></button>
+              <span class="p303-lbl">{k.label}</span>
+            </div>
+          ))}
+        </div>
+        <div class="grid grid-cols-5 gap-x-2 gap-y-3" role="group" aria-label={t(lang, "vtr.step")}>
+          {fns.map((k) => (
+            <div class="key303">
+              <span class="led"></span>
+              <button type="button" class="cap cap-fn" data-fn={k.f} aria-pressed="false" title={k.title} aria-label={k.title}></button>
+              <span class="p303-lbl">{k.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 border-t border-[#111]/25 pt-4">
+        <label class="p303-lbl flex items-center gap-2">
+          Pattern
+          <select class="p303-select" data-preset>
+            <option value="">…</option>
+            {presets.map((p) => <option value={p}>{p}</option>)}
+          </select>
+        </label>
+        <button type="button" class="p303-small" data-random>{t(lang, "vtr.random")}</button>
+        <button type="button" class="p303-small" data-clear>{t(lang, "vtr.clear")}</button>
+        <button type="button" class="p303-small" data-share data-label-done={t(lang, "vtr.copied")}>{t(lang, "vtr.share")}</button>
+        <span class="ml-auto flex items-center gap-2">
+          <span class="p303-lbl">Rhythm</span>
+          <button type="button" class="p303-small" aria-pressed="true" data-drum="kick">kick</button>
+          <button type="button" class="p303-small" aria-pressed="false" data-drum="hat">hat</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-[#0b1408] p-2">
+    <canvas class="block h-[80px] w-full" data-scope aria-hidden="true"></canvas>
+  </div>
+  <p class="m-0 bg-[#111] px-4 py-2 text-[13px] font-semibold text-[#ff4a3a]" data-status hidden>{t(lang, "vtr.unsupported")}</p>
 </div>

@@ -91,6 +91,7 @@ export function vtr303(root: HTMLElement): void {
   const sx = scope.getContext("2d")!;
   const stepEls = $$<HTMLElement>("[data-step]");
   const keyEls = $$<HTMLButtonElement>("[data-key]");
+  const fnEls = $$<HTMLButtonElement>("[data-fn]");
   const presetSel = $<HTMLSelectElement>("[data-preset]");
   const waveBtn = $<HTMLButtonElement>("[data-wave]");
   const kickBtn = $<HTMLButtonElement>("[data-drum='kick']");
@@ -180,8 +181,16 @@ export function vtr303(root: HTMLElement): void {
     if (ready && (param === "bpm" || param === "length")) save();
   }
 
-  async function init(): Promise<boolean> {
-    if (ac) return true;
+  // One shared start-up: a second click during the worklet load waits for the same promise.
+  let starting: Promise<boolean> | null = null;
+  function init(): Promise<boolean> {
+    starting ??= start().catch((err) => {
+      starting = null;
+      throw err;
+    });
+    return starting;
+  }
+  async function start(): Promise<boolean> {
     if (!("AudioWorkletNode" in window)) return false;
     ac = new AudioContext();
     await ac.audioWorklet.addModule("/audio/vtr303-worklet.js");
@@ -282,7 +291,6 @@ export function vtr303(root: HTMLElement): void {
       shown.length = 0;
       setPlayhead(-1);
     }
-    playBtn.textContent = playing ? playBtn.dataset.labelStop! : playBtn.dataset.labelPlay!;
     playBtn.setAttribute("aria-pressed", String(playing));
   }
 
@@ -302,20 +310,20 @@ export function vtr303(root: HTMLElement): void {
     stepEls.forEach((el, n) => el.classList.toggle("is-playing", n === i));
   }
 
+  const flagOn = (s: Step, f: string): boolean =>
+    f === "down" ? s.oct === -1 : f === "up" ? s.oct === 1 : s[f as "accent" | "slide" | "rest"];
+
   function renderSteps() {
     stepEls.forEach((el, i) => {
       const s = pattern.steps[i];
       el.classList.toggle("is-selected", i === selected);
       el.classList.toggle("is-off", i >= pattern.length);
       el.querySelector<HTMLElement>("[data-name]")!.textContent = s.rest ? "∅" : `${NAMES[s.note]}${s.oct > 0 ? "↑" : s.oct < 0 ? "↓" : ""}`;
-      el.querySelectorAll<HTMLButtonElement>("[data-flag]").forEach((b) => {
-        const f = b.dataset.flag!;
-        const on = f === "down" ? s.oct === -1 : f === "up" ? s.oct === 1 : s[f as "accent" | "slide" | "rest"];
-        b.setAttribute("aria-pressed", String(on));
-      });
+      el.querySelectorAll<HTMLElement>("[data-ind]").forEach((ind) => ind.classList.toggle("on", flagOn(s, ind.dataset.ind!)));
     });
     const s = pattern.steps[selected];
     keyEls.forEach((k) => k.setAttribute("aria-pressed", String(!s.rest && Number(k.dataset.key) === s.note)));
+    fnEls.forEach((b) => b.setAttribute("aria-pressed", String(flagOn(s, b.dataset.fn!))));
   }
 
   function save() {
@@ -340,19 +348,18 @@ export function vtr303(root: HTMLElement): void {
       renderSteps();
       preview(pattern.steps[i]);
     });
-    el.querySelectorAll<HTMLButtonElement>("[data-flag]").forEach((b) =>
-      b.addEventListener("click", () => {
-        const s = pattern.steps[i];
-        const f = b.dataset.flag!;
-        if (f === "down") s.oct = s.oct === -1 ? 0 : -1;
-        else if (f === "up") s.oct = s.oct === 1 ? 0 : 1;
-        else s[f as "accent" | "slide" | "rest"] = !s[f as "accent" | "slide" | "rest"];
-        selected = i;
-        renderSteps();
-        save();
-      }),
-    );
   });
+  fnEls.forEach((b) =>
+    b.addEventListener("click", () => {
+      const s = pattern.steps[selected];
+      const f = b.dataset.fn!;
+      if (f === "down") s.oct = s.oct === -1 ? 0 : -1;
+      else if (f === "up") s.oct = s.oct === 1 ? 0 : 1;
+      else s[f as "accent" | "slide" | "rest"] = !s[f as "accent" | "slide" | "rest"];
+      renderSteps();
+      save();
+    }),
+  );
 
   function setNote(note: number) {
     const s = pattern.steps[selected];
@@ -369,7 +376,6 @@ export function vtr303(root: HTMLElement): void {
   waveBtn.addEventListener("click", () => {
     const sq = waveBtn.getAttribute("aria-pressed") !== "true";
     waveBtn.setAttribute("aria-pressed", String(sq));
-    waveBtn.textContent = sq ? waveBtn.dataset.labelSquare! : waveBtn.dataset.labelSaw!;
     voice?.parameters.get("wave")?.setTargetAtTime(sq ? 1 : 0, ac!.currentTime, 0.005);
   });
   for (const [name, btn] of [["kick", kickBtn], ["hat", hatBtn]] as const) {

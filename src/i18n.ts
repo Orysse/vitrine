@@ -50,26 +50,6 @@ const ui = {
     "vtr.unsupported": "Ce navigateur ne prend pas en charge AudioWorklet.",
     "vtr.nojs": "La 303 a besoin de JavaScript (Web Audio).",
     "hl.nav": "Homelab",
-    "hl.title": "Homelab",
-    "hl.lead": "Un Intel NUC sous NixOS fait tourner un cluster k3s de trois microVMs, qui sert ce site. Tout est décrit dans deux dépôts publics.",
-    "hl.map": "Carte",
-    "hl.hint": "Choisissez un bloc pour voir ce qu'il fait et pourquoi il est là, ou lancez un parcours.",
-    "hl.paths": "Parcours",
-    "hl.replay": "Rejouer",
-    "hl.clear": "Tout afficher",
-    "hl.layers": "Couches",
-    "hl.show": "Voir sur la carte",
-    "hl.principles": "Principes",
-    "hl.text": "Version texte",
-    "hl.repos": "Dépôts",
-    "hl.zone.external": "À l'extérieur",
-    "hl.zone.host": "Sur l'hôte",
-    "hl.zone.cluster": "Cluster",
-    "hl.zone.platform": "Plateforme",
-    "hl.zone.app": "Applications",
-    "hl.card": "La carte interactive du homelab qui sert ce site : réseau, identité, secrets, monitoring.",
-    "hl.open": "Carte interactive",
-    "hl.explain": "Explication détaillée",
     "skip": "Aller au contenu",
     "notfound": "Cette page n'existe pas.",
   },
@@ -120,26 +100,6 @@ const ui = {
     "vtr.unsupported": "This browser does not support AudioWorklet.",
     "vtr.nojs": "The 303 needs JavaScript (Web Audio).",
     "hl.nav": "Homelab",
-    "hl.title": "Homelab",
-    "hl.lead": "An Intel NUC running NixOS hosts a k3s cluster of three microVMs, which serves this site. Everything is described in two public repositories.",
-    "hl.map": "Map",
-    "hl.hint": "Pick a block to see what it does and why it is there, or play a path.",
-    "hl.paths": "Paths",
-    "hl.replay": "Replay",
-    "hl.clear": "Show all",
-    "hl.layers": "Layers",
-    "hl.show": "Show on the map",
-    "hl.principles": "Principles",
-    "hl.text": "Text version",
-    "hl.repos": "Repositories",
-    "hl.zone.external": "Outside",
-    "hl.zone.host": "On the host",
-    "hl.zone.cluster": "Cluster",
-    "hl.zone.platform": "Platform",
-    "hl.zone.app": "Apps",
-    "hl.card": "The interactive map of the homelab that serves this site: network, identity, secrets, monitoring.",
-    "hl.open": "Interactive map",
-    "hl.explain": "Detailed explanation",
     "skip": "Skip to content",
     "notfound": "This page does not exist.",
   },
@@ -156,9 +116,6 @@ export const home = (lang: Lang): string => (lang === "fr" ? "/" : "/en/");
 /** Project detail URLs differ per language: /projets/<slug>/ and /en/projects/<slug>/. */
 export const projectUrl = (lang: Lang, slug: string): string =>
   lang === "fr" ? `/projets/${slug}/` : `/en/projects/${slug}/`;
-
-/** The homelab map: /homelab/ and /en/homelab/. */
-export const homelabUrl = (lang: Lang): string => (lang === "fr" ? "/homelab/" : "/en/homelab/");
 
 /** The VTR-303 page: /303/ and /en/303/. */
 export const synthUrl = (lang: Lang): string => (lang === "fr" ? "/303/" : "/en/303/");
