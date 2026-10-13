@@ -2,6 +2,16 @@
 
 One entry per tag. Each tag publishes `ghcr.io/orysse/vitrine:X.Y.Z`.
 
+## 0.12.0 (2026-10-13)
+
+The product decisions of `PRODUCT.md` applied.
+
+- Home page about Abel only: the homelab diagram moves to the Homelab page.
+- Email on the home page; a LinkedIn link appears once its URL is set in `src/profile.ts`.
+- Project pages open on what sets the project apart; facts, stack and write-up fold under "Full details".
+- New project page for this site (vitrine).
+- NixOS config: river, not sway, as the compositor.
+
 ## 0.11.0 (2026-10-13)
 
 The 0.8.0 site in the museum treatment, graphite only (see `DESIGN.md`).
