@@ -38,6 +38,11 @@ typography:
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.6
+  small:
+    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.5
   label:
     fontFamily: "Geist Mono Variable, ui-monospace, Menlo, monospace"
     fontSize: "13px"
@@ -131,6 +136,7 @@ Warm-tinted neutrals only; graphite does the work of an accent.
 - **Title** (600, 16px): entry titles, link labels, project names.
 - **Body** (400, 16px, line-height 1.6): running text, kept within a 42rem column.
 - **Availability** (Body at 600): the internship line under the status, bold, no background; the only emphasis on the home page after the name.
+- **Small** (400, 14px): the header line, fact-sheet keys and outside-work notes.
 - **Label** (Geist Mono 400, 13px): dates, places, versions, paths, tool lists, the colophon.
 
 ### Named Rules
@@ -152,6 +158,8 @@ The page is flat: no shadows, no layered surfaces, no cards. The only depth on t
 ## Shapes
 
 Square corners throughout (0 radius): rows, inverted blocks, focus outlines, legend lines. Lines are 1px. The stack's plates are the only non-rectangular forms.
+
+The VTR-303 page (`/303/`) is exempt: its panel imitates the hardware, with its own silver, knob and LED colours and small radii.
 
 ## Components
 

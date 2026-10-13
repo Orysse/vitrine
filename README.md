@@ -56,7 +56,7 @@ To update the CV, rebuild it in the CV repository and copy the two PDFs into `pu
 
 ## Design
 
-One column of text, light and dark themes from `prefers-color-scheme`, Geist and Geist Mono.
+One column of text in graphite on paper (no hue), light and dark themes from `prefers-color-scheme`, Geist and Geist Mono. The museum treatment and its rules are in `DESIGN.md`; the audience and goals in `PRODUCT.md`.
 Content pages ship no JavaScript of their own (only Umami); the 303 is the one script.
 
 - **Homelab diagram** (`Stack.astro`): an exploded isometric stack, computed at build time

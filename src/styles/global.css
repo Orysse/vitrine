@@ -3,7 +3,7 @@
 @import "@fontsource-variable/geist-mono/wght.css";
 @import "tailwindcss";
 
-/* Neutral tokens, redefined for the dark theme. One accent, for links and focus. */
+/* Graphite on paper (DESIGN.md): neutrals only; graphite is both the text and the accent. */
 :root {
   color-scheme: light dark;
   --bg: #fbfaf8;
@@ -11,10 +11,10 @@
   --muted: #67645e;
   --line: #e3e0da;
   --hover: #f1efea;
-  --accent: #1f57b8;
+  --accent: #1c1b19;
   --plate: #ffffff;
   --plate-side: #e9e6e0;
-  --plate-on: #dfe8f8;
+  --plate-on: #1c1b19;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -23,10 +23,10 @@
     --muted: #9b978f;
     --line: #2f2e2b;
     --hover: #1f1f1d;
-    --accent: #8cb2ff;
+    --accent: #e9e7e2;
     --plate: #23231f;
     --plate-side: #1a1a18;
-    --plate-on: #263249;
+    --plate-on: #e9e7e2;
   }
 }
 
@@ -48,25 +48,35 @@
   body { @apply bg-bg font-sans text-[16px] leading-relaxed text-fg antialiased; font-variant-numeric: tabular-nums; }
   h1, h2, h3 { text-wrap: balance; }
   p, li { text-wrap: pretty; }
-  a { color: inherit; text-decoration-line: underline; text-decoration-color: var(--line); text-decoration-thickness: 1px; text-underline-offset: 3px; transition: text-decoration-color .15s; }
-  a:hover { text-decoration-color: currentColor; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  /* Links: bold, no underline until hovered. */
+  a { color: inherit; font-weight: 600; text-decoration: none; text-underline-offset: 3px; text-decoration-thickness: 2px; }
+  a:hover { text-decoration-line: underline; }
+  ::selection { background: var(--fg); color: var(--bg); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   [hidden] { display: none !important; }
 }
 
 @layer components {
+  /* The one loud element of a page: the name, or a project's title. */
+  .display { @apply m-0 font-bold; font-size: clamp(44px, 8.4vw, 74px); line-height: .84; letter-spacing: -.06em; }
+
   /* Section heading: set apart by weight and space rather than size. */
   .section-title { @apply m-0 mb-3 text-[15px] font-semibold; }
 
-  /* A row of a list: title on the left, date or detail in mono on the right. */
-  .row { @apply -mx-3 grid gap-x-6 gap-y-0.5 rounded-md px-3 py-2.5 sm:grid-cols-[minmax(0,1fr)_auto]; }
-  a.row { @apply no-underline hover:bg-hover; }
-  .meta { @apply font-mono text-[13px] text-muted; }
+  /* A row of a list under a 1px graphite rule: title on the left, date in mono on the right.
+     Hovering inverts the head line as a block (no transition, on purpose). */
+  .row-head { @apply grid gap-x-6 gap-y-0.5 py-2 sm:grid-cols-[minmax(0,1fr)_auto]; }
+  .entry { @apply border-t border-fg pb-2; }
+  /* The inverted block bleeds 6px past the text on both sides, without moving it. */
+  .entry:hover > .row-head, a.row-head:hover { @apply bg-fg text-bg; box-shadow: -6px 0 var(--fg), 6px 0 var(--fg); }
+  .entry:hover > .row-head .meta, .entry:hover > .row-head .text-muted, a.row-head:hover .text-muted, a.row-head:hover .meta { @apply text-bg; }
+  a.row-head { @apply border-t border-fg font-normal no-underline; }
+  .meta { @apply font-mono text-[13px] font-normal text-muted; }
 
-  /* Key/value sheets on project pages. */
-  .facts { @apply m-0 grid gap-x-6 text-[14px] sm:grid-cols-[max-content_minmax(0,1fr)] sm:gap-y-2; }
-  .facts dt { @apply text-muted; }
-  .facts dd { @apply m-0 mb-3 font-mono text-[13px] sm:mb-0; }
+  /* Key/value sheets: one 1px rule per line. */
+  .facts { @apply m-0 grid text-[14px] sm:grid-cols-[max-content_minmax(0,1fr)]; }
+  .facts dt { @apply border-t border-fg pt-2 text-muted sm:pb-2 sm:pr-6; }
+  .facts dd { @apply m-0 pb-2 font-mono text-[13px] sm:border-t sm:border-fg sm:pt-2; }
 
   /* Markdown bodies of project pages. */
   .prose h2 { @apply mt-10 mb-3 text-[15px] font-semibold; }
@@ -74,7 +84,7 @@
   .prose ul { @apply list-disc pl-5; }
   .prose ol { @apply list-decimal pl-5; }
   .prose li { @apply mb-1.5 marker:text-muted; }
-  .prose code { @apply rounded-sm bg-hover px-1 font-mono text-[.86em]; }
+  .prose code { @apply bg-hover px-1 font-mono text-[.86em]; }
 
   /* Homelab diagram: one isometric plate per layer. Hovering a plate or its legend line
      lifts it; the pairing is done by :has() below, without script. */
@@ -84,21 +94,22 @@
   .stack .motif { fill: none; stroke: var(--muted); }
   .stack .dot { fill: var(--muted); }
   .stack .plate:hover { translate: 0 -8px; }
-  .stack .plate:hover .top { fill: var(--plate-on); stroke: var(--accent); }
-  .stack .legend li { @apply -mx-2 rounded-md px-2 py-1; }
-  .stack .legend li:hover { @apply bg-hover; }
+  .stack .plate:hover .top { fill: var(--plate-on); stroke: var(--fg); }
+  .stack .legend li { @apply py-1; }
+  .stack .legend li:hover { @apply bg-fg text-bg; box-shadow: -6px 0 var(--fg), 6px 0 var(--fg); }
+  .stack .legend li:hover .meta { @apply text-bg; }
   .stack:has(.legend li:nth-child(1):hover) .plate[data-layer="1"] { translate: 0 -8px; }
-  .stack:has(.legend li:nth-child(1):hover) .plate[data-layer="1"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(1):hover) .plate[data-layer="1"] .top { fill: var(--plate-on); stroke: var(--fg); }
   .stack:has(.legend li:nth-child(2):hover) .plate[data-layer="2"] { translate: 0 -8px; }
-  .stack:has(.legend li:nth-child(2):hover) .plate[data-layer="2"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(2):hover) .plate[data-layer="2"] .top { fill: var(--plate-on); stroke: var(--fg); }
   .stack:has(.legend li:nth-child(3):hover) .plate[data-layer="3"] { translate: 0 -8px; }
-  .stack:has(.legend li:nth-child(3):hover) .plate[data-layer="3"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(3):hover) .plate[data-layer="3"] .top { fill: var(--plate-on); stroke: var(--fg); }
   .stack:has(.legend li:nth-child(4):hover) .plate[data-layer="4"] { translate: 0 -8px; }
-  .stack:has(.legend li:nth-child(4):hover) .plate[data-layer="4"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(4):hover) .plate[data-layer="4"] .top { fill: var(--plate-on); stroke: var(--fg); }
   .stack:has(.legend li:nth-child(5):hover) .plate[data-layer="5"] { translate: 0 -8px; }
-  .stack:has(.legend li:nth-child(5):hover) .plate[data-layer="5"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(5):hover) .plate[data-layer="5"] .top { fill: var(--plate-on); stroke: var(--fg); }
   .stack:has(.legend li:nth-child(6):hover) .plate[data-layer="6"] { translate: 0 -8px; }
-  .stack:has(.legend li:nth-child(6):hover) .plate[data-layer="6"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(6):hover) .plate[data-layer="6"] .top { fill: var(--plate-on); stroke: var(--fg); }
 }
 
 /* VTR-303 front panel, drawn after the TB-303: brushed silver, black print, black knobs with
@@ -172,7 +183,8 @@
   :root { --bg: #fff; --fg: #000; --muted: #444; --line: #bbb; color-scheme: light; }
   body { font-size: 9.5pt; line-height: 1.35; }
   .no-print { display: none !important; }
-  .row { padding-block: 1.5pt; }
+  .row-head { padding-block: 1.5pt; }
+  .entry:hover > .row-head { background: none; color: inherit; }
   section { break-inside: avoid; margin-top: 9pt !important; }
   a { text-decoration: none; }
   .print-href::after { content: " " attr(data-print); font-family: var(--font-mono); font-size: 8pt; color: var(--muted); }

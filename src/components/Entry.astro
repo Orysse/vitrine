@@ -10,15 +10,17 @@ const { entry, lang } = Astro.props;
 const e = entry.data;
 ---
 
-<article class="row">
-  <h3 class="m-0 text-[16px] font-normal">
-    <span class="font-medium">{l(e.role, lang)}</span>, {e.org}{e.orgDetail && <span class="text-muted"> ({e.orgDetail})</span>}
-  </h3>
-  <p class="meta m-0 sm:text-right">{period(e.start, e.end, lang)} · {e.location}</p>
+<article class="entry">
+  <div class="row-head">
+    <h3 class="m-0 text-[16px] font-normal">
+      <span class="font-semibold">{l(e.role, lang)}</span>, {e.org}{e.orgDetail && <span class="text-muted"> ({e.orgDetail})</span>}
+    </h3>
+    <p class="meta m-0 sm:text-right">{period(e.start, e.end, lang)} · {e.location}</p>
+  </div>
   {e.points.length > 0 && (
-    <ul class="mt-1.5 mb-0 grid list-disc gap-1 pl-5 text-[15px] text-muted marker:text-line sm:col-span-2">
+    <ul class="mt-1 mb-0 grid list-disc gap-1 pl-5 text-[15px] text-muted marker:text-muted">
       {e.points.map((p) => <li>{l(p, lang)}</li>)}
     </ul>
   )}
-  {e.stack.length > 0 && <p class="meta mt-1.5 mb-0 text-[12.5px] sm:col-span-2">{e.stack.join(", ")}</p>}
+  {e.stack.length > 0 && <p class="meta mt-1.5 mb-0 text-[12.5px]">{e.stack.join(", ")}</p>}
 </article>
