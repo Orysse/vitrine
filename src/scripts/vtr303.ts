@@ -1,6 +1,6 @@
 // VTR-303 front panel: knobs, 16-step sequencer, drums, presets, shareable patterns.
 // The voice itself runs in public/audio/vtr303-worklet.js.
-import { fit } from "./state";
+import { fit } from "./canvas";
 
 type Step = { note: number; oct: -1 | 0 | 1; accent: boolean; slide: boolean; rest: boolean };
 type Pattern = { bpm: number; length: number; steps: Step[] };

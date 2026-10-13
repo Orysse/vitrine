@@ -39,6 +39,9 @@
           env = {
             SITE_URL = siteUrl;
             ASTRO_TELEMETRY_DISABLED = "1";
+            # For the colophon: the build sandbox has no .git to ask.
+            VITRINE_REV = rev;
+            VITRINE_DATE = toString (self.lastModified or 0);
           };
           installPhase = ''
             runHook preInstall
