@@ -38,8 +38,8 @@ export const collections = {
       summary: z.string(),
       order: z.number(),
       repo: z.url().optional(),
-      stack: z.array(z.string()),
-      facts: z.array(z.tuple([z.string(), z.string()])),
+      /** A real photo, in public/img/, with its credit (public/img/CREDITS.md). */
+      photo: z.object({ src: z.string(), credit: z.string(), license: z.string(), url: z.url() }),
     }),
   }),
 };

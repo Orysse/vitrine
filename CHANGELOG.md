@@ -2,6 +2,17 @@
 
 One entry per tag. Each tag publishes `ghcr.io/orysse/vitrine:X.Y.Z`.
 
+## 0.9.0 (2026-10-13)
+
+One page per subject, each in its own universe, see `PITCH.md`.
+
+- Home page about me only: availability, now, CV, experiences that open on click with tool logos, project cards.
+- Project pages show their architecture: layers of parts with real logos, a card per part (role, repo path).
+- Universes: warm paper (home), blueprint (homelab), Everforest (config), silver (303).
+- Trail at the top of every page, kept in place by view transitions, marks visited pages.
+- Real photos of the NUC and the ThinkPad are back; logos in `public/logos/` with credits.
+- Removed: the isometric homelab stack, project fact sheets.
+
 ## 0.8.0 (2026-10-13)
 
 Sober redesign, see `PITCH.md`.

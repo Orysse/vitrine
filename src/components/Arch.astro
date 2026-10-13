@@ -1,0 +1,56 @@
+---
+import Logo from "./Logo.astro";
+import { architectures } from "../arch";
+import { logo } from "../logos";
+import { l, t, type Lang } from "../i18n";
+
+interface Props {
+  name: string;
+  lang: Lang;
+}
+const { name, lang } = Astro.props;
+const layers = architectures[name] ?? [];
+---
+
+{layers.length > 0 && (
+  <div class="arch" data-arch>
+    <div class="arch-layers">
+      {layers.map((layer) => (
+        <section class="layer">
+          <h3 class="layer-name">{l(layer.name, lang)}</h3>
+          <ul class="parts">
+            {layer.parts.map((p) => (
+              <li>
+                <a class="part" href={`#${p.id}`} data-part={p.id} aria-controls="arch-panel">
+                  <Logo logo={logo(p.logo, p.name)} class="size-7" />
+                  <span>{p.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+    <div class="arch-panel" id="arch-panel" aria-live="polite">
+      <p class="arch-hint">{t(lang, "arch.hint")}</p>
+      {layers.map((layer) =>
+        layer.parts.map((p) => (
+          <article class="card" id={p.id} data-card={p.id}>
+            <Logo logo={logo(p.logo, p.name)} class="size-12" />
+            <div>
+              <p class="card-layer">{l(layer.name, lang)}</p>
+              <h3 class="card-name">{p.name}</h3>
+            </div>
+            <p class="card-role">{l(p.role, lang)}</p>
+            {p.where && <p class="card-where">{p.where}</p>}
+          </article>
+        )),
+      )}
+    </div>
+  </div>
+)}
+
+<script>
+  import { arch } from "../scripts/arch";
+  document.querySelectorAll<HTMLElement>("[data-arch]").forEach(arch);
+</script>
