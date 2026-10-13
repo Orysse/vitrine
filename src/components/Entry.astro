@@ -1,7 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import Logo from "./Logo.astro";
-import { toolLogo } from "../logos";
 import { l, period, type Lang } from "../i18n";
 
 interface Props {
@@ -10,31 +8,17 @@ interface Props {
 }
 const { entry, lang } = Astro.props;
 const e = entry.data;
-// An entry with points opens on click (details); one without is a plain row.
-const open = e.points.length > 0;
-const Wrap = open ? "details" : "div";
-const Head = open ? "summary" : "div";
 ---
 
-<Wrap class="entry">
-  <Head class="entry-head">
-    <span class="entry-title">
-      <span class="font-semibold">{e.org}</span>{e.orgDetail && <span class="text-muted"> · {e.orgDetail}</span>}{open && <span class="toggle" aria-hidden="true">+</span>}
-      <span class="block text-[15px] text-muted">{l(e.role, lang)}</span>
-    </span>
-    <span class="meta sm:text-right">{period(e.start, e.end, lang)}<span class="block">{e.location}</span></span>
-    {e.stack.length > 0 && (
-      <span class="tools sm:col-span-2">
-        {e.stack.map((s) => {
-          const lg = toolLogo(s);
-          return <span class="tool">{lg && <Logo logo={lg} class="size-4" />}{s}</span>;
-        })}
-      </span>
-    )}
-  </Head>
-  {open && (
-    <ul class="entry-points">
+<article class="row">
+  <h3 class="m-0 text-[16px] font-normal">
+    <span class="font-medium">{l(e.role, lang)}</span>, {e.org}{e.orgDetail && <span class="text-muted"> ({e.orgDetail})</span>}
+  </h3>
+  <p class="meta m-0 sm:text-right">{period(e.start, e.end, lang)} · {e.location}</p>
+  {e.points.length > 0 && (
+    <ul class="mt-1.5 mb-0 grid list-disc gap-1 pl-5 text-[15px] text-muted marker:text-line sm:col-span-2">
       {e.points.map((p) => <li>{l(p, lang)}</li>)}
     </ul>
   )}
-</Wrap>
+  {e.stack.length > 0 && <p class="meta mt-1.5 mb-0 text-[12.5px] sm:col-span-2">{e.stack.join(", ")}</p>}
+</article>

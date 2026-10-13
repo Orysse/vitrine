@@ -3,79 +3,31 @@
 @import "@fontsource-variable/geist-mono/wght.css";
 @import "tailwindcss";
 
-/* Universes. Every page sets data-universe on <html>; the tokens below are all a page uses.
-   home follows the reader's theme; the others have their own fixed light. */
-:root, [data-universe="home"] {
+/* Neutral tokens, redefined for the dark theme. One accent, for links and focus. */
+:root {
   color-scheme: light dark;
-  --bg: #f7f3ec;
-  --fg: #1d1a16;
-  --muted: #6c655b;
-  --line: #e2dbcf;
-  --surface: #fffdf9;
-  --hover: #efe8dc;
-  --accent: #b9472a;
-  --on-accent: #fffdf9;
-  --ok: #2f8f4e;
-  --heading: var(--font-sans);
-  --ground: none;
+  --bg: #fbfaf8;
+  --fg: #1c1b19;
+  --muted: #67645e;
+  --line: #e3e0da;
+  --hover: #f1efea;
+  --accent: #1f57b8;
+  --plate: #ffffff;
+  --plate-side: #e9e6e0;
+  --plate-on: #dfe8f8;
 }
 @media (prefers-color-scheme: dark) {
-  :root, [data-universe="home"] {
-    --bg: #171511;
-    --fg: #ece6da;
-    --muted: #a39b8d;
-    --line: #2f2b25;
-    --surface: #1f1c17;
-    --hover: #26221c;
-    --accent: #e8875f;
-    --on-accent: #171511;
-    --ok: #5cc27d;
+  :root {
+    --bg: #151514;
+    --fg: #e9e7e2;
+    --muted: #9b978f;
+    --line: #2f2e2b;
+    --hover: #1f1f1d;
+    --accent: #8cb2ff;
+    --plate: #23231f;
+    --plate-side: #1a1a18;
+    --plate-on: #263249;
   }
-}
-/* Homelab: a blueprint, in mono. */
-[data-universe="homelab"] {
-  color-scheme: dark;
-  --bg: #0c1724;
-  --fg: #dce8f4;
-  --muted: #86a0bb;
-  --line: #1f3550;
-  --surface: #11223a;
-  --hover: #163052;
-  --accent: #5cc8ff;
-  --on-accent: #0c1724;
-  --ok: #5cc8ff;
-  --heading: var(--font-mono);
-  --ground: linear-gradient(#ffffff08 1px, transparent 1px) 0 0 / 24px 24px, linear-gradient(90deg, #ffffff08 1px, transparent 1px) 0 0 / 24px 24px;
-}
-/* NixOS config: the laptop's own theme, Everforest Dark Medium. */
-[data-universe="config"] {
-  color-scheme: dark;
-  --bg: #2d353b;
-  --fg: #d3c6aa;
-  --muted: #9da9a0;
-  --line: #475258;
-  --surface: #343f44;
-  --hover: #3d484d;
-  --accent: #a7c080;
-  --on-accent: #2d353b;
-  --ok: #a7c080;
-  --heading: var(--font-sans);
-  --ground: none;
-}
-/* VTR-303: the silver of the panel. */
-[data-universe="synth"] {
-  color-scheme: light;
-  --bg: #e4e3dd;
-  --fg: #141414;
-  --muted: #5d5c57;
-  --line: #c9c8c1;
-  --surface: #efeee9;
-  --hover: #d8d7d0;
-  --accent: #d62d1f;
-  --on-accent: #fff;
-  --ok: #d62d1f;
-  --heading: var(--font-sans);
-  --ground: repeating-linear-gradient(90deg, #ffffff12 0 1px, transparent 1px 3px);
 }
 
 @theme {
@@ -83,7 +35,6 @@
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-line: var(--line);
-  --color-surface: var(--surface);
   --color-hover: var(--hover);
   --color-accent: var(--accent);
 
@@ -93,131 +44,61 @@
   --font-serif: Georgia, "Times New Roman", serif;
 }
 
-/* Moving between pages: the universe changes, the trail stays where it is. */
-@view-transition { navigation: auto; }
-.trail-bar { view-transition-name: trail; }
-::view-transition-old(root) { animation: 180ms ease-in both fade-out; }
-::view-transition-new(root) { animation: 320ms cubic-bezier(.2, .8, .2, 1) both rise-in; }
-@keyframes fade-out { to { opacity: 0; } }
-@keyframes rise-in { from { opacity: 0; translate: 0 12px; } }
-
 @layer base {
-  html { background: var(--bg); }
-  body { @apply min-h-dvh bg-bg font-sans text-[16px] leading-relaxed text-fg antialiased; background: var(--ground), var(--bg); font-variant-numeric: tabular-nums; }
+  body { @apply bg-bg font-sans text-[16px] leading-relaxed text-fg antialiased; font-variant-numeric: tabular-nums; }
   h1, h2, h3 { text-wrap: balance; }
   p, li { text-wrap: pretty; }
   a { color: inherit; text-decoration-line: underline; text-decoration-color: var(--line); text-decoration-thickness: 1px; text-underline-offset: 3px; transition: text-decoration-color .15s; }
   a:hover { text-decoration-color: currentColor; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
   [hidden] { display: none !important; }
-  ::selection { background: var(--accent); color: var(--on-accent); }
 }
 
 @layer components {
-  .skip { @apply absolute -left-[999px] top-2 z-50 rounded-md bg-fg px-3 py-2 text-bg focus:left-2; }
+  /* Section heading: set apart by weight and space rather than size. */
+  .section-title { @apply m-0 mb-3 text-[15px] font-semibold; }
 
-  /* The trail: one stop per page, like a line map. The current page is filled; pages
-     already seen keep a coloured stop (:visited may only change colours). */
-  .trail-bar { @apply mx-auto flex max-w-[68rem] items-center justify-between gap-4 px-4 pt-5 sm:px-6; }
-  .trail { @apply min-w-0; }
-  .trail ol { @apply relative m-0 flex list-none gap-0.5 p-0 sm:gap-2; }
-  .trail ol::before { content: ""; @apply absolute top-1/2 right-3 left-3 h-px bg-line; }
-  .station { @apply relative flex items-center gap-2 rounded-full whitespace-nowrap bg-bg py-1 pr-3 pl-2 text-[13.5px] text-muted no-underline transition-colors hover:bg-hover hover:text-fg; }
-  .stop { @apply size-2.5 shrink-0 rounded-full border-2 border-current transition-colors; }
-  .station:visited { color: var(--fg); }
-  .station[aria-current="page"] { @apply font-medium text-fg; }
-  .station[aria-current="page"] .stop { border-color: var(--accent); background-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
-  .lang { @apply shrink-0 rounded-full border border-line px-2 py-0.5 font-mono text-[12px] text-muted no-underline hover:border-fg hover:text-fg; }
-  @media (max-width: 420px) { .station { @apply gap-1.5 pr-2 pl-1.5 text-[13px]; } .trail-bar { @apply gap-2; } }
+  /* A row of a list: title on the left, date or detail in mono on the right. */
+  .row { @apply -mx-3 grid gap-x-6 gap-y-0.5 rounded-md px-3 py-2.5 sm:grid-cols-[minmax(0,1fr)_auto]; }
+  a.row { @apply no-underline hover:bg-hover; }
+  .meta { @apply font-mono text-[13px] text-muted; }
 
-  .hero-name { @apply m-0 text-[clamp(40px,8vw,60px)] leading-[1.02] font-semibold tracking-[-.03em]; font-family: var(--heading); }
-  .page-title { @apply m-0 text-[clamp(34px,6vw,52px)] leading-[1.05] font-semibold tracking-[-.025em]; font-family: var(--heading); }
-  .section-title { @apply m-0 mb-4 font-mono text-[12.5px] font-medium tracking-[.06em] text-muted uppercase; }
-
-  .pill { @apply m-0 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-[15px]; }
-  .pulse { @apply relative size-2 shrink-0 rounded-full; background: var(--ok); }
-  .pulse::after { content: ""; @apply absolute inset-0 rounded-full; background: var(--ok); animation: ping 2.4s cubic-bezier(0, 0, .2, 1) infinite; }
-  @keyframes ping { 75%, 100% { scale: 2.6; opacity: 0; } }
-
-  .btn { @apply inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-3.5 py-2 text-[14.5px] font-medium no-underline transition hover:-translate-y-px hover:border-fg; }
-  .btn-primary { @apply border-transparent; background: var(--accent); color: var(--on-accent); }
-  .btn-primary:hover { @apply border-transparent brightness-110; }
-
-  .meta { @apply font-mono text-[12.5px] leading-5 text-muted; }
-
-  /* CV entries: the summary line opens the details. */
-  .entry { @apply -mx-3 rounded-xl px-3 transition-colors; }
-  details.entry:hover, details.entry[open] { @apply bg-surface; }
-  .entry-head { @apply grid list-none gap-x-6 gap-y-2 py-3 sm:grid-cols-[minmax(0,1fr)_auto]; }
-  details.entry > summary { @apply cursor-pointer; }
-  details.entry > summary::-webkit-details-marker { display: none; }
-  .toggle { @apply ml-2 inline-block font-mono text-muted transition-transform; }
-  details.entry[open] .toggle { rotate: 45deg; }
-  .entry-points { @apply m-0 mb-3 grid list-disc gap-1.5 pl-5 text-[15px] marker:text-muted; }
-  .tools { @apply flex flex-wrap gap-1.5; }
-  .tool { @apply inline-flex items-center gap-1.5 rounded-md border border-line bg-bg py-0.5 pr-2 pl-1 font-mono text-[12px] text-muted; }
-  .tool:not(:has(.tile)) { @apply pl-2; }
-
-  /* Logo tiles: brand colours on a light square, readable in every universe. */
-  .tile { @apply inline-grid shrink-0 place-items-center rounded-[22%] bg-white shadow-[0_0_0_1px_rgb(0_0_0/.08)]; }
-  .tile svg, .tile img { @apply h-[68%] w-[68%] object-contain; }
-  .tile .initials { @apply leading-none font-bold text-[#3b3b3b]; }
-  .tile:has(.initials) { container-type: size; }
-  .tile .initials { font-size: 55cqh; }
-  .tool .tile { @apply rounded-[4px] shadow-none; }
-  .tool .tile svg, .tool .tile img { @apply size-[80%]; }
-
-  .project-card { @apply flex flex-col overflow-hidden rounded-xl border border-line bg-surface no-underline transition hover:-translate-y-0.5 hover:border-fg; }
-  .project-card img { @apply aspect-[16/9] w-full object-cover; }
-  .project-card-body { @apply grid gap-1 p-4; }
-  .project-homelab img { filter: saturate(.85); }
-
-  .facts { @apply m-0 grid gap-x-6 text-[14.5px] sm:grid-cols-[max-content_minmax(0,1fr)] sm:gap-y-2.5; }
+  /* Key/value sheets on project pages. */
+  .facts { @apply m-0 grid gap-x-6 text-[14px] sm:grid-cols-[max-content_minmax(0,1fr)] sm:gap-y-2; }
   .facts dt { @apply text-muted; }
-  .facts dd { @apply m-0 mb-3 sm:mb-0; }
-
-  .photo { @apply relative; }
-  .photo img { @apply aspect-[4/3] w-full rounded-xl object-cover shadow-[0_20px_50px_-20px_rgb(0_0_0/.5)]; }
-  .photo figcaption { @apply mt-2 text-right font-mono text-[11px] text-muted; }
-  .photo figcaption a { @apply no-underline hover:underline; }
-
-  /* Architecture: layers on the left, the selected part's card on the right. */
-  .arch { @apply grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]; }
-  .arch-layers { @apply relative grid gap-2.5; }
-  .layer { @apply relative grid gap-2 rounded-xl border border-line bg-surface/80 p-3 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:items-center; }
-  .layer + .layer::before { content: ""; @apply absolute -top-2.5 left-8 h-2.5 w-px bg-line; }
-  .layer:has([aria-current]) { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
-  .layer-name { @apply m-0 font-mono text-[12px] font-medium tracking-[.04em] text-muted uppercase; }
-  .parts { @apply m-0 flex list-none flex-wrap gap-2 p-0; }
-  .part { @apply flex shrink-0 items-center gap-2 rounded-lg border border-transparent bg-bg py-1.5 pr-3 pl-1.5 text-[14px] no-underline transition hover:-translate-y-px hover:border-line; }
-  .part[aria-current] { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
-  .arch-panel { @apply grid gap-3 lg:sticky lg:top-6; }
-  .arch-hint { @apply m-0 hidden text-[13.5px] text-muted; }
-  .is-live .arch-hint { @apply block; }
-  .card { @apply grid scroll-mt-6 grid-cols-[auto_minmax(0,1fr)] items-center gap-x-4 gap-y-3 rounded-xl border border-line bg-surface p-5; }
-  .is-live .card:not(.on) { display: none; }
-  .is-live .card.on { animation: slide-in .25s cubic-bezier(.2, .8, .2, 1); }
-  @keyframes slide-in { from { translate: 0 8px; } }
-  .card-layer { @apply m-0 font-mono text-[11.5px] tracking-[.04em] text-muted uppercase; }
-  .card-name { @apply m-0 text-[20px] leading-tight font-semibold; }
-  .card-role { @apply col-span-2 m-0 text-[15.5px] leading-relaxed; }
-  .card-where { @apply col-span-2 m-0 font-mono text-[12px] break-all text-muted; }
-
-  .more > summary { @apply inline-flex cursor-pointer list-none items-center gap-2 rounded-lg border border-line bg-surface px-3.5 py-2 text-[14.5px] font-medium; }
-  .more > summary::-webkit-details-marker { display: none; }
-  .more > summary::after { content: "+"; @apply font-mono text-muted transition-transform; }
-  .more[open] > summary::after { rotate: 45deg; }
-
-  .colophon { @apply mx-auto mt-24 max-w-[68rem] px-4 pb-10 font-mono text-[12px] leading-6 text-muted sm:px-6; }
-  .colophon p { @apply m-0; }
+  .facts dd { @apply m-0 mb-3 font-mono text-[13px] sm:mb-0; }
 
   /* Markdown bodies of project pages. */
-  .prose h2 { @apply mt-10 mb-3 text-[17px] font-semibold; font-family: var(--heading); }
+  .prose h2 { @apply mt-10 mb-3 text-[15px] font-semibold; }
   .prose p, .prose ul, .prose ol { @apply mb-4; }
   .prose ul { @apply list-disc pl-5; }
   .prose ol { @apply list-decimal pl-5; }
   .prose li { @apply mb-1.5 marker:text-muted; }
   .prose code { @apply rounded-sm bg-hover px-1 font-mono text-[.86em]; }
+
+  /* Homelab diagram: one isometric plate per layer. Hovering a plate or its legend line
+     lifts it; the pairing is done by :has() below, without script. */
+  .stack .plate { transition: translate .25s cubic-bezier(.2, .8, .2, 1); }
+  .stack .top { fill: var(--plate); stroke: var(--muted); }
+  .stack .side { fill: var(--plate-side); stroke: var(--muted); }
+  .stack .motif { fill: none; stroke: var(--muted); }
+  .stack .dot { fill: var(--muted); }
+  .stack .plate:hover { translate: 0 -8px; }
+  .stack .plate:hover .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack .legend li { @apply -mx-2 rounded-md px-2 py-1; }
+  .stack .legend li:hover { @apply bg-hover; }
+  .stack:has(.legend li:nth-child(1):hover) .plate[data-layer="1"] { translate: 0 -8px; }
+  .stack:has(.legend li:nth-child(1):hover) .plate[data-layer="1"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(2):hover) .plate[data-layer="2"] { translate: 0 -8px; }
+  .stack:has(.legend li:nth-child(2):hover) .plate[data-layer="2"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(3):hover) .plate[data-layer="3"] { translate: 0 -8px; }
+  .stack:has(.legend li:nth-child(3):hover) .plate[data-layer="3"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(4):hover) .plate[data-layer="4"] { translate: 0 -8px; }
+  .stack:has(.legend li:nth-child(4):hover) .plate[data-layer="4"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(5):hover) .plate[data-layer="5"] { translate: 0 -8px; }
+  .stack:has(.legend li:nth-child(5):hover) .plate[data-layer="5"] .top { fill: var(--plate-on); stroke: var(--accent); }
+  .stack:has(.legend li:nth-child(6):hover) .plate[data-layer="6"] { translate: 0 -8px; }
+  .stack:has(.legend li:nth-child(6):hover) .plate[data-layer="6"] .top { fill: var(--plate-on); stroke: var(--accent); }
 }
 
 /* VTR-303 front panel, drawn after the TB-303: brushed silver, black print, black knobs with
@@ -282,24 +163,17 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
-  .pulse::after, .is-live .card.on { animation: none; }
-  .btn, .part, .project-card { transition: none; }
+  .stack .plate { transition: none; }
 }
 
-/* Printed, the home page is a one-page CV: no chrome, entries open, link targets spelled out. */
+/* Printed, the home page is a one-page CV: no chrome, link targets spelled out. */
 @media print {
   @page { size: A4; margin: 12mm 15mm; }
-  :root, [data-universe] { --bg: #fff; --fg: #000; --muted: #444; --line: #bbb; --surface: #fff; color-scheme: light; }
-  body { font-size: 9.5pt; line-height: 1.35; background: #fff; }
-  .no-print, .btn:not(.print-href), .pill .pulse { display: none !important; }
-  .hero-name { font-size: 20pt; }
-  section { break-inside: avoid; margin-top: 9pt !important; padding-top: 0 !important; }
-  details.entry::details-content { content-visibility: visible; display: block; }
-  .entry-head { padding-block: 2pt; }
-  .tool { border: 0; padding: 0; }
-  .tool .tile { display: none; }
+  :root { --bg: #fff; --fg: #000; --muted: #444; --line: #bbb; color-scheme: light; }
+  body { font-size: 9.5pt; line-height: 1.35; }
+  .no-print { display: none !important; }
+  .row { padding-block: 1.5pt; }
+  section { break-inside: avoid; margin-top: 9pt !important; }
   a { text-decoration: none; }
-  .print-href { border: 0; padding: 0; }
   .print-href::after { content: " " attr(data-print); font-family: var(--font-mono); font-size: 8pt; color: var(--muted); }
 }

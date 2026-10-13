@@ -2,8 +2,16 @@
 title: Config NixOS
 summary: La configuration de mon laptop (ThinkPad) en un flake dendritique, sans home-manager. Racine en tmpfs, disque chiffré déclaré, Secure Boot, secrets sur YubiKey.
 order: 2
-photo: { src: "/img/thinkpad.jpg", credit: "Edvard10 / Wikimedia Commons", license: "CC0", url: "https://commons.wikimedia.org/wiki/File:ThinkPad_T14.jpg" }
 repo: https://github.com/Orysse/config
+stack: [NixOS, flake-parts, import-tree, nix-wrapper-modules, disko, preservation, lanzaboote, sops-nix, sway]
+facts:
+  - [Structure, "flake-parts + import-tree : features/, system/, flavors/, hosts/"]
+  - [Programmes, "configurés avec nix-wrapper-modules ; chacun se lance seul : nix run .#kitty"]
+  - [Racine, "tmpfs ; seuls /nix et /persistent survivent (preservation)"]
+  - [Disque, "GPT + LUKS + btrfs, déclaré avec disko"]
+  - [Démarrage, "Secure Boot avec lanzaboote, LUKS déverrouillé par TPM2"]
+  - [Secrets, "sops-nix, clé sur YubiKey ou clé SSH de l'hôte, dépôt chiffré séparé"]
+  - [Bureau, "sway, waybar, kitty, tmux, nvim, thème Everforest Dark Medium"]
 ---
 
 ## Organisation

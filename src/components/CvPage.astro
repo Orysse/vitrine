@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Entry from "./Entry.astro";
+import Stack from "./Stack.astro";
 import { home, l, projectUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 
@@ -19,50 +20,60 @@ const experience = (await getCollection("experience")).sort(byDate);
 const education = (await getCollection("education")).sort(byDate);
 const associations = (await getCollection("associations")).sort(byDate);
 const skills = (await getCollection("skills")).sort(byOrder);
-const interests = (await getCollection("interests")).sort(byOrder).filter((i) => i.id !== "homelab");
+const interests = (await getCollection("interests")).sort(byOrder);
 const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang}/`))).sort(byOrder);
 const slug = (id: string) => id.split("/")[1];
+const homelab = projects.find((p) => slug(p.id) === "homelab");
+const repoName = (url: string) => url.replace("https://github.com/", "");
 ---
 
-<Layout lang={lang} universe="home" title={`${profile.name} · ${l(profile.major, lang)}`} description={`${l(profile.status, lang)}. ${l(profile.major, lang)}. ${l(profile.looking, lang)}.`} alternates={{ fr: home("fr"), en: home("en") }}>
-  <section class="pt-10 sm:pt-16">
-    <h1 class="hero-name">{profile.name}</h1>
-    <p class="mt-3 mb-0 text-[17px] text-muted">{l(profile.status, lang)}. {l(profile.major, lang)}, {profile.location}.</p>
-    <p class="pill mt-7"><span class="pulse" aria-hidden="true"></span>{l(profile.looking, lang)}</p>
-    <p class="mt-5 mb-0 text-[17px]">{l(profile.now, lang)}.</p>
-    <p class="mt-8 mb-0 flex flex-wrap gap-2.5">
-      <a class="btn btn-primary" href={profile.cv[lang]} data-umami-event="cv-download" data-umami-event-lang={lang} data-umami-event-from="hero">{t(lang, lang === "fr" ? "cv.fr" : "cv.en")}</a>
-      <a class="btn" href={profile.cv[lang === "fr" ? "en" : "fr"]} data-umami-event="cv-download" data-umami-event-lang={lang === "fr" ? "en" : "fr"} data-umami-event-from="hero">{t(lang, lang === "fr" ? "cv.en" : "cv.fr")}</a>
-      <a class="btn print-href" href={profile.links.github} data-print="github.com/Orysse" data-umami-event="github">GitHub</a>
+<Layout lang={lang} title={`${profile.name} · ${l(profile.major, lang)}`} description={`${l(profile.status, lang)}. ${l(profile.major, lang)}. ${l(profile.looking, lang)}.`} alternates={{ fr: home("fr"), en: home("en") }}>
+  <section>
+    <h1 class="m-0 text-[26px] leading-tight font-semibold tracking-[-.01em]">{profile.name}</h1>
+    <p class="mt-1 mb-0 text-muted">{l(profile.status, lang)}. {l(profile.major, lang)}, {profile.location}.</p>
+    <p class="mt-6 mb-0">{l(profile.now, lang)}.</p>
+    <p class="mt-3 mb-0">{l(profile.looking, lang)}.</p>
+    <p class="mt-6 mb-0 flex flex-wrap gap-x-5 gap-y-1">
+      <a class="print-href" href={profile.links.github} data-print="github.com/Orysse" data-umami-event="github">GitHub</a>
+      <a href={profile.cv.fr} data-umami-event="cv-download" data-umami-event-lang="fr" data-umami-event-from="hero">{t(lang, "cv.fr")}</a>
+      <a href={profile.cv.en} data-umami-event="cv-download" data-umami-event-lang="en" data-umami-event-from="hero">{t(lang, "cv.en")}</a>
     </p>
   </section>
 
-  <section class="mt-20" id="experience">
+  {homelab && (
+    <section class="no-print mt-20" id="homelab">
+      <h2 class="section-title mb-6">{t(lang, "section.homelab")}</h2>
+      <Stack lang={lang} />
+      <p class="mt-6 mb-0 text-muted">
+        {homelab.data.summary} <a class="text-fg" href={projectUrl(lang, "homelab")}>{t(lang, "project.read")}</a>
+      </p>
+    </section>
+  )}
+
+  <section class="mt-16" id="experience">
     <h2 class="section-title">{t(lang, "section.experience")}</h2>
-    <div class="grid gap-1">{experience.map((e) => <Entry entry={e} lang={lang} />)}</div>
+    {experience.map((e) => <Entry entry={e} lang={lang} />)}
   </section>
 
-  <section class="no-print mt-16" id="projects">
+  <section class="mt-16" id="projects">
     <h2 class="section-title">{t(lang, "section.projects")}</h2>
-    <div class="grid gap-4 sm:grid-cols-2">
-      {projects.map((p) => (
-        <a class:list={["project-card", `project-${slug(p.id)}`]} href={projectUrl(lang, slug(p.id))}>
-          <img src={p.data.photo.src} alt="" width="1000" height="667" loading="lazy" decoding="async" />
-          <span class="project-card-body">
-            <span class="font-semibold">{p.data.title} →</span>
-            <span class="text-[14.5px] leading-snug text-muted">{p.data.summary}</span>
-          </span>
-        </a>
-      ))}
-    </div>
+    {projects.map((p) => (
+      <a class="row" href={projectUrl(lang, slug(p.id))}>
+        <span class="font-medium">{p.data.title}</span>
+        {p.data.repo && <span class="meta">{repoName(p.data.repo)}</span>}
+        <span class="text-[15px] text-muted sm:col-span-2">{p.data.summary}</span>
+      </a>
+    ))}
   </section>
 
   <section class="mt-16" id="education">
     <h2 class="section-title">{t(lang, "section.education")}</h2>
-    <div class="grid gap-1">
-      {education.map((e) => <Entry entry={e} lang={lang} />)}
-      {associations.map((e) => <Entry entry={e} lang={lang} />)}
-    </div>
+    {education.map((e) => <Entry entry={e} lang={lang} />)}
+  </section>
+
+  <section class="mt-16" id="associations">
+    <h2 class="section-title">{t(lang, "section.associations")}</h2>
+    {associations.map((e) => <Entry entry={e} lang={lang} />)}
   </section>
 
   <section class="mt-16" id="skills">
@@ -76,10 +87,16 @@ const slug = (id: string) => id.split("/")[1];
       ))}
       <dt>{t(lang, "section.spoken")}</dt>
       <dd>{l(profile.spoken, lang)}</dd>
+    </dl>
+  </section>
+
+  <section class="mt-16" id="interests">
+    <h2 class="section-title">{t(lang, "section.interests")}</h2>
+    <dl class="facts">
       {interests.map((i) => (
         <>
           <dt>{l(i.data.label, lang)}</dt>
-          <dd>{l(i.data.text, lang)}</dd>
+          <dd class="font-sans! text-[14px]!">{l(i.data.text, lang)}</dd>
         </>
       ))}
     </dl>

@@ -2,8 +2,16 @@
 title: Homelab
 summary: An Intel NUC running NixOS hosts a k3s cluster of three microVMs, which serves this site. The host is described in a flake, the cluster through GitOps with Flux.
 order: 1
-photo: { src: "/img/intel-nuc.jpg", credit: "Laserlicht / Wikimedia Commons", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Intel_NUC8.jpg" }
 repo: https://github.com/Orysse/homelab-nix
+stack: [NixOS, microvm.nix, deploy-rs, k3s, Cilium, Hubble, Flux, Traefik, cert-manager, OpenBao, External Secrets, Pocket-ID, PostgreSQL, VictoriaMetrics, VictoriaLogs, Grafana, Umami, Renovate]
+facts:
+  - [Host, "NixOS, deployed with deploy-rs and automatic rollback"]
+  - [Cluster, "3 disposable k3s microVMs, state kept on the host"]
+  - [Network, "Cilium in eBPF, WireGuard between nodes, everything denied by default"]
+  - [Secrets, "OpenBao and External Secrets, sops for bootstrap"]
+  - [Identity, "Pocket-ID, passkeys only, rights from groups"]
+  - [Monitoring, "VictoriaMetrics and VictoriaLogs on the host, alerts by email"]
+  - [Repos, "homelab-nix (host, Nix) and homelab-cluster (GitOps)"]
 ---
 
 ## Base: homelab-nix

@@ -2,6 +2,10 @@
 
 One entry per tag. Each tag publishes `ghcr.io/orysse/vitrine:X.Y.Z`.
 
+## 0.10.0 (2026-10-13)
+
+- Back to the 0.8.0 design and content: the code is the 0.8.0 tree, under a new version.
+
 ## 0.9.0 (2026-10-13)
 
 One page per subject, each in its own universe, see `PITCH.md`.
