@@ -10,6 +10,13 @@ export default defineConfig({
     locales: ["fr", "en"],
     routing: { prefixDefaultLocale: false },
   },
+  // Legacy paths kept alive: /projets/<slug>/ and /homelab/ point to the new poles.
+  redirects: {
+    "/projets": "/systemes/",
+    "/en/projects": "/en/systems/",
+    "/homelab": "/systemes/homelab/",
+    "/en/homelab": "/en/systems/homelab/",
+  },
   build: {
     // The CSP only allows same-origin styles and scripts: nothing may be inlined.
     inlineStylesheets: "never",

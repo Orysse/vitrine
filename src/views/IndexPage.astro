@@ -1,0 +1,126 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { t, l, systemsUrl, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const projects = (await getCollection("projects", (entry) => entry.id.startsWith(`${lang}/`))).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const alternates = { fr: "/", en: "/en/" };
+---
+
+<Layout
+  lang={lang}
+  title={`${profile.name} · ${t(lang, "chassis.status")}`}
+  description={t(lang, "index.lead")}
+  alternates={alternates}
+  pole="index"
+>
+  <section class="g12 hero">
+    <p class="label c1-3">{t(lang, "index.ref")} AC / {profile.location.toUpperCase()}</p>
+    <p class="label c9-12">{t(lang, "index.seeking")}</p>
+
+    <h1 class="c1-12 display">Abel<br />Chartier</h1>
+
+    <p class="c1-7 lede">{t(lang, "index.lead")}</p>
+
+    <div class="c9-12 hero-side">
+      <p class="label">{t(lang, "index.role")}</p>
+      <p class="body-lg mt-4">{t(lang, "index.now")} : {l(profile.now, lang)}</p>
+      <p class="label mt-6">{t(lang, "resume.spoken")}</p>
+      <p class="body-lg mt-2">{l(profile.spoken, lang)}</p>
+      <p class="mt-8">
+        <a class="big-link" href={profile.cv[lang]}>{t(lang, "index.download")}</a>
+      </p>
+      <p class="mt-4">
+        <a class="big-link" href={`mailto:${profile.email}`}>{t(lang, "index.contact")}</a>
+      </p>
+      <p class="mt-4">
+        <a class="big-link" href={profile.links.github} rel="noopener">{t(lang, "index.source")}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="g12 section">
+    <p class="label c1-2">02</p>
+    <h2 class="c2-8 title">{t(lang, "index.register")}</h2>
+    <p class="c9-12 body-lg">{t(lang, "index.registerIntro")}</p>
+  </section>
+
+  {projects.map((project) => (
+    <article class="g12 section-tight rule-strong">
+      <p class="label c1-2">0{project.data.order}</p>
+      <h3 class="c2-8 subtitle">
+        <a class="strong-link" href={systemsUrl(lang, project.id.split("/")[1])}>{project.data.title}</a>
+      </h3>
+      <p class="c2-8 body-lg">{project.data.summary}</p>
+      <ul class="c9-12 hl-words">
+        {project.data.highlights.slice(0, 3).map((highlight) => (
+          <li>{highlight.title}</li>
+        ))}
+      </ul>
+      <p class="c2-8">
+        <a class="big-link" href={systemsUrl(lang, project.id.split("/")[1])}>{t(lang, "index.read")}</a>
+      </p>
+    </article>
+  ))}
+
+  <section class="invert-block">
+    <div class="g12">
+      <p class="c1-7 lede">{l(profile.looking, lang)}</p>
+      <div class="c9-12">
+        <p class="label invert-label">{t(lang, "index.served")}</p>
+        <p class="mt-6">
+          <a class="big-link invert-link" href={profile.cv[lang]}>{t(lang, "index.download")}</a>
+        </p>
+        <p class="mt-4">
+          <a class="big-link invert-link" href={`mailto:${profile.email}`}>{t(lang, "index.contact")}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero-side {
+    padding-top: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .hl-words {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .hl-words li {
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--line);
+    line-height: 1.45;
+  }
+  .invert-label {
+    color: var(--invert-ink);
+    opacity: 0.65;
+  }
+  .invert-link {
+    border-bottom-color: var(--invert-ink);
+    color: var(--invert-ink);
+  }
+  .invert-link:hover {
+    background: var(--invert-ink);
+    color: var(--invert-bg);
+  }
+</style>

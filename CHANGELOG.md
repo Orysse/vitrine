@@ -2,6 +2,18 @@
 
 One entry per tag. Each tag publishes `ghcr.io/orysse/vitrine:X.Y.Z`.
 
+## 0.13.0 (2026-10-14)
+
+Full-width grid minimalism, honest copy, diagrams that explain the systems.
+
+- Layout spans the full width on a 12-column grid: no more narrow centered column.
+- Strong text elements carry the page (name, statements, section titles); plain text links.
+- Diagrams replace decorative layer stacks, each one saying something true:
+  diskless microVMs and where the state goes, data flows and the Cilium default-deny
+  boundary, the monitoring that survives the cluster, the impermanence boot chain
+  of the NixOS config, the tag-to-production chain of this site.
+- Copy rewritten in the first person, humble and factual.
+
 ## 0.12.0 (2026-10-13)
 
 The product decisions of `PRODUCT.md` applied.

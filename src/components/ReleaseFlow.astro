@@ -1,0 +1,65 @@
+---
+import { type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const txt = {
+  fr: {
+    z1: "01 · Du tag à la production",
+    chain: [
+      ["git tag vX.Y.Z", "version + commit"],
+      ["nix build", "site + image OCI"],
+      ["ghcr.io", "orysse/vitrine"],
+      ["Renovate", "ouvre le bump"],
+      ["Flux", "l'applique"],
+      ["nginx", "2 réplicas, 65534"],
+    ],
+    note: "Racine en lecture seule, écriture dans /tmp. CSP stricte : rien d'inline, aucune requête externe.",
+  },
+  en: {
+    z1: "01 · From tag to production",
+    chain: [
+      ["git tag vX.Y.Z", "version + commit"],
+      ["nix build", "site + OCI image"],
+      ["ghcr.io", "orysse/vitrine"],
+      ["Renovate", "opens the bump"],
+      ["Flux", "applies it"],
+      ["nginx", "2 replicas, 65534"],
+    ],
+    note: "Read-only root, writes only to /tmp. Strict CSP: nothing inline, no external request.",
+  },
+}[lang];
+
+const chainX = [40, 245, 450, 655, 860, 1065];
+const blockW = 180;
+const blockH = 104;
+---
+
+<div class="diagram">
+  <svg viewBox="0 0 1280 300" role="img" aria-label={txt.z1} preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path class="d-arrow" d="M 0 0 L 10 5 L 0 10 z" />
+      </marker>
+    </defs>
+
+    <text class="d-label" x="40" y="32">{txt.z1}</text>
+
+    {txt.chain.map(([title, note], i) => (
+      <>
+        <rect class="d-box-fill" x={chainX[i]} y="58" width={blockW} height={blockH} />
+        <text class="d-title d-title-sm" x={chainX[i] + 18} y={58 + 44}>{title}</text>
+        <text class="d-label" x={chainX[i] + 18} y={58 + 72}>{note}</text>
+        {i < chainX.length - 1 && (
+          <path class="d-line-soft" d={`M ${chainX[i] + blockW + 4} 110 L ${chainX[i + 1] - 6} 110`} marker-end="url(#ar2)" />
+        )}
+      </>
+    ))}
+
+    <path class="d-line-soft" d="M 40 210 L 1240 210" />
+    <text class="d-label d-label-ink" x="40" y="244">{txt.note}</text>
+  </svg>
+</div>

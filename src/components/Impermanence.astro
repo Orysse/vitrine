@@ -1,0 +1,90 @@
+---
+import { type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const txt = {
+  fr: {
+    z1: "01 · La chaîne de démarrage",
+    z2: "02 · Ce que devient le disque",
+    z3: "03 · Sans home-manager",
+    chain: [
+      ["POWER", "allumage"],
+      ["lanzaboote", "Secure Boot"],
+      ["TPM2 → LUKS", "disque ouvert"],
+      ["racine / = tmpfs", "rien n'est écrit"],
+      ["/persistent", "monté, déclaré"],
+      ["sops-nix", "YubiKey ou clé SSH"],
+    ],
+    volatile: "tout ce qui n'est pas déclaré",
+    volatileNote: "disparaît au redémarrage",
+    kept: "/nix · /persistent",
+    keptNote: "les seuls qui survivent",
+    wm: "chaque programme porte sa configuration",
+    wmNote: "nix run .#nvim · nix run .#kitty · pas de home-manager",
+  },
+  en: {
+    z1: "01 · The boot chain",
+    z2: "02 · What the disk becomes",
+    z3: "03 · No home-manager",
+    chain: [
+      ["POWER", "power on"],
+      ["lanzaboote", "Secure Boot"],
+      ["TPM2 → LUKS", "disk unlocked"],
+      ["root / = tmpfs", "nothing written"],
+      ["/persistent", "mounted, declared"],
+      ["sops-nix", "YubiKey or host SSH key"],
+    ],
+    volatile: "everything that is not declared",
+    volatileNote: "is gone on reboot",
+    kept: "/nix · /persistent",
+    keptNote: "the only two that survive",
+    wm: "every program carries its own configuration",
+    wmNote: "nix run .#nvim · nix run .#kitty · no home-manager",
+  },
+}[lang];
+
+const chainX = [40, 245, 450, 655, 860, 1065];
+const blockW = 180;
+const blockH = 104;
+---
+
+<div class="diagram">
+  <svg viewBox="0 0 1280 560" role="img" aria-label={txt.z2} preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path class="d-arrow" d="M 0 0 L 10 5 L 0 10 z" />
+      </marker>
+    </defs>
+
+    <text class="d-label" x="40" y="32">{txt.z1}</text>
+    <text class="d-label" x="40" y="262">{txt.z2}</text>
+    <text class="d-label" x="660" y="262">{txt.z3}</text>
+
+    {txt.chain.map(([title, note], i) => (
+      <>
+        <rect class={i === 3 ? "d-box-dash" : "d-box-fill"} x={chainX[i]} y="58" width={blockW} height={blockH} />
+        <text class="d-title d-title-sm" x={chainX[i] + 18} y={58 + 44}>{title}</text>
+        <text class="d-label" x={chainX[i] + 18} y={58 + 72}>{note}</text>
+        {i < chainX.length - 1 && (
+          <path class="d-line-soft" d={`M ${chainX[i] + blockW + 4} 110 L ${chainX[i + 1] - 6} 110`} marker-end="url(#ar)" />
+        )}
+      </>
+    ))}
+
+    <rect class="d-box-dash" x="40" y="290" width="580" height="150" />
+    <text class="d-title" x="68" y="342">{txt.volatile}</text>
+    <text class="d-note" x="68" y="378">{txt.volatileNote}</text>
+
+    <rect class="d-box-fill" x="660" y="290" width="580" height="150" />
+    <text class="d-title" x="688" y="342">{txt.kept}</text>
+    <text class="d-note" x="688" y="378">{txt.keptNote}</text>
+
+    <path class="d-line-soft" d="M 40 480 L 1240 480" />
+    <text class="d-label d-label-ink" x="40" y="512">{txt.wm}</text>
+    <text class="d-label" x="40" y="536">{txt.wmNote}</text>
+  </svg>
+</div>

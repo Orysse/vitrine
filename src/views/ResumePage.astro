@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import ResumeEntry from "../components/ResumeEntry.astro";
+import SkillsMatrix from "../components/SkillsMatrix.astro";
+import { resumeUrl, t, l, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const experience = await getCollection("experience");
+const education = await getCollection("education");
+const associations = await getCollection("associations");
+const skills = (await getCollection("skills")).sort((a, b) => a.data.order - b.data.order);
+const interests = (await getCollection("interests")).sort((a, b) => a.data.order - b.data.order);
+const alternates = { fr: resumeUrl("fr"), en: resumeUrl("en") };
+---
+
+<Layout
+  lang={lang}
+  title={`${t(lang, "resume.title")} · ${profile.name}`}
+  description={t(lang, "resume.intro")}
+  alternates={alternates}
+  pole="resume"
+>
+  <section class="g12 hero">
+    <p class="label c1-3">03 / {t(lang, "resume.title")}</p>
+    <h1 class="c1-8 display">{t(lang, "resume.title")}</h1>
+    <p class="c1-7 lede">{t(lang, "resume.intro")}</p>
+    <div class="c9-12">
+      <p class="label">{t(lang, "resume.spoken")}</p>
+      <p class="body-lg mt-3">{l(profile.spoken, lang)}</p>
+      <p class="mt-8">
+        <a class="big-link" href={profile.cv[lang]}>{t(lang, "resume.downloads")} {lang.toUpperCase()}.PDF</a>
+      </p>
+      <p class="mt-4">
+        <button type="button" class="big-link no-print" data-print>{t(lang, "resume.print")}</button>
+      </p>
+    </div>
+  </section>
+
+  <section class="g12 section-tight">
+    <p class="label c1-2">03.1</p>
+    <h2 class="c2-8 title">{t(lang, "resume.experience")}</h2>
+  </section>
+  {experience.map((entry) => <ResumeEntry entry={entry.data} lang={lang} />)}
+
+  <section class="g12 section-tight">
+    <p class="label c1-2">03.2</p>
+    <h2 class="c2-8 title">{t(lang, "resume.education")}</h2>
+  </section>
+  {education.map((entry) => <ResumeEntry entry={entry.data} lang={lang} />)}
+
+  <section class="g12 section-tight">
+    <p class="label c1-2">03.3</p>
+    <h2 class="c2-8 title">{t(lang, "resume.skills")}</h2>
+    <div class="c2-12">
+      <SkillsMatrix groups={skills.map((group) => group.data)} lang={lang} />
+    </div>
+  </section>
+
+  <section class="g12 section-tight">
+    <p class="label c1-2">03.4</p>
+    <h2 class="c2-8 title">{t(lang, "resume.associations")}</h2>
+  </section>
+  {associations.map((entry) => <ResumeEntry entry={entry.data} lang={lang} />)}
+
+  <section class="g12 section-tight">
+    <p class="label c1-2">03.5</p>
+    <h2 class="c2-8 title">{t(lang, "resume.interests")}</h2>
+    <div class="c2-12">
+      <dl class="facts">
+        {interests.map((entry) => (
+          <>
+            <dt>{l(entry.data.label, lang)}</dt>
+            <dd>{l(entry.data.text, lang)}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+  </section>
+</Layout>

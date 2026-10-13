@@ -23,11 +23,17 @@ src/
     skills.yaml           skill groups  │
     interests.yaml        outside work  ┘
     projects/{fr,en}/*.md one Markdown file per project and language (row + detail page)
-  components/             CvPage, ProjectPage, Entry, Stack (homelab diagram), Vtr303Page, Vtr303
-  layouts/Layout.astro    head, header, colophon
-  scripts/                VTR-303 panel (TypeScript), loaded on /303/ only
-  styles/global.css       Tailwind theme (light and dark tokens), print sheet, 303 panel
-  pages/                  / and /en/, /projets/<slug>/, /303/ (and /en/…), 404
+  components/             Stack3D (isometric stack + architecture inspector), SystemSheet,
+                          FactsMatrix, HighlightGrid, ResumeEntry, SkillsMatrix, KeyboardHelp,
+                          Redirect, Vtr303, Vtr303Page
+  views/                  one component per pole, rendered by the thin route files
+  layouts/Layout.astro    chassis (top bar, pole nav, controls), colophon, keyboard help
+  scripts/                ui (density, polarity, keyboard), stack (CAD/inspector),
+                          vtr303 + canvas (loaded on /303/ only)
+  styles/global.css       monochrome tokens, chassis, density, print; vtr303.css (303 panel)
+  pages/                  / and /en/, /systemes/<slug>/ (+ /en/systems/…), /parcours/ and
+                          /en/resume/, /colophon/ (+ /en/), /303/ (+ /en/), 404,
+                          legacy /projets/<slug>/ and /en/projects/<slug>/ redirects
 public/cv/                CV PDFs, copied from the CV repository
 public/audio/             VTR-303 voice (AudioWorklet, plain JS: served as is)
 
@@ -56,17 +62,28 @@ To update the CV, rebuild it in the CV repository and copy the two PDFs into `pu
 
 ## Design
 
-One column of text in graphite on paper (no hue), light and dark themes from `prefers-color-scheme`, Geist and Geist Mono. The museum treatment and its rules are in `DESIGN.md`; the audience and goals in `PRODUCT.md`.
-Content pages ship no JavaScript of their own (only Umami); the 303 is the one script.
+Surgical Engineering Brutalism (Oxide Computer x Hara Design Institute x Stripe Press): strict
+monochrome (`#FFFFFF` / `#0A0A0A`, no hue), exposed 1px grid, 0px radius, no shadows or
+gradients. Geist and Geist Mono. The rules live in `DESIGN.md`, the audience and goals in
+`PRODUCT.md`, and the page map in `BRIEF.md`.
 
-- **Homelab diagram** (`Stack.astro`): an exploded isometric stack, computed at build time
-  as plain SVG. Hovering a plate or its legend line lifts it, in CSS only (`:has()`).
-- **Colophon**: the footer shows the version (linked to its tag), the git revision and the
-  commit date. The flake passes them as `VITRINE_REV` and `VITRINE_DATE`; a local build asks
-  git.
-- **Print**: the home page prints as a CV, without header, footer or diagram.
-- **VTR-303** (`/303/`): a TB-303 emulation. The voice (polyBLEP oscillator, 4-pole
-  resonant ladder, envelopes, accent, slide) runs in an AudioWorklet; the panel has a
+One chassis on every page: a top bar (identity, the four indexed poles, a density switch,
+polarity `[INV]`, locale, `[CV.PDF]`), the content rails, and a colophon footer. Pages ship
+no inline style or script (the CSP forbids both); external modules add the interactions.
+
+- **Poles**: `[01]` index and the isometric stack, `[02]` systems (+ a page per system),
+  `[03]` résumé (prints as an A4 CV), `[04]` colophon.
+- **Density** (`d`): `data-density="summary"` keeps a 30-second recruiter scan (deep rows
+  behind `.d-deep`); `spec` opens the full fact matrices.
+- **Architecture inspector** (`Stack3D.astro`): the six homelab layers as an isometric SVG,
+  computed at build time. Explosion slider, bounded tilt on drag, and layer selection
+  (click, or `j` / `k`) that reads out each layer's source file and invariant. The full
+  table is in the DOM, so it reads without JavaScript.
+- **Keyboard**: `1`-`4` poles, `d` density, `i` polarity, `l` locale, `j`/`k` layers, `?` help.
+- **Colophon**: version (linked to its tag), git revision and commit date, the CSP, and a live
+  type specimen. The flake passes `VITRINE_REV` and `VITRINE_DATE`; a local build asks git.
+- **VTR-303** (`/303/`): a TB-303 emulation, kept as-is. The voice (polyBLEP oscillator,
+  4-pole resonant ladder, envelopes, accent, slide) runs in an AudioWorklet; the panel has a
   16-step sequencer, presets, a generator and drums, and stores the pattern in the URL.
 
 ## Server

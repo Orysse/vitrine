@@ -1,0 +1,15 @@
+---
+interface Props {
+  facts: [string, string][];
+}
+const { facts } = Astro.props;
+---
+
+<dl class="facts mt-5">
+  {facts.map(([key, value]) => (
+    <>
+      <dt>{key}</dt>
+      <dd>{value}</dd>
+    </>
+  ))}
+</dl>

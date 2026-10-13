@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { t, systemsUrl, type Lang } from "../i18n";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  lang: Lang;
+  slug: string;
+}
+const { project, lang, slug } = Astro.props;
+const data = project.data;
+const href = systemsUrl(lang, slug);
+---
+
+<article class="g12 section-tight rule-strong">
+  <p class="label c1-2">0{data.order}</p>
+  <h3 class="c2-8 subtitle">
+    <a class="strong-link" href={href}>{data.title}</a>
+  </h3>
+  <p class="c2-8 body-lg">{data.summary}</p>
+
+  <ul class="c2-8 hl-list">
+    {data.highlights.map((highlight, i) => (
+      <li>
+        <span class="n">{String(i + 1).padStart(2, "0")}</span>
+        <div>
+          <h3>{highlight.title}</h3>
+          <p>{highlight.text}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+
+  <p class="c2-8">
+    <a class="big-link" href={href}>{t(lang, "systems.details")}</a>
+  </p>
+
+  {data.repo && (
+    <p class="c9-12">
+      <a class="label label-ink" href={data.repo} rel="noopener">{t(lang, "systems.repo")} · {data.repo.replace("https://github.com/", "")}</a>
+    </p>
+  )}
+  <p class="c9-12 label">{data.stack.join(" · ")}</p>
+</article>

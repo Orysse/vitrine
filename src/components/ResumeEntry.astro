@@ -1,0 +1,77 @@
+---
+import { l, period, type Lang, type L10n } from "../i18n";
+
+export interface ResumeEntry {
+  org: string;
+  orgDetail?: string;
+  role: L10n;
+  start: string;
+  end: string | null;
+  location: string;
+  stack?: string[];
+  points?: L10n[];
+}
+
+interface Props {
+  entry: ResumeEntry;
+  lang: Lang;
+}
+const { entry, lang } = Astro.props;
+const points = entry.points ?? [];
+---
+
+<div class="g12 entry rule">
+  <div class="c1-3">
+    <p class="label label-ink">{period(entry.start, entry.end, lang)}</p>
+    <p class="label mt-2">{entry.location}</p>
+  </div>
+  <div class="c4-12">
+    <h3 class="entry-h">
+      {entry.org}
+      {entry.orgDetail && <span class="entry-sub">· {entry.orgDetail}</span>}
+    </h3>
+    <p class="body-lg mt-2">{l(entry.role, lang)}</p>
+    {entry.stack && entry.stack.length > 0 && (
+      <p class="label mt-4">{entry.stack.join(" · ")}</p>
+    )}
+    {points.length > 0 && (
+      <ul class="points">
+        {points.map((point) => (
+          <li>{l(point, lang)}</li>
+        ))}
+      </ul>
+    )}
+  </div>
+</div>
+
+<style>
+  .entry {
+    padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
+  }
+  .entry-h {
+    font-size: clamp(1.35rem, 2.6vw, 2rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    font-weight: 650;
+    margin: 0;
+  }
+  .entry-sub {
+    font-weight: 450;
+    color: var(--ink-2);
+    letter-spacing: -0.025em;
+  }
+  .points {
+    margin: 1.15rem 0 0;
+    padding-left: 1.15rem;
+    list-style: square;
+    color: var(--ink-2);
+    max-width: 62ch;
+  }
+  .points li {
+    margin-bottom: 0.55rem;
+  }
+  .points li::marker {
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+  }
+</style>

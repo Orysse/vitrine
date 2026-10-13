@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import SystemSheet from "../components/SystemSheet.astro";
+import { systemsUrl, t, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const projects = (await getCollection("projects", (entry) => entry.id.startsWith(`${lang}/`))).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const alternates = { fr: systemsUrl("fr"), en: systemsUrl("en") };
+---
+
+<Layout
+  lang={lang}
+  title={`${t(lang, "systems.title")} · ${profile.name}`}
+  description={t(lang, "systems.intro")}
+  alternates={alternates}
+  pole="systems"
+>
+  <section class="g12 hero">
+    <p class="label c1-3">02 / {t(lang, "systems.title")}</p>
+    <h1 class="c1-8 display">{t(lang, "systems.title")}</h1>
+    <p class="c1-7 lede">{t(lang, "systems.intro")}</p>
+  </section>
+
+  {projects.map((project) => (
+    <SystemSheet project={project} lang={lang} slug={project.id.split("/")[1]} />
+  ))}
+
+  <section class="g12 section-tight">
+    <p class="label c1-2">ADR</p>
+    <h2 class="c2-8 title">{t(lang, "systems.notes")}</h2>
+    <p class="c2-8 body-lg">{t(lang, "systems.notesSoon")}</p>
+  </section>
+</Layout>

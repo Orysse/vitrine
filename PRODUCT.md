@@ -8,67 +8,67 @@ web
 
 ## Users
 
-Technical recruiters: infrastructure, systems or security engineers and leads evaluating Abel
-Chartier for an internship starting February 2027. They arrive from the CV, LinkedIn or GitHub,
-usually with the CV already in hand, and want to judge quickly whether the technical depth is
-real.
+Technical recruiters, infrastructure engineers, SREs, DevSecOps engineers, and engineering leads evaluating Abel Chartier (5th-year engineering student at EPITA, Systems, Networks and Security major; contributor at La Forge) for a 6-month end-of-studies internship starting February 2027.
+
+They arrive from a CV PDF, GitHub, or LinkedIn. Some scan in 30 seconds between candidates to verify profile fit and grab the CV; others (tech leads, staff engineers) inspect the systems architecture, Nix expressions, and security invariants to verify whether the claimed technical depth is genuine.
 
 ## Product Purpose
 
-vitrine.abe.lc is Abel's CV expanded into a site: who he is, what he does, and the technical
-detail behind each project. A visit succeeds when the recruiter:
+`vitrine.abe.lc` is Abel Chartier's technical portfolio and specification index: who he is, the systems he builds and operates, and the verifiable engineering decisions behind them.
 
-- downloads the CV (French or English PDF),
-- gets in touch (email or LinkedIn),
-- goes on to read the repositories on GitHub.
+A visit succeeds when the visitor:
+1. Downloads the CV (`ABEL_CHARTIER_CV_fr.pdf` or `ABEL_CHARTIER_CV_en.pdf`),
+2. Contacts Abel directly (`abel.chartier@gmail.com` or LinkedIn),
+3. Inspects the source repositories on GitHub (`homelab-nix`, `homelab-cluster`, `config`, `vitrine`).
 
 ## Positioning
 
-The site is written and run by the candidate himself: built reproducibly with Nix and served
-from his own homelab. It shows each project through what is different about it, not through an
-inventory of everything it contains.
+Proof by artifact. The site is not a marketing brochure about infrastructure; it is itself a reproducible Nix package (`buildNpmPackage` + `buildLayeredImage`), served by an unprivileged nginx container (`65534:65534`, read-only root filesystem, `/tmp` only) running on Abel's own homelab (an Intel NUC running NixOS with three diskless tmpfs k3s microVMs, Cilium eBPF default-deny networking, and Flux GitOps).
+
+Every project is presented through its distinctive architectural decisions and security invariants rather than an exhaustive inventory of standard boilerplate.
 
 ## Operating Context
 
-- Visitors read on desktop between other candidates, or on a phone from a link; the page must
-  make sense in under a minute and reward a deeper read.
-- French by default (`/`), English under `/en/`; every string exists in both.
-- Content lives in `src/content/` and `src/profile.ts`; CV PDFs are copied from the CV
-  repository into `public/cv/`.
-- Released by semver tags; CI publishes `ghcr.io/orysse/vitrine:X.Y.Z`, Renovate and Flux
-  deploy it in homelab-cluster.
+- Multi-page architecture organized into four indexed poles (`[01] Index`, `[02] Systèmes`, `[03] Parcours`, `[04] Colophon`) plus dedicated specification pages for each system, replacing endless single-page scrolling with purposeful navigation.
+- Dual reading depth via a global density toggle (`SYNTHÈSE` vs `SPEC BRUTE`): rapid 30-second triage for recruiters in summary mode, full technical specifications and fact matrices for engineers in raw spec mode.
+- Bilingual parity: French by default (`/`), English under `/en/`. Every route, label, and data entry exists in both languages.
+- Structured data lives in `src/profile.ts`, `src/homelab.ts`, and `src/content/` (YAML collections and Markdown project specs), validated at build time by Astro content schemas.
+- Continuous delivery via semver git tags (`vX.Y.Z`), built and published to `ghcr.io/orysse/vitrine`, tracked by Renovate and deployed by Flux in `homelab-cluster`.
 
 ## Capabilities and Constraints
 
-- Static Astro site, Tailwind, Nix flake, unprivileged nginx image.
-- Strict CSP: scripts, styles and fonts from self only (plus Umami at pulse.abe.lc); nothing
-  inline, no third-party requests.
-- Pages must read fully without JavaScript.
-- No LAN IPs, ports, internal subdomains or VPN details on public pages.
-- Contact: email (abel.chartier@gmail.com, as on the CV) and LinkedIn. **Open:** LinkedIn URL
-  to be provided by Abel; no LinkedIn link is on the CV today.
-- The VTR-303 (`/303/`) stays as a hidden extra, reachable but not promoted.
+- **Stack**: Static Astro site, Tailwind CSS v4, TypeScript, packaged reproducibly via Nix Flakes (`flake.nix`).
+- **Strict Content Security Policy (CSP)**: `default-src 'none'; script-src 'self' https://pulse.abe.lc; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://pulse.abe.lc; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`. No inline styles (`inlineStylesheets: "never"`), no inline scripts, no external CDN requests.
+- **Progressive Enhancement & Lightweight JS**: Every page must render its complete textual and structural content without JavaScript. Lightweight first-party TypeScript (`'self'`) is used for system-level interactions: keyboard navigation (`1`-`4`, `d`, `i`, `l`, `j`/`k`, `?`), the `[SYNTHÈSE / SPEC BRUTE]` density toggle, `[INV]` monochrome polarity inversion, interactive architecture layer inspection, and the manipulable isometric/CAD stack artifact.
+- **Operational Security (OPSEC)**: Never expose private LAN IP addresses, internal ports, private subdomains, or VPN endpoints on public pages.
+- **Easter Egg**: The VTR-303 synthesizer (`/303/` and `/en/303/`) remains intact as an unpromoted, reachable extra linked subtly from the Colophon.
+- **Print Fidelity**: `/parcours/` (`/en/resume/`) formats cleanly as a single-column A4 curriculum vitae under `@media print`, stripping navigation chrome and interactive controls.
+- **Extensibility**: The `[02] Systèmes` collection and layout grid must accommodate future technical write-ups, post-mortems, or Architecture Decision Records (ADRs) without structural changes.
 
 ## Brand Commitments
 
-- Copy is concise and factual, French and English, never salesy, no flattery, no editorial
-  framing, and no em or en dashes.
-- Every sentence comes from Abel; nothing is written in his place, and every number is true.
-- The current sober design (v0.8.0) is the accepted look. Two wholesale redesigns (0.9.0 and
-  an unreleased page-based variant) were rejected; changes are incremental.
+- **Factual, anti-bullshit tone**: Concise, technical, and verifiable. Zero sales adjectives, zero self-congratulatory framing, zero filler.
+- **Punctuation discipline**: Never use em dashes or en dashes in prose or UI labels; use colons, semicolons, parentheses, or periods.
+- **Authorship & truth**: Every statement, metric, file path, and repository reference is factual and authored from Abel's real infrastructure and career history.
+- **Single cohesive system**: One unified visual and structural language across the entire site (no per-page theme switching or disparate "universes").
 
 ## Evidence on Hand
 
-- CV PDFs: `public/cv/ABEL_CHARTIER_CV_fr.pdf`, `public/cv/ABEL_CHARTIER_CV_en.pdf`.
-- Experience, education, associations, skills, interests: `src/content/*.yaml`.
-- Projects: `src/content/projects/{fr,en}/homelab.md` and `config.md`; repositories
-  github.com/Orysse/homelab-nix, homelab-cluster, config, vitrine.
-- No testimonials, references, metrics or employer endorsements exist; none may be invented.
+- **CV PDFs**: `public/cv/ABEL_CHARTIER_CV_fr.pdf` and `public/cv/ABEL_CHARTIER_CV_en.pdf`.
+- **Structured Career Data**: `src/content/experience.yaml` (La Forge EPITA, CEA, Kleis), `src/content/education.yaml` (EPITA SRS, ITS Surabaya), `src/content/associations.yaml` (La Paillasse, Antre), `src/content/skills.yaml`, `src/content/interests.yaml`.
+- **System Specifications**: `src/content/projects/{fr,en}/homelab.md`, `config.md`, `vitrine.md`, and `src/homelab.ts`.
+- **Public Repositories**: `github.com/Orysse/homelab-nix`, `github.com/Orysse/homelab-cluster`, `github.com/Orysse/config`, `github.com/Orysse/vitrine`.
+- **Absences**: No third-party testimonials, commercial client logos, or fabricated performance percentages exist; none may be invented. LinkedIn URL in `src/profile.ts` remains hidden until populated.
 
 ## Product Principles
 
-1. Recruiter first: the CV, the contact and GitHub are always one step away.
-2. Show what is different about a project, not everything in it. Abel does not want the full
-   NixOS config or the whole cluster laid out; pick the distinctive decisions.
-3. Facts over adjectives: real values, real paths, real repositories.
-4. Evolve the accepted design; never replace it without asking.
+1. **Recruiter & Engineer Dual Speed**: Immediate access to the CV PDF, email, and GitHub within seconds in `SYNTHÈSE` mode; deep architectural proof in `SPEC BRUTE` mode.
+2. **Architecture as Proof**: Show what makes a system distinct (diskless tmpfs microVMs, magic rollback, wrapper-modules without home-manager, default-deny Cilium eBPF) rather than listing generic tools.
+3. **Zero Decorative Chrome**: Every border, index number, diagram line, and keyboard shortcut encodes real hierarchy, state, or navigation.
+4. **Resilient Delivery**: Self-hosted, zero third-party dependencies, strict CSP compliance, and full readability before a single byte of JavaScript executes.
+
+## Accessibility & Inclusion
+
+- WCAG 2.1 AA minimum contrast (and AAA ≥ 7:1 on primary body and specification tables) in both default surgical white (`#FFFFFF`) and inverted carbon black (`#0A0A0A`) polarities.
+- Full keyboard operability with high-visibility 1px inverted focus states and shortcut suppression inside interactive controls or when modifiers are pressed.
+- Respects `prefers-reduced-motion: reduce` (disables isometric interpolation and smooth transitions) and `prefers-color-scheme` as the initial default before manual `[INV]` override.

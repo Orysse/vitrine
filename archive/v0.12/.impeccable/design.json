@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-13T19:30:00+02:00",
+  "title": "Design System: vitrine.abe.lc",
+  "extensions": {
+    "colorMeta": {
+      "graphite": { "role": "primary", "displayName": "Graphite", "canonical": "#1c1b19", "tonalRamp": ["#1c1b19", "#33312e", "#4d4a46", "#67645e", "#86827b", "#a6a29a", "#cbc7bf", "#efece6"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#fbfaf8", "tonalRamp": ["#2a2926", "#45433f", "#62605b", "#817e78", "#a19e97", "#c3c0b9", "#e3e0da", "#fbfaf8"] },
+      "night": { "role": "neutral", "displayName": "Night", "canonical": "#151514", "tonalRamp": ["#151514", "#1f1f1d", "#2f2e2b", "#45433f", "#62605b", "#817e78", "#9b978f", "#e9e7e2"] },
+      "stone": { "role": "neutral", "displayName": "Stone", "canonical": "#67645e" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The name or project title, once per page." },
+      "label": { "displayName": "Label", "purpose": "Dates, versions, paths, tools: data only." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "lift", "value": "translate .25s cubic-bezier(.2, .8, .2, 1)", "purpose": "A picked stack plate rising 8px; off with prefers-reduced-motion." }
+    ],
+    "breakpoints": [{ "name": "sm", "value": "640px" }]
+  },
+  "components": [
+    {
+      "name": "Entry row",
+      "kind": "custom",
+      "refersTo": "row",
+      "description": "A CV entry head line under a 1px rule; only the head inverts on hover.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-row-title\">Contributeur étudiant, La Forge</span><span class=\"ds-row-meta\">depuis févr. 2026</span></div>",
+      "css": ".ds-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 2px 24px; padding: 8px 0; border-top: 1px solid #1c1b19; font: 600 16px/1.4 'Geist Variable', system-ui, sans-serif; color: #1c1b19; } .ds-row-meta { font: 400 13px 'Geist Mono Variable', ui-monospace, monospace; } .ds-row:hover { background: #1c1b19; color: #fbfaf8; padding-inline: 6px; }"
+    },
+    {
+      "name": "Link",
+      "kind": "custom",
+      "refersTo": "link",
+      "description": "Bold text-coloured link; a 2px underline appears on hover.",
+      "html": "<a class=\"ds-link\" href=\"#\">CV (PDF, français)</a>",
+      "css": ".ds-link { color: #1c1b19; font: 600 16px 'Geist Variable', system-ui, sans-serif; text-decoration: none; } .ds-link:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; } .ds-link:focus-visible { outline: 2px solid #1c1b19; outline-offset: 3px; }"
+    },
+    {
+      "name": "Display name",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "The one loud element of a page.",
+      "html": "<h1 class=\"ds-display\">Abel Chartier</h1>",
+      "css": ".ds-display { margin: 0; font: 700 clamp(44px, 8.4vw, 74px)/0.84 'Geist Variable', system-ui, sans-serif; letter-spacing: -0.06em; color: #1c1b19; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet README",
+    "overview": "The site reads like a good repository README hung on a museum wall: one column of plain facts, set in black on paper, with the owner's name as the only loud object. The museum treatment gives it its rawness: a huge, tight grotesk name, 1px graphite rules between entries, and states shown by inverting a whole block to black instead of by colour.",
+    "keyCharacteristics": ["One huge name, everything else at reading size.", "Graphite on paper, no hue anywhere.", "1px rules and full-block inversion instead of cards, shadows or tints.", "Square corners everywhere.", "Mono only for values: dates, versions, paths, tool names."],
+    "rules": [
+      { "name": "The No Hue Rule", "body": "No colour other than the neutrals. Status, emphasis and selection are shown by weight, size or inversion, never by a coloured accent.", "section": "colors" },
+      { "name": "The Inversion Rule", "body": "A selected or hovered entry inverts as a whole block. Never tint a block partially.", "section": "colors" },
+      { "name": "The One Shout Rule", "body": "Display size appears once per page.", "section": "typography" },
+      { "name": "The Mono Is Data Rule", "body": "Mono only for values a reader could copy.", "section": "typography" },
+      { "name": "The One Object Rule", "body": "Depth belongs to the stack alone. Any other element that needs emphasis inverts; it never rises.", "section": "elevation" }
+    ],
+    "dos": ["Do set the name and project titles in Display, once per page.", "Do separate entries with 1px graphite rules and invert the hovered entry as a whole block.", "Do keep every corner square and every line 1px.", "Do design the dark theme with the same care."],
+    "donts": ["Don't add any hue, including blue for links.", "Don't use drop shadows, offset shadows, thick borders or rounded cards.", "Don't introduce per-page colour universes.", "Don't set labels or headings in mono or uppercase-tracked mono."]
+  }
+}

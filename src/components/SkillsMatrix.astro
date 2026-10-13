@@ -1,0 +1,22 @@
+---
+import { l, type Lang, type L10n } from "../i18n";
+
+interface Group {
+  label: L10n;
+  items: string[];
+}
+interface Props {
+  groups: Group[];
+  lang: Lang;
+}
+const { groups, lang } = Astro.props;
+---
+
+<dl class="facts">
+  {groups.map((group) => (
+    <>
+      <dt>{l(group.label, lang)}</dt>
+      <dd>{group.items.join(" · ")}</dd>
+    </>
+  ))}
+</dl>

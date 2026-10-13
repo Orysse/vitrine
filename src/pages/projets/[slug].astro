@@ -1,12 +1,14 @@
 ---
 import { getCollection } from "astro:content";
-import ProjectPage from "../../components/ProjectPage.astro";
+import Redirect from "../../components/Redirect.astro";
+import { systemsUrl } from "../../i18n";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects", (p) => p.id.startsWith("fr/"));
-  return projects.map((project) => ({ params: { slug: project.id.split("/")[1] }, props: { project } }));
+  const projects = await getCollection("projects", (entry) => entry.id.startsWith("fr/"));
+  return projects.map((project) => ({ params: { slug: project.id.split("/")[1] } }));
 }
-const { project } = Astro.props;
+
+const to = systemsUrl("fr", String(Astro.params.slug));
 ---
 
-<ProjectPage project={project} lang="fr" slug={Astro.params.slug} />
+<Redirect to={to} lang="fr" />

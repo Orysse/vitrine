@@ -1,201 +1,143 @@
----
-name: vitrine.abe.lc
-description: A CV laid out like museum signage, in graphite.
-colors:
-  paper: "#fbfaf8"
-  graphite: "#1c1b19"
-  stone: "#67645e"
-  rule-light: "#e3e0da"
-  hover-light: "#f1efea"
-  plate: "#ffffff"
-  plate-side: "#e9e6e0"
-  night: "#151514"
-  chalk: "#e9e7e2"
-  stone-dark: "#9b978f"
-  rule-dark: "#2f2e2b"
-  hover-dark: "#1f1f1d"
-  plate-dark: "#23231f"
-  plate-side-dark: "#1a1a18"
-typography:
-  display:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(44px, 8.4vw, 74px)"
-    fontWeight: 700
-    lineHeight: 0.84
-    letterSpacing: "-0.06em"
-  headline:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "15px"
-    fontWeight: 600
-    lineHeight: 1.4
-  title:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "16px"
-    fontWeight: 600
-    lineHeight: 1.4
-  body:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "16px"
-    fontWeight: 400
-    lineHeight: 1.6
-  small:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "14px"
-    fontWeight: 400
-    lineHeight: 1.5
-  label:
-    fontFamily: "Geist Mono Variable, ui-monospace, Menlo, monospace"
-    fontSize: "13px"
-    fontWeight: 400
-    lineHeight: 1.5
-rounded:
-  none: "0"
-spacing:
-  gutter: "16px"
-  gutter-wide: "24px"
-  row: "8px"
-  section: "64px"
-  column: "42rem"
-  column-wide: "64rem"
-components:
-  link:
-    textColor: "{colors.graphite}"
-    typography: "{typography.title}"
-  link-hover:
-    textColor: "{colors.graphite}"
-  row:
-    textColor: "{colors.graphite}"
-    padding: "8px 0"
-    rounded: "{rounded.none}"
-  row-hover:
-    backgroundColor: "{colors.graphite}"
-    textColor: "{colors.paper}"
-    padding: "8px 6px"
-  legend-on:
-    backgroundColor: "{colors.graphite}"
-    textColor: "{colors.paper}"
+# Design System: Surgical Engineering Brutalism
+
+## 1. Visual Thesis & Reference World
+
+`vitrine.abe.lc` embodies **Surgical Engineering Brutalism**: a cross-pollination of three reference worlds tailored to a Systems, Infrastructure, and Security engineer:
+
+1. **Oxide Computer (`oxide.computer`) — Exposed Engineering Chassis**:
+   1px structural hairlines, exposed tabular specification matrices, hardware/kernel datasheet rigor, schematic wireframe diagrams, and explicit system state indicators.
+2. **Hara Design Institute (`hara.ndc.co.jp`) — Radical Emptiness (*Ma*) & Surgical Monochrome**:
+   Pure unbleached/surgical white ground (`#FFFFFF`) and carbon ink (`#0A0A0A`), zero chromatic noise, strict typographic scale, and deliberate negative space (at least 35% of every viewport remains open paper/canvas so the exposed grid never feels cramped).
+3. **Stripe Press (`press.stripe.com`) — Archival Edition & Tactile Artifact**:
+   Catalog-style edition indexing (`[01]` to `[04]`), rich colophon metadata, and a manipulable 3D/isometric CAD technical artifact that gives physical presence to abstract infrastructure.
+
+### Core Aesthetic Rules
+- **One System Everywhere**: Every route shares the exact same chassis, grid, typography, and monochrome polarity. Never invent per-page themes or "universes".
+- **Zero Radius (`0px`)**: Every cell, button, badge, diagram frame, and table uses sharp `0px` corners.
+- **Zero Shadows, Gradients, or Blur**: Depth and hierarchy are achieved strictly through `1px solid` rules, solid black/white polarity inversion, SVG hatching/stipple patterns, and typographic weight/scale.
+- **Structure Is Information**: Every `1px` line separates distinct semantic regions (index column vs specification body, key vs value, layer vs inspector). Never draw boxes inside boxes.
+
+### Explicit Anti-Goals (Banned Patterns)
+- No rounded SaaS cards, soft drop shadows, glassmorphism, or decorative gradients.
+- No third-party brand logo walls or colorful tech badges.
+- No decorative all-caps eyebrows above every heading or single italicized/colored accent words inside headlines.
+- No em dashes or en dashes in UI copy or prose.
+- No scroll-jacking, fade-and-slide-up section reveals, or unrequested background animations.
+
 ---
 
-# Design System: vitrine.abe.lc
+## 2. Chromatic System: Surgical Monochrome & Polarity Inversion (`[INV]`)
 
-## Overview
+The palette is strictly **achromatic (`hue = 0`, `chroma = 0`)**. There is no accent hue. Hierarchy, active states, and focus are communicated through **full polarity inversion** (white ink on solid black ground in light mode; black ink on solid white ground in dark mode) and **geometric SVG line patterns** (diagonal 45deg hatching, cross-hatching, and dot matrices).
 
-**Creative North Star: "The Quiet README"**
+Default polarity is **Hara Surgical Light (`#FFFFFF`)**, while honoring `prefers-color-scheme: dark` on first visit if the user's OS requests it, and providing an instant manual/keyboard polarity switch (`[INV]` / key `i`) persisted via `data-theme="light | dark"` on `<html>`.
 
-The site reads like a good repository README hung on a museum wall: one column of plain facts,
-set in black on paper, with the owner's name as the only loud object. The museum treatment
-(after the Whitney and the Stedelijk) gives it its rawness: a huge, tight grotesk name, 1px
-graphite rules between entries, and states shown by inverting a whole block to black instead
-of by colour.
+### Token Table
 
-There is no accent colour. Graphite is both the text and the accent, so emphasis comes from
-size, weight, rules and inversion only. Light and dark themes are both first-class and follow
-the reader's system setting.
+| CSS Custom Property | Light Mode (Hara Paper) | Dark Mode (Oxide Rack `[INV]`) | Semantic Role |
+|---|---|---|---|
+| `--bg-canvas` | `#FFFFFF` | `#0A0A0A` | Primary page background |
+| `--bg-surface` | `#F6F6F6` | `#121212` | Secondary technical cells, inactive spec panels, code blocks |
+| `--bg-elevated` | `#EEEEEE` | `#1A1A1A` | Hover surface for non-inverted interactive rows |
+| `--bg-inverse` | `#0A0A0A` | `#FFFFFF` | Active tab, selected architecture layer, primary CTA fill, focus badge |
+| `--ink-primary` | `#0A0A0A` | `#FFFFFF` | Primary prose, headlines, active SVG strokes (Contrast 19.6:1) |
+| `--ink-secondary` | `#404040` | `#B0B0B0` | Supporting descriptions, secondary table cells (Contrast ≥ 9.5:1) |
+| `--ink-muted` | `#6E6E6E` | `#808080` | Coordinate labels, index numbers, keyboard hints, inactive wireframe lines (Contrast ≥ 4.8:1) |
+| `--ink-inverse` | `#FFFFFF` | `#0A0A0A` | Text and icons rendered on `--bg-inverse` |
+| `--rule-strong` | `#0A0A0A` | `#FFFFFF` | Outer chassis frame, major section dividers, active cell borders (`1px solid`) |
+| `--rule-hairline` | `#E0E0E0` | `#242424` | Internal 12-column grid lines, fact matrix rows, diagram axes (`1px solid`) |
+| `--pattern-hatch` | `rgba(10,10,10,0.08)` | `rgba(255,255,255,0.10)` | 45deg diagonal 1px SVG/CSS repeating linear pattern for structural zones |
 
-The isometric homelab stack is the one drawn object on the site, and the only place with depth.
+---
 
-**Key Characteristics:**
-- One huge name, everything else at reading size.
-- Graphite on paper, no hue anywhere.
-- 1px rules and full-block inversion instead of cards, shadows or tints.
-- Square corners everywhere.
-- Mono only for values: dates, versions, paths, tool names.
+## 3. Typography & Scannable Hierarchy
 
-## Colors
+All fonts are self-hosted (`font-src 'self'`) via `@fontsource-variable/geist` and `@fontsource-variable/geist-mono`.
 
-Warm-tinted neutrals only; graphite does the work of an accent.
+### Font Families
+1. **`--font-sans`**: `'Geist Variable', system-ui, -apple-system, sans-serif`
+   - Used for primary titles, system summaries, architectural prose, and biographical descriptions.
+   - Features: `"kern" 1, "liga" 1`.
+2. **`--font-mono`**: `'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace`
+   - Used for the top chassis bar, edition indices (`[01]`-`[04]`), specification keys, dates, durations, file paths, git revisions, keyboard shortcuts, and diagram annotations.
+   - Mandatory numeric discipline: `font-variant-numeric: tabular-nums slashed-zero`.
 
-### Primary
-- **Graphite** (light text, rules and inverted blocks): body text, the 1px rules between rows, the fill of a hovered row or a picked stack layer, and the focus outline.
-- **Chalk** (dark theme counterpart of graphite): the same roles on the night background.
+### Typographic Scale & Rhythm
 
-### Neutral
-- **Paper**: the light page background, and the text colour inside an inverted block.
-- **Night**: the dark page background.
-- **Stone** and **Stone dark**: secondary text, metadata, legend values.
-- **Rule light** and **Rule dark**: the faint dividers that are not entry rules (the colophon rule).
-- **Hover light** and **Hover dark**: the only tint, reserved for quiet hovers (legend lines).
-- **Plate**, **Plate side** and their dark counterparts: the top and the edges of the stack's isometric plates.
+| Role | Family | Size (Fluid / Desktop) | Weight | Line Height | Tracking | Measure / Notes |
+|---|---|---|---|---|---|---|
+| **Display / Index Title (`h1`)** | `--font-sans` | `clamp(1.75rem, 2.8vw, 2.5rem)` (`28px`–`40px`) | `600` | `1.1` | `-0.03em` | Max `28ch`. Crisp, architectural, never oversized billboard text. |
+| **System / Section Header (`h2`)** | `--font-sans` | `clamp(1.25rem, 1.8vw, 1.5rem)` (`20px`–`24px`) | `600` | `1.2` | `-0.02em` | Preceded by its tabular index in `--font-mono` (e.g. `02.1`). |
+| **Sub-heading / Highlight (`h3`)** | `--font-sans` | `1.0rem` (`16px`) | `600` | `1.35` | `-0.01em` | Paired directly with factual body text. |
+| **Primary Prose (`body`)** | `--font-sans` | `0.9375rem` (`15px`) | `400` | `1.6` | `0em` | Strict reading measure: `58ch` to `68ch`. |
+| **Specification Table Value** | `--font-sans` | `0.875rem` (`14px`) | `400` | `1.45` | `0em` | Aligned against monospace keys in fact matrices. |
+| **Chassis / Spec Key / Meta** | `--font-mono` | `0.75rem` (`12px`) | `500` | `1.4` | `0.02em` | `tabular-nums`. Used for keys, dates, stack tags, and `[KEY]` hints. |
+| **Micro Coordinate / CAD Label** | `--font-mono` | `0.6875rem` (`11px`) | `400` | `1.2` | `0.04em` | Used inside SVG schematic diagrams and colophon stamps. |
 
-### Named Rules
-**The No Hue Rule.** No colour other than the neutrals above. Status, emphasis and selection are shown by weight, size or inversion, never by a coloured accent.
+---
 
-**The Inversion Rule.** A selected or hovered line inverts as a whole block (graphite ground, paper text): the head line of an entry, a legend line. Never tint a block partially.
+## 4. Layout Architecture, Grid & Exposed Chassis
 
-## Typography
+### The Page Chassis
+- **Max Width**: `1200px` centered in the viewport, bounded on left and right (on viewports `>= 1200px`) by continuous `1px solid var(--rule-hairline)` vertical rails, with a `1px solid var(--rule-strong)` top chassis header and bottom colophon bar.
+- **12-Column Structural Grid**:
+  - Desktop (`>= 1024px`): 12 columns, `0px` outer gap (cells share `1px` borders via CSS grid border-collapse patterns or `gap: 1px` on a `--rule-hairline` background where a full matrix is displayed), with generous internal cell padding (`24px` to `40px`).
+  - Asymmetric split by default: **Left Index Column (3 or 4 cols)** carries section numbers, metadata, dates, and mode controls; **Right Content Column (8 or 9 cols)** carries the thesis, specification tables, prose, and interactive schematics.
+  - Tablet (`768px`–`1023px`): 8 columns (2 cols index / 6 cols content).
+  - Mobile (`< 768px`): Single column stack with horizontal `1px solid var(--rule-hairline)` dividers and `16px` horizontal padding.
 
-**Display Font:** Geist (with ui-sans-serif, system-ui)
-**Body Font:** Geist
-**Label/Mono Font:** Geist Mono (with ui-monospace, Menlo)
+### Negative Space Ratio (*Ma*)
+To prevent the Oxide-style grid from becoming an oppressive wall of text:
+- Every major section reserves **at least one unoccupied structural zone** (either the lower portion of the left index column or breathing margin around the CAD diagram) on desktop.
+- Cell padding is never tighter than `16px 20px` in data tables and `32px 32px` in primary narrative/diagram cells.
 
-**Character:** One grotesk at two extremes: a heavy, tightly tracked display used once, and a calm reading weight everywhere else. The mono is a data face, not a style.
+### Top Chassis Bar (Persistent System Header)
+A single-row (or two-row on mobile) structural bar at the top of every page, rendered in `--font-mono` (`12px`), divided into bordered cells:
+1. **Identity Cell**: `ABEL CHARTIER` + status badge `SYSOPS / DEVSECOPS · STAGE FÉV. 2027`
+2. **Navigation Matrix**:
+   - `[01] INDEX`
+   - `[02] SYSTÈMES`
+   - `[03] PARCOURS`
+   - `[04] COLOPHON`
+   *(The active pole is rendered in solid inverted colors: `background: var(--bg-inverse); color: var(--ink-inverse)`).*
+3. **System Controls Cell**:
+   - Density switch: `[MODE: SYNTHÈSE | SPEC]` (shortcut `D`)
+   - Polarity switch: `[INV]` (shortcut `I`)
+   - Locale switch: `[FR | EN]` (shortcut `L`)
+   - Primary artifact action: `[CV.PDF]`
 
-### Hierarchy
-- **Display** (700, clamp 44px to 74px, line-height 0.84, tracking -0.06em): the owner's name on the home page and the title of a project page. Once per page.
-- **Headline** (600, 15px): section titles (Experience, Projects, Education, Skills).
-- **Title** (600, 16px): entry titles, link labels, project names.
-- **Body** (400, 16px, line-height 1.6): running text, kept within a 42rem column.
-- **Availability** (Body at 600): the internship line under the status, bold, no background; the only emphasis on the home page after the name.
-- **Small** (400, 14px): the header line, fact-sheet keys and outside-work notes.
-- **Label** (Geist Mono 400, 13px): dates, places, versions, paths, tool lists, the colophon.
+---
 
-### Named Rules
-**The One Shout Rule.** Display size appears once per page. Everything else stays at 13 to 16px; hierarchy below the name comes from weight and rules.
+## 5. Component & Interactive Grammar
 
-**The Mono Is Data Rule.** Mono only for values a reader could copy: dates, versions, paths, tools. Never for labels or decoration.
+### A. Fact & Specification Matrices (Oxide Datasheet Pattern)
+Projects and systems never use marketing feature cards. They use **2-column or 4-column bordered specification tables**:
+- **Key cell**: `140px`–`180px` wide, `--font-mono`, `--ink-muted`, `--bg-surface`, right-bordered `1px solid var(--rule-hairline)`.
+- **Value cell**: `--font-sans` (with inline `--font-mono` for paths, binaries, and Nix attributes), `--ink-primary`, `--bg-canvas`.
 
-## Layout
+### B. Density Mode (`data-density="summary | spec"`)
+- **`summary` (Default — 30-second Recruiter Scan)**:
+  Displays system summaries, the 3 to 5 distinctive architectural highlights per project, core experience roles, and primary CTAs. Deep implementation prose, secondary fact rows, and file-level Nix/Flux mappings are collapsed behind a clean `1px` status bar (`[+ N SPÉCIFICATIONS TECHNIQUES — BASCULER EN MODE SPEC (D)]`).
+- **`spec` (Raw Engineering Specification)**:
+  Expands all architectural prose, full `facts` tables, exact repository file paths, security invariants, and detailed coursework/stack breakdowns across the entire site simultaneously.
 
-A single left-aligned column of 42rem (64rem for the 303 panel), with a 16px gutter on phones and 24px from the sm breakpoint. Sections are separated by 64px of space, entries by 1px graphite rules with 8px of vertical padding. Rows put the title on the left and the date in mono on the right; on phones the date drops under the title. The stack sits beside its legend from the sm breakpoint and above it on phones. Nothing is centred.
+### C. Interactive Architecture Inspector & Manipulable Isometric Artifact
+- Rendered in **crisp `1px` vector SVG** (`vector-effect: non-scaling-stroke`), using only `--ink-primary`, `--ink-muted`, `--bg-canvas`, `--bg-surface`, and diagonal SVG hatch fills.
+- **Manipulable Isometric Stack (on `[01] Index` and `[02] Systèmes`)**:
+  - Displays the 6 physical-to-application layers of the homelab (`Matériel NUC10i7FNH` → `Hôte NixOS` → `3 × microVMs tmpfs` → `Cluster k3s/Cilium` → `Plateforme Flux/OpenBao/Pocket-ID` → `Ce site nginx:65534`).
+  - **Interactive CAD Controls**: Visitors can drag to rotate/tilt the isometric projection within bounded angles (or step through Z-axis explosion levels `[COMPACT / ÉCLATÉ / COUPE]`) and click or keyboard-select (`j`/`k` or `1`–`6`) any plate.
+  - Selecting a plate inverts that plate (`--bg-inverse` fill, `--ink-inverse` stroke) and updates the adjacent **Layer Specification Readout** with the exact source file in `Orysse/homelab-nix` or `Orysse/homelab-cluster`, its runtime invariant, and failure/recovery behavior.
+  - **Zero-JS Fallback**: Without JavaScript, the SVG renders in its canonical exploded isometric view with all 6 layers clearly labeled in an adjacent static specification table.
 
-## Elevation & Depth
+### D. Keyboard Command System
+- Pressing `1`–`4` navigates to the corresponding pole.
+- Pressing `d` toggles `SYNTHÈSE` / `SPEC BRUTE`.
+- Pressing `i` toggles light/dark polarity (`[INV]`).
+- Pressing `l` switches between French and English equivalents of the current route.
+- Pressing `j` / `k` steps through inspectable architecture layers or system entries on the current page.
+- Pressing `?` toggles a compact, bordered monochrome keyboard reference overlay anchored to the bottom-right chassis rail.
+- All single-key shortcuts are automatically disabled when focus is inside an input, when modifier keys (`Ctrl`, `Alt`, `Meta`) are held, or on `/303/` where the synthesizer uses its own controls.
 
-The page is flat: no shadows, no layered surfaces, no cards. The only depth on the site is the isometric stack, drawn in SVG; picking a layer lifts its plate by 8px.
-
-### Named Rules
-**The One Object Rule.** Depth belongs to the stack alone. Any other element that needs emphasis inverts; it never rises.
-
-## Shapes
-
-Square corners throughout (0 radius): rows, inverted blocks, focus outlines, legend lines. Lines are 1px. The stack's plates are the only non-rectangular forms.
-
-The VTR-303 page (`/303/`) is exempt: its panel imitates the hardware, with its own silver, knob and LED colours and small radii.
-
-## Components
-
-### Links
-- **Style:** inherit the text colour, 600 weight, no underline at rest.
-- **Hover:** a 2px graphite underline appears (3px offset).
-- **Focus:** 2px graphite (chalk in dark) outline, 3px offset, square.
-
-### Entry rows
-- **Style:** a 1px graphite rule above each entry, title left, mono date and place right; the points of an entry stay visible below its head line.
-- **Hover:** only the head line (title, date, place) inverts (graphite ground, paper text, 6px side padding); the points below stay on paper. Inversion is instant, with no transition.
-
-### Project pages
-- **Title** in Display; summary in Body stone; repository link in Label.
-- **Fact sheet:** key in stone, value in mono, one 1px rule per line.
-
-### Navigation
-- **Style:** a small header line: the site name or the owner's name on the left, the language switch on the right, both at 14px in stone, graphite on hover.
-
-### Architecture stack (signature)
-- **Plates:** paper tops, plate-side edges, 1px stone outlines; a picked plate fills graphite and lifts 8px.
-- **Legend:** layer name in title weight, values in mono stone; the picked line inverts like an entry row.
-
-### Colophon
-- **Style:** mono 12.5px in stone under a 1px rule: version linked to its tag, revision, commit date, source.
-
-## Do's and Don'ts
-
-### Do:
-- **Do** set the name and project titles in Display (700, up to 74px, line-height 0.84, -0.06em), once per page.
-- **Do** separate entries with 1px graphite rules and invert the hovered entry as a whole block.
-- **Do** keep every corner square and every line 1px.
-- **Do** design the dark theme with the same care: night ground, chalk text, chalk inversions.
-
-### Don't:
-- **Don't** add any hue, including blue for links (rejected); graphite is the accent.
-- **Don't** use drop shadows, offset shadows, thick borders or rounded cards (the generated neo-brutalist look was rejected).
-- **Don't** introduce per-page colour universes (rejected in 0.9.0).
-- **Don't** set labels or headings in mono or uppercase-tracked mono; mono is for data only.
+### E. Print Stylesheet (`@media print`)
+- Hides the top chassis control cells, keyboard hints, interactive CAD sliders, and footer colophon links.
+- Forces light polarity (`#FFFFFF` paper, `#000000` ink) and single-column A4 geometry so `/parcours/` (and `/`) can be printed or saved to PDF as a clean engineering resume.

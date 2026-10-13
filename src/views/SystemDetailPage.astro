@@ -1,0 +1,115 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import FactsMatrix from "../components/FactsMatrix.astro";
+import VmFlow from "../components/VmFlow.astro";
+import Impermanence from "../components/Impermanence.astro";
+import ReleaseFlow from "../components/ReleaseFlow.astro";
+import { systemsUrl, t, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Neighbour {
+  slug: string;
+  title: string;
+}
+interface Props {
+  project: CollectionEntry<"projects">;
+  lang: Lang;
+  slug: string;
+  prev?: Neighbour;
+  next?: Neighbour;
+}
+const { project, lang, slug, prev, next } = Astro.props;
+const data = project.data;
+const { Content } = await render(project);
+const alternates = { fr: systemsUrl("fr", slug), en: systemsUrl("en", slug) };
+const diagram = slug === "homelab" ? VmFlow : slug === "config" ? Impermanence : slug === "vitrine" ? ReleaseFlow : null;
+const Diagram = diagram;
+---
+
+<Layout
+  lang={lang}
+  title={`${data.title} · ${profile.name}`}
+  description={data.summary}
+  alternates={alternates}
+  pole="systems"
+>
+  <section class="g12 hero">
+    <p class="label c1-3">{t(lang, "systems.title")} / 0{data.order}</p>
+    {data.repo && (
+      <p class="c9-12">
+        <a class="label label-ink" href={data.repo} rel="noopener">{t(lang, "systems.repo")} · {data.repo.replace("https://github.com/", "")}</a>
+      </p>
+    )}
+    <h1 class="c1-10 display">{data.title}</h1>
+    <p class="c1-7 lede">{data.summary}</p>
+    <div class="c9-12">
+      <p class="label">{t(lang, "systems.stack")}</p>
+      <p class="body-lg mt-3">{data.stack.join(" · ")}</p>
+    </div>
+  </section>
+
+  <section class="g12 section">
+    <p class="label c1-2">{t(lang, "systems.highlights")}</p>
+    <ul class="c2-12 hl-list">
+      {data.highlights.map((highlight, i) => (
+        <li>
+          <span class="n">{String(i + 1).padStart(2, "0")}</span>
+          <div>
+            <h3>{highlight.title}</h3>
+            <p>{highlight.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {Diagram && (
+    <section class="g12 section-tight">
+      <p class="label c1-12 mb-6">{t(lang, "systems.details")}</p>
+      <div class="c1-12">
+        <Diagram lang={lang} />
+      </div>
+    </section>
+  )}
+
+  <section class="g12 section-tight">
+    <p class="label c1-2">{t(lang, "systems.facts")}</p>
+    <div class="c2-12">
+      <FactsMatrix facts={data.facts} />
+    </div>
+  </section>
+
+  <section class="g12 section">
+    <div class="c2-8 prose">
+      <Content />
+    </div>
+  </section>
+
+  <nav class="g12 section-tight" aria-label={t(lang, "systems.title")}>
+    <p class="label c1-2">→</p>
+    <div class="c2-12 detail-nav">
+      {prev ? (
+        <a class="big-link" href={systemsUrl(lang, prev.slug)}>← {prev.title}</a>
+      ) : (
+        <span></span>
+      )}
+      <a class="big-link" href={systemsUrl(lang)}>{t(lang, "systems.back")}</a>
+      {next ? (
+        <a class="big-link" href={systemsUrl(lang, next.slug)}>{next.title} →</a>
+      ) : (
+        <span></span>
+      )}
+    </div>
+  </nav>
+</Layout>
+
+<style>
+  .detail-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+</style>

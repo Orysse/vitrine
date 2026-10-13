@@ -1,24 +1,25 @@
 ---
 import "../styles/global.css";
-import { home, synthUrl, t, type Lang } from "../i18n";
+import { home, poles, synthUrl, colophonUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 import { umami } from "../analytics";
 import { build } from "../build";
+
+type PoleKey = "index" | "systems" | "resume" | "colophon" | "none";
 
 interface Props {
   lang: Lang;
   title: string;
   description: string;
-  /** URL of this page in each language, for the switcher and hreflang. */
   alternates: Record<Lang, string>;
-  /** Wider column, for the 303 panel. */
-  wide?: boolean;
+  pole?: PoleKey;
 }
 
-const { lang, title, description, alternates, wide = false } = Astro.props;
+const { lang, title, description, alternates, pole = "none" } = Astro.props;
 const other: Lang = lang === "fr" ? "en" : "fr";
 const canonical = new URL(alternates[lang], Astro.site);
-const isHome = alternates[lang] === home(lang);
+const navPoles = poles(lang);
+const cvHref = profile.cv[lang];
 ---
 
 <!doctype html>
@@ -30,41 +31,54 @@ const isHome = alternates[lang] === home(lang);
     <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#151514" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f5f3ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="fr" href={new URL(alternates.fr, Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL(alternates.en, Astro.site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline src="/theme.js"></script>
     {umami.websiteId && <script is:inline defer src={`${umami.host}/script.js`} data-website-id={umami.websiteId} data-domains={umami.domains}></script>}
   </head>
   <body>
-    <a href="#main" class="absolute -left-[999px] top-2 z-50 bg-fg px-3 py-2 text-bg focus:left-2">{t(lang, "skip")}</a>
+    <a class="skip no-print" href="#main">{t(lang, "skip")}</a>
 
-    <div class:list={["mx-auto px-4 sm:px-6", wide ? "max-w-[64rem]" : "max-w-[42rem]"]}>
-      <header class="no-print flex items-baseline justify-between gap-4 pt-8 pb-14 text-[14px] sm:pt-12">
-        {isHome ? <span class="font-semibold">vitrine.abe.lc</span> : <a href={home(lang)}>{profile.name}</a>}
-        <a href={alternates[other]} hreflang={other} lang={other}>{t(lang, "nav.lang")}</a>
-      </header>
+    <header class="bar no-print">
+      <a class="label label-ink" href={home(lang)}>{profile.name}</a>
+      <span class="label">{t(lang, "chassis.status")}</span>
+      <nav class="bar-nav" aria-label={lang === "fr" ? "Pages" : "Pages"}>
+        {navPoles.map((item) => (
+          <a href={item.href} aria-current={pole === item.key ? "page" : undefined}>{item.label}</a>
+        ))}
+        <a href={alternates[other]} hreflang={other} data-locale-switch>{other.toUpperCase()}</a>
+        <button type="button" class="big-link no-print" data-polarity-toggle aria-pressed="false" title={t(lang, "chassis.inv.title")}>{t(lang, "chassis.inv")}</button>
+        <a class="big-link" href={cvHref}>{t(lang, "chassis.cv")}</a>
+      </nav>
+    </header>
 
-      <main id="main">
-        <slot />
-      </main>
+    <main id="main">
+      <slot />
+    </main>
 
-      <footer class="no-print mt-24 border-t border-line pt-6 pb-12 font-mono text-[12.5px] leading-6 text-muted">
-        <p class="m-0">
-          vitrine <a href={build.tagUrl}>{build.version}</a>
-          {build.revUrl ? <> · <a href={build.revUrl}>{build.rev}</a></> : <> · {build.rev}</>}
-          {build.date && <> · {t(lang, "colophon.built")} <time datetime={build.date}>{build.date}</time></>}
-        </p>
-        <p class="m-0">{t(lang, "colophon.stack")}</p>
-        <p class="m-0">
-          <a href={profile.links.source}>{t(lang, "colophon.source")}</a> · <a href={synthUrl(lang)}>{t(lang, "vtr.nav")}</a>
-        </p>
-      </footer>
-    </div>
+    <footer class="bar bar-foot no-print">
+      <span class="label">vitrine {build.version}</span>
+      <span class="label">{build.revUrl ? <a href={build.revUrl}>{build.rev}</a> : build.rev}</span>
+      {build.date && (
+        <span class="label">{t(lang, "colophon.built")} <time datetime={build.date}>{build.date}</time></span>
+      )}
+      <nav class="bar-nav" aria-label={lang === "fr" ? "Pied de page" : "Footer"}>
+        <a href={colophonUrl(lang)}>{t(lang, "nav.colophon")}</a>
+        <a href={synthUrl(lang)}>{t(lang, "vtr.nav")}</a>
+        <a href={profile.links.source}>{t(lang, "colophon.source")}</a>
+      </nav>
+    </footer>
+
+    <script>
+      import "../scripts/ui";
+    </script>
   </body>
 </html>

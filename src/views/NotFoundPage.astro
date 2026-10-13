@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { home, t, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<Layout
+  lang={lang}
+  title={`404 · ${profile.name}`}
+  description={t(lang, "notfound")}
+  alternates={{ fr: "/", en: "/en/" }}
+  pole="none"
+>
+  <section class="g12 hero">
+    <p class="label c1-3">404</p>
+    <h1 class="c1-8 display">404</h1>
+    <p class="c1-7 lede">{t(lang, "notfound")}</p>
+    <p class="c1-7">
+      <a class="big-link" href={home(lang)}>{t(lang, "notfound.hint")}</a>
+    </p>
+  </section>
+</Layout>
