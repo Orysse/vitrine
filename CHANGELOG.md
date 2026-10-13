@@ -2,6 +2,17 @@
 
 One entry per tag. Each tag publishes `ghcr.io/orysse/vitrine:X.Y.Z`.
 
+## 0.11.0 (2026-10-13)
+
+The 0.8.0 site in the museum treatment, graphite only (see `DESIGN.md`).
+
+- No hue: graphite is the text and the accent; blue links and focus are gone.
+- Huge tight name and project titles (Geist 700, up to 74px).
+- Entries under 1px graphite rules; hovering inverts the head line as a black block.
+- Links bold, underlined only on hover; the availability line in bold.
+- Fact sheets with one rule per line; square corners everywhere.
+- `PRODUCT.md` and `DESIGN.md` record the audience, the goals and the design system.
+
 ## 0.10.0 (2026-10-13)
 
 - Back to the 0.8.0 design and content: the code is the 0.8.0 tree, under a new version.
