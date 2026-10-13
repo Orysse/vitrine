@@ -3,7 +3,7 @@ title: NixOS config
 summary: My laptop (ThinkPad) configuration as one dendritic flake, without home-manager. tmpfs root, declared encrypted disk, Secure Boot, secrets on a YubiKey.
 order: 2
 repo: https://github.com/Orysse/config
-stack: [NixOS, flake-parts, import-tree, nix-wrapper-modules, disko, preservation, lanzaboote, sops-nix, sway]
+stack: [NixOS, flake-parts, import-tree, nix-wrapper-modules, disko, preservation, lanzaboote, sops-nix, river]
 facts:
   - [Layout, "flake-parts + import-tree: features/, system/, flavors/, hosts/"]
   - [Programs, "configured with nix-wrapper-modules; each runs on its own: nix run .#kitty"]
@@ -11,7 +11,16 @@ facts:
   - [Disk, "GPT + LUKS + btrfs, declared with disko"]
   - [Boot, "Secure Boot with lanzaboote, LUKS unlocked by TPM2"]
   - [Secrets, "sops-nix, keyed to a YubiKey or the host SSH key, separate encrypted repo"]
-  - [Desktop, "sway, waybar, kitty, tmux, nvim, Everforest Dark Medium theme"]
+  - [Desktop, "river, waybar, kitty, tmux, nvim, Everforest Dark Medium theme"]
+highlights:
+  - title: No home-manager
+    text: "Each program carries its own configuration (nix-wrapper-modules) and runs on its own from the flake: nix run .#nvim."
+  - title: No module list
+    text: "import-tree loads everything in modules/, and each file is a flake-parts module."
+  - title: A root that wipes itself
+    text: "The root is a tmpfs: whatever is not declared is gone after a reboot. Only /nix and /persistent survive."
+  - title: Locked boot
+    text: "Secure Boot with lanzaboote, LUKS unlocked by the TPM2, secrets decrypted with the YubiKey."
 ---
 
 ## Layout

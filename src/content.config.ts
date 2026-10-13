@@ -38,6 +38,8 @@ export const collections = {
       summary: z.string(),
       order: z.number(),
       repo: z.url().optional(),
+      /** What sets the project apart, shown first on its page. */
+      highlights: z.array(z.object({ title: z.string(), text: z.string() })),
       stack: z.array(z.string()),
       facts: z.array(z.tuple([z.string(), z.string()])),
     }),

@@ -29,7 +29,10 @@ export const profile = {
     homelabNix: "https://github.com/Orysse/homelab-nix",
     homelabCluster: "https://github.com/Orysse/homelab-cluster",
     source: "https://github.com/Orysse/vitrine",
+    /** Empty until Abel provides the URL; the link is hidden while empty. */
+    linkedin: "",
   },
+  email: "abel.chartier@gmail.com",
   cv: {
     fr: "/cv/ABEL_CHARTIER_CV_fr.pdf",
     en: "/cv/ABEL_CHARTIER_CV_en.pdf",

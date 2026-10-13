@@ -73,6 +73,12 @@
   a.row-head { @apply border-t border-fg font-normal no-underline; }
   .meta { @apply font-mono text-[13px] font-normal text-muted; }
 
+  /* Full details of a project, folded under its highlights. */
+  .more > summary { @apply inline-flex list-none items-baseline gap-2; }
+  .more > summary::-webkit-details-marker { display: none; }
+  .toggle { @apply font-mono font-normal text-muted; }
+  .more[open] .toggle { rotate: 45deg; }
+
   /* Key/value sheets: one 1px rule per line. */
   .facts { @apply m-0 grid text-[14px] sm:grid-cols-[max-content_minmax(0,1fr)]; }
   .facts dt { @apply border-t border-fg pt-2 text-muted sm:pb-2 sm:pr-6; }

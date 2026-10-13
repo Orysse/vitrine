@@ -12,6 +12,17 @@ facts:
   - [Identité, "Pocket-ID, passkeys uniquement, droits par groupes"]
   - [Monitoring, "VictoriaMetrics et VictoriaLogs sur l'hôte, alertes par mail"]
   - [Dépôts, "homelab-nix (hôte, Nix) et homelab-cluster (GitOps)"]
+highlights:
+  - title: Des VMs sans disque
+    text: "Trois microVMs générées depuis un seul fichier de topologie. Pas d'image disque : la racine est un tmpfs, seuls l'identité du nœud et les données k3s sont gardées, sur l'hôte."
+  - title: Rollback automatique
+    text: "L'hôte se déploie avec deploy-rs. S'il ne répond plus après l'activation, il revient seul à la version précédente."
+  - title: Le monitoring survit au cluster
+    text: "Métriques, logs et alertes tournent sur l'hôte, hors des VMs. Si l'hôte tombe, c'est Healthchecks.io qui prévient."
+  - title: Tout refusé par défaut
+    text: "Network policies Cilium dans chaque namespace, chaque flux permis est écrit dans git. Ce site ne joint rien, pas même le DNS."
+  - title: Des mots de passe que personne ne connaît
+    text: "Les mots de passe PostgreSQL sont créés et changés par OpenBao. Les accès passent par Pocket-ID, avec des passkeys uniquement."
 ---
 
 ## Base : homelab-nix

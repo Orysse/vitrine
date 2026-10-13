@@ -3,7 +3,7 @@ title: Config NixOS
 summary: La configuration de mon laptop (ThinkPad) en un flake dendritique, sans home-manager. Racine en tmpfs, disque chiffré déclaré, Secure Boot, secrets sur YubiKey.
 order: 2
 repo: https://github.com/Orysse/config
-stack: [NixOS, flake-parts, import-tree, nix-wrapper-modules, disko, preservation, lanzaboote, sops-nix, sway]
+stack: [NixOS, flake-parts, import-tree, nix-wrapper-modules, disko, preservation, lanzaboote, sops-nix, river]
 facts:
   - [Structure, "flake-parts + import-tree : features/, system/, flavors/, hosts/"]
   - [Programmes, "configurés avec nix-wrapper-modules ; chacun se lance seul : nix run .#kitty"]
@@ -11,7 +11,16 @@ facts:
   - [Disque, "GPT + LUKS + btrfs, déclaré avec disko"]
   - [Démarrage, "Secure Boot avec lanzaboote, LUKS déverrouillé par TPM2"]
   - [Secrets, "sops-nix, clé sur YubiKey ou clé SSH de l'hôte, dépôt chiffré séparé"]
-  - [Bureau, "sway, waybar, kitty, tmux, nvim, thème Everforest Dark Medium"]
+  - [Bureau, "river, waybar, kitty, tmux, nvim, thème Everforest Dark Medium"]
+highlights:
+  - title: Sans home-manager
+    text: "Chaque programme embarque sa configuration (nix-wrapper-modules) et se lance seul depuis le flake : nix run .#nvim."
+  - title: Pas de liste de modules
+    text: "import-tree charge tout ce qui est dans modules/, chaque fichier est un module flake-parts."
+  - title: Une racine qui s'efface
+    text: "La racine est un tmpfs : ce qui n'est pas déclaré disparaît au redémarrage. Seuls /nix et /persistent survivent."
+  - title: Démarrage verrouillé
+    text: "Secure Boot avec lanzaboote, disque LUKS déverrouillé par le TPM2, secrets déchiffrés avec la YubiKey."
 ---
 
 ## Organisation

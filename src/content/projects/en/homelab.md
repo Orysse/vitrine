@@ -12,6 +12,17 @@ facts:
   - [Identity, "Pocket-ID, passkeys only, rights from groups"]
   - [Monitoring, "VictoriaMetrics and VictoriaLogs on the host, alerts by email"]
   - [Repos, "homelab-nix (host, Nix) and homelab-cluster (GitOps)"]
+highlights:
+  - title: Diskless VMs
+    text: "Three microVMs generated from a single topology file. No disk image: the root is a tmpfs, and only the node identity and k3s data are kept, on the host."
+  - title: Automatic rollback
+    text: "The host is deployed with deploy-rs. If it stops answering after activation, it rolls back on its own."
+  - title: Monitoring outlives the cluster
+    text: "Metrics, logs and alerts run on the host, outside the VMs. If the host goes down, Healthchecks.io raises the alarm."
+  - title: Everything denied by default
+    text: "Cilium network policies in every namespace, each allowed flow written in git. This site reaches nothing, not even DNS."
+  - title: Passwords nobody knows
+    text: "PostgreSQL passwords are created and rotated by OpenBao. Access goes through Pocket-ID, with passkeys only."
 ---
 
 ## Base: homelab-nix

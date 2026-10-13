@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Entry from "./Entry.astro";
-import Stack from "./Stack.astro";
 import { home, l, projectUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 
@@ -23,7 +22,6 @@ const skills = (await getCollection("skills")).sort(byOrder);
 const interests = (await getCollection("interests")).sort(byOrder);
 const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang}/`))).sort(byOrder);
 const slug = (id: string) => id.split("/")[1];
-const homelab = projects.find((p) => slug(p.id) === "homelab");
 const repoName = (url: string) => url.replace("https://github.com/", "");
 ---
 
@@ -37,18 +35,10 @@ const repoName = (url: string) => url.replace("https://github.com/", "");
       <a class="print-href" href={profile.links.github} data-print="github.com/Orysse" data-umami-event="github">GitHub</a>
       <a href={profile.cv.fr} data-umami-event="cv-download" data-umami-event-lang="fr" data-umami-event-from="hero">{t(lang, "cv.fr")}</a>
       <a href={profile.cv.en} data-umami-event="cv-download" data-umami-event-lang="en" data-umami-event-from="hero">{t(lang, "cv.en")}</a>
+      <a href={`mailto:${profile.email}`} data-umami-event="email">{profile.email}</a>
+      {profile.links.linkedin && <a class="print-href" href={profile.links.linkedin} data-print={profile.links.linkedin.replace("https://www.", "")} data-umami-event="linkedin">LinkedIn</a>}
     </p>
   </section>
-
-  {homelab && (
-    <section class="no-print mt-20" id="homelab">
-      <h2 class="section-title mb-6">{t(lang, "section.homelab")}</h2>
-      <Stack lang={lang} />
-      <p class="mt-6 mb-0 text-muted">
-        {homelab.data.summary} <a class="text-fg" href={projectUrl(lang, "homelab")}>{t(lang, "project.read")}</a>
-      </p>
-    </section>
-  )}
 
   <section class="mt-16" id="experience">
     <h2 class="section-title">{t(lang, "section.experience")}</h2>
