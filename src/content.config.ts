@@ -22,10 +22,6 @@ export const collections = {
   experience: defineCollection({ loader: file("src/content/experience.yaml"), schema: entry }),
   education: defineCollection({ loader: file("src/content/education.yaml"), schema: entry }),
   associations: defineCollection({ loader: file("src/content/associations.yaml"), schema: entry }),
-  skills: defineCollection({
-    loader: file("src/content/skills.yaml"),
-    schema: z.object({ order: z.number(), label: l10n, items: z.array(z.string()) }),
-  }),
   interests: defineCollection({
     loader: file("src/content/interests.yaml"),
     schema: z.object({ order: z.number(), label: l10n, text: l10n }),
@@ -38,10 +34,10 @@ export const collections = {
       summary: z.string(),
       order: z.number(),
       repo: z.url().optional(),
-      /** What sets the project apart, shown first on its page. */
-      highlights: z.array(z.object({ title: z.string(), text: z.string() })),
-      stack: z.array(z.string()),
-      facts: z.array(z.tuple([z.string(), z.string()])),
+      repoSecondary: z.url().optional(),
+      highlights: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
+      stack: z.array(z.string()).default([]),
+      facts: z.array(z.tuple([z.string(), z.string()])).default([]),
     }),
   }),
 };

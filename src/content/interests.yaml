@@ -1,13 +1,14 @@
-- id: beer
+- id: music
   order: 1
-  label: { fr: Zythologie, en: Zythology }
-  text:
-    fr: "Membre de LATEB, le club de dégustation de bière de l'EPITA."
-    en: "Member of LATEB, EPITA's beer tasting club."
+  label: { fr: Musique, en: Music }
+  text: { fr: "Piano, audiophile", en: "Piano, audiophile" }
+
+- id: beer
+  order: 2
+  label: { fr: "Bière & zythologie", en: "Beer & zythology" }
+  text: { fr: "LATEB, EPITA", en: "LATEB, EPITA" }
 
 - id: homelab
-  order: 2
+  order: 3
   label: { fr: Homelab, en: Homelab }
-  text:
-    fr: "Linux, Nix, microvm.nix. Le cluster qui sert ce site est décrit dans le projet Homelab."
-    en: "Linux, Nix, microvm.nix. The cluster serving this site is described in the Homelab project."
+  text: { fr: "Linux, Nix, microvm.nix", en: "Linux, Nix, microvm.nix" }

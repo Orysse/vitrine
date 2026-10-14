@@ -3,9 +3,7 @@ import { render, type CollectionEntry } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import FactsMatrix from "../components/FactsMatrix.astro";
 import VmFlow from "../components/VmFlow.astro";
-import KubeNetSec from "../components/KubeNetSec.astro";
 import Impermanence from "../components/Impermanence.astro";
-import ReleaseFlow from "../components/ReleaseFlow.astro";
 import { home, systemsUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 
@@ -24,90 +22,47 @@ const { project, lang, slug, prev, next } = Astro.props;
 const data = project.data;
 const { Content } = await render(project);
 const alternates = { fr: systemsUrl("fr", slug), en: systemsUrl("en", slug) };
-const activeTab =
-  slug === "homelab" ? "homelab" : slug === "config" ? "config" : slug === "vitrine" ? "vitrine" : "systems";
+const activeTab = slug === "homelab" ? "homelab" : slug === "config" ? "config" : "systems";
+const otherProject = prev ?? next;
 ---
 
 <Layout
   lang={lang}
-  title={`${data.title} · ${profile.name}`}
+  title={`${data.title.toUpperCase()} | ${profile.name}`}
   description={data.summary}
   alternates={alternates}
   pole={activeTab}
 >
-  <div class="col">
-    <section class="intro-block">
+  <div class="frame">
+    <div class="content-title">
       <h1>{data.title}</h1>
-      <p class="intro-lead">{data.summary}</p>
+    </div>
 
-      <div class="inline-actions">
-        {data.repo && (
-          <a class="text-link" href={data.repo} rel="noopener">
-            {t(lang, "systems.repo")} : {data.repo.replace("https://", "")}
-          </a>
-        )}
-        <span class="focus-tag">{data.stack.join(" · ")}</span>
-      </div>
-    </section>
+    <div class="reading-column">
+      <p>{data.summary}</p>
+    </div>
 
-    <section class="doc-section">
-      <div class="section-head">
-        <h2>{t(lang, "systems.highlights")}</h2>
-      </div>
-      <ul class="hl-list">
-        {data.highlights.map((highlight) => (
-          <li>
-            <h3>{highlight.title}</h3>
-            <p>{highlight.text}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
-  </div>
+    {slug === "homelab" && <VmFlow lang={lang} />}
+    {slug === "config" && <Impermanence lang={lang} />}
 
-  {slug === "homelab" && (
-    <>
-      <VmFlow lang={lang} />
-      <KubeNetSec lang={lang} />
-    </>
-  )}
-  {slug === "config" && <Impermanence lang={lang} />}
-  {slug === "vitrine" && <ReleaseFlow lang={lang} />}
-
-  <div class="col">
-    <section class="doc-section">
-      <div class="section-head">
-        <h2>{t(lang, "systems.facts")}</h2>
-      </div>
-      <FactsMatrix facts={data.facts} />
-    </section>
-
-    <section class="doc-section prose">
+    <div class="essay-prose">
       <Content />
-    </section>
+    </div>
 
-    <nav class="doc-section detail-nav no-print" aria-label={t(lang, "systems.title")}>
-      {prev ? (
-        <a class="text-link" href={systemsUrl(lang, prev.slug)}>← {prev.title}</a>
-      ) : (
-        <a class="muted-link" href={home(lang)}>← {t(lang, "nav.index")}</a>
-      )}
-      <a class="muted-link" href={home(lang)}>{t(lang, "nav.index")}</a>
-      {next ? (
-        <a class="text-link" href={systemsUrl(lang, next.slug)}>{next.title} →</a>
-      ) : (
-        <span></span>
+    {data.facts.length > 0 && (
+      <div class="entry-credit">
+        <h2>{t(lang, "systems.facts")}</h2>
+        <FactsMatrix facts={data.facts} />
+      </div>
+    )}
+
+    <nav class="entry-return no-print" aria-label={t(lang, "systems.title")}>
+      <a href={home(lang)}>← {t(lang, "systems.back")}</a>
+      {otherProject && (
+        <a href={systemsUrl(lang, otherProject.slug)}>
+          {otherProject.title.toUpperCase()} →
+        </a>
       )}
     </nav>
   </div>
 </Layout>
-
-<style>
-  .detail-nav {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-</style>

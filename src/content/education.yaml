@@ -1,20 +1,20 @@
 - id: epita
-  org: EPITA
-  role: { fr: "Diplôme d'ingénieur, majeure Systèmes, Réseaux et Sécurité", en: "Engineering degree, Systems, Networks and Security major" }
+  org: EPITA (École Pour l'Informatique et les Techniques Avancées)
+  role: { fr: "Diplôme d'ingénieur en Systèmes, Réseaux, Sécurité & Infrastructure", en: "Engineering Degree in Systems, Networks, Security & Infrastructure" }
   start: "2022"
   end: null
   location: Le Kremlin-Bicêtre
   points:
-    - fr: "Réseau avancé (OSI/TCP-IP, OSPF, BGP, conception LAN/WAN multi-sites), administration Linux et Windows."
-      en: "Advanced networking (OSI/TCP-IP, OSPF, BGP, multi-site LAN/WAN design), Linux and Windows administration."
-    - fr: "Durcissement Windows/AD, sécurité offensive (analyse de malware, reverse engineering, exploitation de binaires, pentest), cryptographie appliquée et PKI."
-      en: "Windows/AD hardening, offensive security (malware analysis, reverse engineering, binary exploitation, pentesting), applied cryptography and PKI."
-    - fr: "SOC/SIEM et réponse à incident, guerre de l'information, politique de sécurité et conformité."
-      en: "SOC/SIEM and incident response, information warfare, security policy and compliance."
+    - fr: "Réseaux avancés (OSI/TCP-IP, OSPF, BGP, architecture LAN/WAN multi-sites) et administration de systèmes Linux/Windows."
+      en: "Advanced networking (OSI/TCP-IP, OSPF, BGP, multi-site LAN/WAN design) and Linux/Windows systems administration."
+    - fr: "Durcissement Windows/AD, sécurité offensive (analyse de malwares, reverse engineering, exploitation de binaires, tests d'intrusion), et cryptographie appliquée/PKI."
+      en: "Windows/AD hardening, offensive security (malware analysis, reverse engineering, binary exploitation, penetration testing), and applied cryptography/PKI."
+    - fr: "Réponse à incident SOC/SIEM, lutte informationnelle, et politique de sécurité des SI & conformité."
+      en: "SOC/SIEM incident response, information warfare, and IS security policy & compliance."
 
 - id: its
   org: Institut Teknologi Sepuluh Nopember (ITS)
-  role: { fr: Semestre d'échange, en: Exchange semester }
+  role: { fr: "Semestre d'échange universitaire", en: "Exchange Semester" }
   start: "2024-02"
   end: "2024-07"
-  location: Surabaya
+  location: Surabaya, Indonésie

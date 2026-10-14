@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import SystemSheet from "../components/SystemSheet.astro";
-import VmFlow from "../components/VmFlow.astro";
 import { systemsUrl, t, type Lang } from "../i18n";
 import { profile } from "../profile";
 
@@ -20,30 +19,22 @@ const alternates = { fr: systemsUrl("fr"), en: systemsUrl("en") };
 
 <Layout
   lang={lang}
-  title={`${t(lang, "systems.title")} · ${profile.name}`}
+  title={`${t(lang, "systems.title")} | ${profile.name}`}
   description={t(lang, "systems.intro")}
   alternates={alternates}
   pole="systems"
 >
-  <div class="col">
-    <section class="intro-block">
+  <div class="frame">
+    <div class="content-title">
       <h1>{t(lang, "systems.title")}</h1>
-      <p class="intro-lead">{t(lang, "systems.intro")}</p>
-    </section>
-  </div>
+    </div>
 
-  <VmFlow lang={lang} />
+    <div class="reading-column">
+      <p>{t(lang, "systems.intro")}</p>
+    </div>
 
-  <div class="col">
     {projects.map((project) => (
       <SystemSheet project={project} lang={lang} slug={project.id.split("/")[1]} />
     ))}
-
-    <section class="doc-section">
-      <div class="section-head">
-        <h2>{t(lang, "systems.notes")}</h2>
-      </div>
-      <p class="section-desc">{t(lang, "systems.notesSoon")}</p>
-    </section>
   </div>
 </Layout>

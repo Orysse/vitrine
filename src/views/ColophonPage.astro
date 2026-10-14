@@ -10,60 +10,34 @@ interface Props {
 const { lang } = Astro.props;
 
 const alternates = { fr: colophonUrl("fr"), en: colophonUrl("en") };
-const image = `ghcr.io/orysse/vitrine:${build.version}`;
-const csp =
-  "default-src 'none'; script-src 'self' https://pulse.abe.lc; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://pulse.abe.lc; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
 ---
 
 <Layout
   lang={lang}
-  title={`${t(lang, "colophon.title")} · ${profile.name}`}
+  title={`${t(lang, "colophon.title")} | ${profile.name}`}
   description={t(lang, "colophon.intro")}
   alternates={alternates}
   pole="none"
 >
-  <div class="col">
-    <section class="intro-block">
+  <div class="frame">
+    <div class="content-title">
       <h1>{t(lang, "colophon.title")}</h1>
-      <p class="intro-lead">{t(lang, "colophon.intro")}</p>
-    </section>
+    </div>
 
-    <section class="doc-section">
-      <div class="section-head">
-        <h2>{t(lang, "colophon.build")}</h2>
-      </div>
-      <dl class="facts">
+    <div class="reading-column">
+      <p>{t(lang, "colophon.intro")}</p>
+    </div>
+
+    <div class="entry-credit">
+      <h2>{t(lang, "colophon.build")}</h2>
+      <dl class="credit-list">
         <dt>{t(lang, "colophon.version")}</dt>
-        <dd><a class="text-link" href={build.tagUrl}>{build.version}</a></dd>
+        <dd>{build.version}</dd>
         <dt>{t(lang, "colophon.revision")}</dt>
-        <dd>{build.revUrl ? <a class="text-link" href={build.revUrl}>{build.rev}</a> : build.rev}</dd>
-        {build.date && (
-          <>
-            <dt>{t(lang, "colophon.date")}</dt>
-            <dd><time datetime={build.date}>{build.date}</time></dd>
-          </>
-        )}
-        <dt>{t(lang, "colophon.image")}</dt>
-        <dd><span class="focus-tag">{image}</span></dd>
-        <dt>{t(lang, "systems.repo")}</dt>
-        <dd>
-          <a class="text-link" href={profile.links.source} rel="noopener">
-            {profile.links.source.replace("https://", "")}
-          </a>
-        </dd>
-        <dt>{t(lang, "colophon.csp")}</dt>
-        <dd><span class="focus-tag">{csp}</span></dd>
+        <dd>{build.rev}</dd>
+        <dt>{t(lang, "colophon.audio")}</dt>
+        <dd><a href={synthUrl(lang)}>VTR-303</a></dd>
       </dl>
-    </section>
-
-    <section class="doc-section">
-      <div class="section-head">
-        <h2>{t(lang, "colophon.audio")}</h2>
-      </div>
-      <p class="section-desc">{t(lang, "colophon.audioText")}</p>
-      <div class="inline-actions">
-        <a class="text-link" href={synthUrl(lang)}>VTR-303 →</a>
-      </div>
-    </section>
+    </div>
   </div>
 </Layout>

@@ -3,13 +3,41 @@ interface Props {
   facts: [string, string][];
 }
 const { facts } = Astro.props;
+
+function splitLinks(text: string): ({ type: "text"; value: string } | { type: "link"; url: string; label: string })[] {
+  const regex = /(github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)/g;
+  const parts: ({ type: "text"; value: string } | { type: "link"; url: string; label: string })[] = [];
+  let lastIndex = 0;
+  for (const match of text.matchAll(regex)) {
+    const idx = match.index ?? 0;
+    if (idx > lastIndex) {
+      parts.push({ type: "text", value: text.slice(lastIndex, idx) });
+    }
+    parts.push({ type: "link", url: `https://${match[1]}`, label: match[1] });
+    lastIndex = idx + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    parts.push({ type: "text", value: text.slice(lastIndex) });
+  }
+  return parts;
+}
 ---
 
-<dl class="facts">
+<dl class="credit-list">
   {facts.map(([key, value]) => (
     <>
       <dt>{key}</dt>
-      <dd>{value}</dd>
+      <dd>
+        {splitLinks(value).map((part) =>
+          part.type === "link" ? (
+            <a href={part.url} target="_blank" rel="noopener">
+              {part.label}
+            </a>
+          ) : (
+            part.value
+          ),
+        )}
+      </dd>
     </>
   ))}
 </dl>

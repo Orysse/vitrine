@@ -12,31 +12,17 @@ const data = project.data;
 const href = systemsUrl(lang, slug);
 ---
 
-<article class="doc-section">
-  <div class="section-head">
+<section class="top-section">
+  <div class="column-header">
     <h2>
-      <a class="text-link" href={href}>{data.title}</a>
+      <a href={href}>{data.title}</a>
     </h2>
-    {data.repo && (
-      <a class="focus-tag muted-link" href={data.repo} rel="noopener">
-        {data.repo.replace("https://", "")}
-      </a>
-    )}
+    <a class="column-header-link" href={href}>
+      <span>{t(lang, "index.read")}</span>
+      <span aria-hidden="true">→</span>
+    </a>
   </div>
-
-  <p class="section-desc">{data.summary}</p>
-
-  <ul class="hl-list">
-    {data.highlights.map((highlight) => (
-      <li>
-        <h3>{highlight.title}</h3>
-        <p>{highlight.text}</p>
-      </li>
-    ))}
-  </ul>
-
-  <div class="inline-actions">
-    <a class="text-link" href={href}>{t(lang, "index.read")} →</a>
-    <span class="focus-tag">{data.stack.slice(0, 8).join(" · ")}</span>
+  <div class="reading-column">
+    <p>{data.summary}</p>
   </div>
-</article>
+</section>

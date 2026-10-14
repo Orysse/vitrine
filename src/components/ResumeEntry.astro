@@ -21,22 +21,17 @@ const points = entry.points ?? [];
 ---
 
 <article class="cv-entry">
-  <div class="cv-head">
-    <h3 class="cv-org">
-      {entry.org}
-      {entry.orgDetail && <span class="cv-org-sub"> · {entry.orgDetail}</span>}
-    </h3>
-    <span class="cv-period">{period(entry.start, entry.end, lang)}</span>
+  <div class="cv-meta">
+    <span>{period(entry.start, entry.end, lang)}</span>
+    <span>{entry.location}</span>
   </div>
 
-  <div class="cv-role-line">
-    <span>{l(entry.role, lang)}</span>
-    <span class="cv-location">{entry.location}</span>
-  </div>
+  <h3 class="cv-title">
+    {entry.org}
+    {entry.orgDetail && <span> ({entry.orgDetail})</span>}
+  </h3>
 
-  {entry.stack && entry.stack.length > 0 && (
-    <p class="cv-stack">{entry.stack.join(" · ")}</p>
-  )}
+  <p class="cv-role">{l(entry.role, lang)}</p>
 
   {points.length > 0 && (
     <ul class="cv-points">

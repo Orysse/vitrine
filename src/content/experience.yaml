@@ -1,20 +1,20 @@
 - id: la-forge
   org: La Forge
   orgDetail: EPITA
-  role: { fr: Contributeur étudiant, en: Student contributor }
+  role: { fr: Contributeur étudiant, en: Student Contributor }
   start: "2026-02"
   end: null
   location: Le Kremlin-Bicêtre
   stack: [NixOS, netboot, Java, Kubernetes, Argo CD]
   points:
-    - fr: "Développement et maintenance de l'intranet de l'EPITA, utilisé notamment pendant la piscine et les workshops."
-      en: "Build and maintain EPITA's intranet, used notably during the piscine (first-year bootcamp) and workshops."
-    - fr: "Support interne des outils de l'école, pour les équipes pédagogiques et les étudiants."
-      en: "Internal support for the school's tools, for teaching staff and students."
-    - fr: "Microservices Java internes, déployés sur Kubernetes en GitOps avec Argo CD."
-      en: "Internal Java microservices, deployed on Kubernetes through GitOps with Argo CD."
-    - fr: "Images NixOS en infrastructure as code, déployées en netboot sur le parc des salles machines étudiantes."
-      en: "NixOS images as infrastructure as code, netbooted across the student lab machines."
+    - fr: "Développement et maintenance de l'intranet de l'EPITA, notamment utilisé pour la piscine et les ateliers."
+      en: "Build and maintain EPITA's intranet, used notably during the piscine (intensive first-year bootcamp) and workshops."
+    - fr: "Support interne auprès des outils de l'école, tant vis-à-vis des équipes pédagogiques que des élèves."
+      en: "Provide internal support for the school's tools, for both teaching staff and students."
+    - fr: "Développement de microservices Java internes, déployés sur Kubernetes via des workflows GitOps avec Argo CD."
+      en: "Develop internal Java microservices, deployed on Kubernetes via GitOps workflows with Argo CD."
+    - fr: "Construction et maintenance des images NixOS en Infrastructure as Code, déployées sur tout le parc des salles machines via netboot."
+      en: "Build and maintain NixOS images as Infrastructure as Code, deployed fleet-wide across EPITA's student lab machines over netboot."
 
 - id: cea
   org: CEA Saclay
@@ -25,12 +25,12 @@
   location: Gif-sur-Yvette
   stack: [GitLab CI, GitLab Runner, MinIO, Prometheus, Grafana]
   points:
-    - fr: "Pipelines CI/CD GitLab pour TRUST, plateforme de simulation thermohydraulique utilisée par les chercheurs du CEA."
-      en: "GitLab CI/CD pipelines for TRUST, a thermohydraulics simulation platform used by CEA researchers."
-    - fr: "Infrastructure associée déployée en code : runners GitLab, cache d'artefacts S3 MinIO, supervision Prometheus/Grafana."
-      en: "Supporting infrastructure deployed as code: GitLab runners, a MinIO S3 artifact cache, Prometheus/Grafana monitoring."
+    - fr: "Création de pipelines CI/CD GitLab pour TRUST, une plateforme de simulation thermohydraulique du CEA."
+      en: "Built and automated GitLab CI/CD pipelines for TRUST, a thermohydraulics simulation platform used by CEA researchers."
+    - fr: "Déploiement de l'infrastructure associée sous forme de code (Infrastructure as Code) : runners GitLab, cache d'artefacts S3 (MinIO) et stack de supervision Prometheus/Grafana."
+      en: "Deployed the supporting infrastructure as code: GitLab Runners, a MinIO S3 artifact cache, and a Prometheus/Grafana observability stack."
     - fr: "Intégration des suites de tests de non-régression des projets satellites de TRUST (Baltiks) dans le pipeline principal."
-      en: "Integrated the non-regression test suites of TRUST's satellite projects (Baltiks) into the main pipeline."
+      en: "Integrated automated non-regression test suites for TRUST's satellite projects (Baltiks) into the main pipeline."
 
 - id: redpill
   org: RedPill Group
@@ -40,7 +40,7 @@
   location: Paris
   stack: [Kubernetes, OVHcloud, Terraform, Helm, Kind]
   points:
-    - fr: "Participation à la migration de l'infrastructure vers un cluster Kubernetes hébergé chez OVHcloud, déployé avec Terraform et Helm."
-      en: "Contributed to migrating the infrastructure to a Kubernetes cluster hosted on OVHcloud, deployed with Terraform and Helm."
-    - fr: "Environnements de preuve de concept locaux avec Kind pour valider les choix avant déploiement."
-      en: "Local proof-of-concept environments with Kind to validate approaches before rollout."
+    - fr: "Participation à une migration d'infrastructure vers un cluster Kubernetes entièrement cloud, hébergé sur OVHcloud, avec des workflows de déploiement Terraform et Helm."
+      en: "Contributed to migrating infrastructure to a fully cloud-hosted Kubernetes cluster on OVHcloud, using Terraform and Helm for deployment."
+    - fr: "Construction de prototypes Kubernetes locaux avec Kind pour valider les choix d'infrastructure avant déploiement."
+      en: "Built local Kubernetes proof-of-concept environments with Kind to validate infrastructure approaches before rollout."

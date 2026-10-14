@@ -25,26 +25,27 @@ const help = {
 
 <Layout
   lang={lang}
-  title={`VTR-303 · ${profile.name}`}
+  title={`VTR-303 | ${profile.name}`}
   description={t(lang, "vtr.lead")}
   alternates={{ fr: synthUrl("fr"), en: synthUrl("en") }}
   pole="none"
 >
-  <div class="col">
-    <section class="intro-block">
+  <div class="frame">
+    <div class="content-title">
       <h1>VTR-303</h1>
-      <p class="intro-lead">{t(lang, "vtr.lead")}</p>
-    </section>
-  </div>
+    </div>
 
-  <div class="col-wide">
-    <noscript><p class="section-desc">{t(lang, "vtr.nojs")}</p></noscript>
-    <Vtr303 lang={lang} />
-  </div>
+    <div class="reading-column">
+      <p>{t(lang, "vtr.lead")}</p>
+    </div>
 
-  <div class="col">
-    <section class="doc-section">
-      <dl class="facts">
+    <div class="epure-diagram">
+      <noscript><p>{t(lang, "vtr.nojs")}</p></noscript>
+      <Vtr303 lang={lang} />
+    </div>
+
+    <div class="entry-credit">
+      <dl class="credit-list">
         {help.map(([k, v]) => (
           <>
             <dt>{k}</dt>
@@ -52,7 +53,7 @@ const help = {
           </>
         ))}
       </dl>
-    </section>
+    </div>
   </div>
 </Layout>
 

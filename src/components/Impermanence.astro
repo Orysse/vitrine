@@ -6,249 +6,102 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-const txt = {
+const l = {
   fr: {
-    figTitle: "Chaîne de démarrage verrouillée, racine éphémère en tmpfs et encapsulation nix-wrapper-modules",
-    figMeta: "Orysse/config · lanzaboote · preservation · nix-wrapper-modules",
-    caption: "La racine / s'efface à chaque redémarrage (tmpfs). Les programmes utilisateurs n'utilisent pas home-manager : chacun embarque sa configuration directement dans le store Nix.",
-    legend1: "Pointillés : détruit au reboot (tmpfs)",
-    legend2: "Trait plein : conservé sur btrfs (/nix & /persistent)",
-
-    s1Title: "1. Chaîne de démarrage matériel & Impermanence du système de fichiers (ThinkPad)",
-    s1Sub: "system/boot.nix · system/impermanence.nix · disko",
-
-    b1Title: "UEFI + Lanzaboote",
-    b1Sub: "Secure Boot",
-    b1L1: "Images noyau signées,",
-    b1L2: "clés UEFI personnalisées.",
-
-    b2Title: "TPM2 → LUKS (disko)",
-    b2Sub: "Chiffrement intégral",
-    b2L1: "Partition GPT + LUKS",
-    b2L2: "déverrouillée par TPM2.",
-
-    b3Title: "Racine / en tmpfs (RAM)",
-    b3Sub: "Impermanence par défaut",
-    b3L1: "Tout fichier hors liste",
-    b3L2: "disparaît au redémarrage.",
-
-    b4Title: "Preservation + btrfs",
-    b4Sub: "/nix & /persistent",
-    b4L1: "Montage explicite des",
-    b4L2: "seuls dossiers déclarés.",
-
-    b5Title: "sops-nix + YubiKey",
-    b5Sub: "Secrets déchiffrés",
-    b5L1: "Dépôt chiffré séparé,",
-    b5L2: "clé matérielle ou SSH.",
-
-    volBoxTitle: "Espace volatile : / (tmpfs en RAM)",
-    volBoxSub: "Effacé intégralement à chaque extinction : aucune dérive d'état ni fichiers résiduels dans /etc, /var ou /home.",
-    persBoxTitle: "Espace persistant : sous-volumes btrfs (/nix/store & /persistent)",
-    persBoxSub: "Seuls le store Nix immuable et les chemins listés dans preservation survivent d'un démarrage à l'autre.",
-
-    s2Title: "2. Flake dendritique & Programmes auto-portés sans home-manager",
-    s2Sub: "flake-parts + import-tree + nix-wrapper-modules",
-
-    treeTitle: "import-tree (modules/)",
-    treeSub: "Zéro liste maintenue à la main",
-    treeL1: "features/ · system/",
-    treeL2: "flavors/ · hosts/thinkpad",
-
-    wrapTitle: "nix-wrapper-modules (encapsulation dans /nix/store)",
-    wrapSub: "Chaque binaire est empaqueté avec ses flags, plugins et fichiers de configuration :",
-    w1: "features/nvim → /nix/store/...-nvim",
-    w2: "features/kitty → /nix/store/...-kitty",
-    w3: "features/tmux & zsh → /nix/store/...-zsh",
-    w4: "features/river & waybar → session Wayland",
-
-    out1Title: "Système NixOS complet",
-    out1Sub: "nixosConfigurations.thinkpad",
-    out1L1: "Active les modules système + paquets.",
-    out2Title: "Exécution autonome partout",
-    out2Sub: "nix run github:Orysse/config#nvim",
-    out2L1: "Identique sur n'importe quelle machine.",
+    aria: "Schéma minimal du poste NixOS : démarrage Secure Boot TPM2, racine tmpfs éphémère et paquets nix-wrapper-modules",
+    caption: "Pointillés : détruit à chaque extinction (tmpfs). Trait plein : conservé sur le volume chiffré LUKS.",
+    bootZone: "CHAÎNE DE DÉMARRAGE MATÉRIEL",
+    b1: "Lanzaboote",
+    b1Sub: "UEFI Secure Boot",
+    b2: "TPM2 + LUKS",
+    b2Sub: "partitionnement disko",
+    b3: "sops-nix",
+    b3Sub: "secrets YubiKey",
+    fsZone: "SYSTÈME DE FICHIERS AU DÉMARRAGE",
+    tmpfs: "Racine / en tmpfs (RAM)",
+    tmpfsSub: "effacée à chaque extinction",
+    persist: "/nix/store & /persistent",
+    persistSub: "seuls chemins conservés (preservation)",
+    wrapZone: "APPLICATIONS AUTO-PORTÉES (NIX-WRAPPER-MODULES)",
+    wrapTitle: "nix-wrapper-modules",
+    wrapSub: "chaque binaire embarque sa configuration dans /nix/store (nix run .#nvim)",
+    apps: "neovim · kitty · tmux · river · waybar · zsh",
   },
   en: {
-    figTitle: "Locked boot chain, ephemeral tmpfs root, and nix-wrapper-modules encapsulation",
-    figMeta: "Orysse/config · lanzaboote · preservation · nix-wrapper-modules",
-    caption: "The root filesystem / is wiped on every reboot (tmpfs). User programs skip home-manager: each binary bundles its own configuration directly in the Nix store.",
-    legend1: "Dashed: wiped on reboot (tmpfs)",
-    legend2: "Solid: kept on btrfs (/nix & /persistent)",
-
-    s1Title: "1. Hardware-locked boot chain & Filesystem impermanence (ThinkPad)",
-    s1Sub: "system/boot.nix · system/impermanence.nix · disko",
-
-    b1Title: "UEFI + Lanzaboote",
-    b1Sub: "Secure Boot",
-    b1L1: "Signed kernel images,",
-    b1L2: "custom UEFI keys.",
-
-    b2Title: "TPM2 → LUKS (disko)",
-    b2Sub: "Full-disk encryption",
-    b2L1: "Declarative GPT + LUKS",
-    b2L2: "unlocked by TPM2.",
-
-    b3Title: "Root / on tmpfs (RAM)",
-    b3Sub: "Ephemeral by default",
-    b3L1: "Any undeclared file is",
-    b3L2: "wiped on reboot.",
-
-    b4Title: "Preservation + btrfs",
-    b4Sub: "/nix & /persistent",
-    b4L1: "Bind-mounts only the",
-    b4L2: "explicitly declared paths.",
-
-    b5Title: "sops-nix + YubiKey",
-    b5Sub: "Runtime secrets",
-    b5L1: "Separate encrypted repo,",
-    b5L2: "YubiKey or host SSH key.",
-
-    volBoxTitle: "Volatile space: / (tmpfs in RAM)",
-    volBoxSub: "Wiped clean on every shutdown: zero configuration drift or leftover state in /etc, /var, or /home.",
-    persBoxTitle: "Persistent space: btrfs subvolumes (/nix/store & /persistent)",
-    persBoxSub: "Only the immutable Nix store and paths explicitly listed in preservation survive across reboots.",
-
-    s2Title: "2. Dendritic flake & Self-contained programs without home-manager",
-    s2Sub: "flake-parts + import-tree + nix-wrapper-modules",
-
-    treeTitle: "import-tree (modules/)",
-    treeSub: "No hand-maintained import list",
-    treeL1: "features/ · system/",
-    treeL2: "flavors/ · hosts/thinkpad",
-
-    wrapTitle: "nix-wrapper-modules (packaged inside /nix/store)",
-    wrapSub: "Each binary is wrapped with its flags, plugins, and configuration files:",
-    w1: "features/nvim → /nix/store/...-nvim",
-    w2: "features/kitty → /nix/store/...-kitty",
-    w3: "features/tmux & zsh → /nix/store/...-zsh",
-    w4: "features/river & waybar → Wayland desktop",
-
-    out1Title: "Full NixOS host",
-    out1Sub: "nixosConfigurations.thinkpad",
-    out1L1: "Enables system modules + wrapped apps.",
-    out2Title: "Standalone execution anywhere",
-    out2Sub: "nix run github:Orysse/config#nvim",
-    out2L1: "Runs identically on any machine with Nix.",
+    aria: "Minimal NixOS workstation schematic: TPM2 Secure Boot, ephemeral tmpfs root, and nix-wrapper-modules packages",
+    caption: "Dashed line: wiped on every shutdown (tmpfs). Solid line: kept on the LUKS-encrypted volume.",
+    bootZone: "HARDWARE BOOT CHAIN",
+    b1: "Lanzaboote",
+    b1Sub: "UEFI Secure Boot",
+    b2: "TPM2 + LUKS",
+    b2Sub: "disko layout",
+    b3: "sops-nix",
+    b3Sub: "YubiKey secrets",
+    fsZone: "FILESYSTEM SPLIT AT BOOT",
+    tmpfs: "Root / on tmpfs (RAM)",
+    tmpfsSub: "wiped on every shutdown",
+    persist: "/nix/store & /persistent",
+    persistSub: "only paths kept on disk (preservation)",
+    wrapZone: "SELF-CONTAINED PACKAGES (NIX-WRAPPER-MODULES)",
+    wrapTitle: "nix-wrapper-modules",
+    wrapSub: "each binary bundles its own configuration in /nix/store (nix run .#nvim)",
+    apps: "neovim · kitty · tmux · river · waybar · zsh",
   },
 }[lang];
-
-const steps = [
-  { x: 32, title: txt.b1Title, sub: txt.b1Sub, l1: txt.b1L1, l2: txt.b1L2, dash: false },
-  { x: 254, title: txt.b2Title, sub: txt.b2Sub, l1: txt.b2L1, l2: txt.b2L2, dash: false },
-  { x: 476, title: txt.b3Title, sub: txt.b3Sub, l1: txt.b3L1, l2: txt.b3L2, dash: true },
-  { x: 698, title: txt.b4Title, sub: txt.b4Sub, l1: txt.b4L1, l2: txt.b4L2, dash: false },
-  { x: 920, title: txt.b5Title, sub: txt.b5Sub, l1: txt.b5L1, l2: txt.b5L2, dash: false },
-];
 ---
 
-<figure class="diagram-bleed">
-  <div class="diagram-card">
-    <div class="diagram-header">
-      <span class="diagram-title">{txt.figTitle}</span>
-      <span class="diagram-meta">{txt.figMeta}</span>
-    </div>
+<figure class="epure-diagram">
+  <svg viewBox="0 0 760 330" role="img" aria-label={l.aria}>
+    <defs>
+      <marker id="arr-imp" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,1 L7,4 L0,7" fill="none" stroke="#000000" stroke-width="1" />
+      </marker>
+    </defs>
 
-    <div class="diagram-scroll">
-      <svg viewBox="0 0 1160 560" role="img" aria-label={txt.figTitle} preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <pattern id="hatch-imp" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-            <line x1="0" y1="0" x2="0" y2="8" class="d-rule" />
-          </pattern>
-          <marker id="ar-imp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path class="d-arrow" d="M 0 1 L 9 5 L 0 9 z" />
-          </marker>
-        </defs>
+    <!-- 1. Boot chain row -->
+    <text x="20" y="20" font-size="10.5" letter-spacing="0.08em" fill="#828282">{l.bootZone}</text>
 
-        <!-- ── TOP HALF: BOOT CHAIN & IMPERMANENCE (y=16, h=266) ── -->
-        <rect class="d-zone-sub" x="16" y="16" width="1128" height="266" />
-        <rect class="d-band" x="16" y="16" width="1128" height="44" />
-        <line class="d-rule" x1="16" y1="60" x2="1144" y2="60" />
-        <text class="d-title" x="32" y="38">{txt.s1Title}</text>
-        <text class="d-label" x="32" y="53">{txt.s1Sub}</text>
+    <rect x="20" y="32" width="216" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" />
+    <text x="128" y="54" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.b1}</text>
+    <text x="128" y="70" text-anchor="middle" font-size="11" fill="#828282">{l.b1Sub}</text>
 
-        {steps.map((s, i) => (
-          <>
-            {s.dash && <rect fill="url(#hatch-imp)" x={s.x} y="76" width="206" height="96" />}
-            <rect class={s.dash ? "d-box-dash" : "d-box"} x={s.x} y="76" width="206" height="96" />
-            <text class="d-title-sm" x={s.x + 14} y="98">{s.title}</text>
-            <text class="d-label-ink" x={s.x + 14} y="114">{s.sub}</text>
-            <text class="d-note" x={s.x + 14} y="138">{s.l1}</text>
-            <text class="d-note" x={s.x + 14} y="154">{s.l2}</text>
-            {i < steps.length - 1 && (
-              <path class="d-line" d={`M ${s.x + 206} 124 L ${steps[i + 1].x - 4} 124`} marker-end="url(#ar-imp)" />
-            )}
-          </>
-        ))}
+    <line x1="236" y1="57" x2="270" y2="57" stroke="#000000" stroke-width="1" marker-end="url(#arr-imp)" />
 
-        <!-- Volatile vs Persistent comparison row -->
-        <rect fill="url(#hatch-imp)" x="32" y="190" width="536" height="74" />
-        <rect class="d-box-dash" x="32" y="190" width="536" height="74" />
-        <text class="d-title-sm" x="48" y="214">{txt.volBoxTitle}</text>
-        <text class="d-note" x="48" y="236">{txt.volBoxSub}</text>
+    <rect x="272" y="32" width="216" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" />
+    <text x="380" y="54" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.b2}</text>
+    <text x="380" y="70" text-anchor="middle" font-size="11" fill="#828282">{l.b2Sub}</text>
 
-        <rect class="d-box-fill" x="592" y="190" width="534" height="74" />
-        <text class="d-title-sm" x="608" y="214">{txt.persBoxTitle}</text>
-        <text class="d-note" x="608" y="236">{txt.persBoxSub}</text>
+    <line x1="488" y1="57" x2="522" y2="57" stroke="#000000" stroke-width="1" marker-end="url(#arr-imp)" />
 
-        <!-- ── BOTTOM HALF: DENDRITIC FLAKE & NIX-WRAPPER-MODULES (y=302, h=242) ── -->
-        <rect class="d-zone" x="16" y="302" width="1128" height="242" />
-        <rect class="d-band" x="17" y="303" width="1126" height="43" />
-        <line class="d-rule" x1="16" y1="346" x2="1144" y2="346" />
-        <text class="d-title" x="32" y="324">{txt.s2Title}</text>
-        <text class="d-label" x="32" y="339">{txt.s2Sub}</text>
+    <rect x="524" y="32" width="216" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" />
+    <text x="632" y="54" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.b3}</text>
+    <text x="632" y="70" text-anchor="middle" font-size="11" fill="#828282">{l.b3Sub}</text>
 
-        <!-- Left: import-tree -->
-        <rect class="d-box" x="32" y="366" width="248" height="158" />
-        <rect class="d-box-inv" x="32" y="366" width="248" height="26" />
-        <text class="d-title-inv" x="46" y="383">{txt.treeTitle}</text>
-        <text class="d-label-ink" x="46" y="412">{txt.treeSub}</text>
-        <text class="d-label" x="46" y="438">{txt.treeL1}</text>
-        <text class="d-label" x="46" y="458">{txt.treeL2}</text>
-        <text class="d-note" x="46" y="492">1 fichier = 1 module flake-parts</text>
+    <!-- Connectors down to filesystem split -->
+    <line x1="210" y1="82" x2="210" y2="128" stroke="#000000" stroke-width="1" marker-end="url(#arr-imp)" />
+    <line x1="550" y1="82" x2="550" y2="128" stroke="#000000" stroke-width="1" marker-end="url(#arr-imp)" />
 
-        <!-- Center: nix-wrapper-modules -->
-        <rect class="d-box-fill" x="322" y="366" width="468" height="158" />
-        <text class="d-title-sm" x="340" y="390">{txt.wrapTitle}</text>
-        <text class="d-note" x="340" y="410">{txt.wrapSub}</text>
+    <!-- 2. Filesystem split -->
+    <text x="20" y="120" font-size="10.5" letter-spacing="0.08em" fill="#828282">{l.fsZone}</text>
 
-        <rect class="d-box" x="340" y="424" width="212" height="38" />
-        <text class="d-label-ink" x="352" y="447">{txt.w1}</text>
+    <!-- Left: Volatile tmpfs root -->
+    <rect x="20" y="132" width="340" height="64" fill="#ffffff" stroke="#828282" stroke-width="1" stroke-dasharray="4 4" />
+    <text x="190" y="160" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.tmpfs}</text>
+    <text x="190" y="178" text-anchor="middle" font-size="11" fill="#828282">{l.tmpfsSub}</text>
 
-        <rect class="d-box" x="562" y="424" width="212" height="38" />
-        <text class="d-label-ink" x="574" y="447">{txt.w2}</text>
+    <!-- Right: Persistent btrfs subvolumes -->
+    <rect x="400" y="132" width="340" height="64" fill="#ffffff" stroke="#000000" stroke-width="1" />
+    <text x="570" y="160" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.persist}</text>
+    <text x="570" y="178" text-anchor="middle" font-size="11" fill="#828282">{l.persistSub}</text>
 
-        <rect class="d-box" x="340" y="472" width="212" height="38" />
-        <text class="d-label-ink" x="352" y="495">{txt.w3}</text>
+    <!-- Connector from /nix/store to wrapper-modules -->
+    <line x1="570" y1="196" x2="570" y2="230" stroke="#000000" stroke-width="1" marker-end="url(#arr-imp)" />
 
-        <rect class="d-box" x="562" y="472" width="212" height="38" />
-        <text class="d-label-ink" x="574" y="495">{txt.w4}</text>
-
-        <!-- Right: Dual outputs -->
-        <rect class="d-box" x="832" y="366" width="294" height="72" />
-        <text class="d-title-sm" x="846" y="388">{txt.out1Title}</text>
-        <text class="d-label-ink" x="846" y="405">{txt.out1Sub}</text>
-        <text class="d-note" x="846" y="424">{txt.out1L1}</text>
-
-        <rect class="d-box" x="832" y="452" width="294" height="72" />
-        <text class="d-title-sm" x="846" y="474">{txt.out2Title}</text>
-        <text class="d-label-ink" x="846" y="491">{txt.out2Sub}</text>
-        <text class="d-note" x="846" y="510">{txt.out2L1}</text>
-
-        <!-- Arrows in bottom half -->
-        <path class="d-line" d="M 280 445 L 318 445" marker-end="url(#ar-imp)" />
-        <path class="d-line" d="M 790 402 L 828 402" marker-end="url(#ar-imp)" />
-        <path class="d-line" d="M 790 488 L 828 488" marker-end="url(#ar-imp)" />
-      </svg>
-    </div>
-
-    <figcaption class="diagram-caption">
-      <span>{txt.caption}</span>
-      <div class="diagram-legend">
-        <span>{txt.legend1}</span>
-        <span>·</span>
-        <span>{txt.legend2}</span>
-      </div>
-    </figcaption>
-  </div>
+    <!-- 3. Wrapper modules -->
+    <rect x="20" y="234" width="720" height="82" fill="#ffffff" stroke="#000000" stroke-width="1" />
+    <text x="38" y="254" font-size="10.5" letter-spacing="0.08em" fill="#828282">{l.wrapZone}</text>
+    <text x="380" y="279" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.wrapTitle} · {l.apps}</text>
+    <text x="380" y="298" text-anchor="middle" font-size="11" fill="#828282">{l.wrapSub}</text>
+  </svg>
+  <figcaption class="epure-caption">{l.caption}</figcaption>
 </figure>

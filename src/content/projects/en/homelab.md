@@ -1,79 +1,52 @@
 ---
 title: Homelab
-summary: An Intel NUC running NixOS hosts a k3s cluster of three microVMs, which serves this site. The host is described in a flake, the cluster through GitOps with Flux.
+summary: "I didn't build this homelab just to quietly host a few services at home, but to have a real infrastructure playground where I could push Nix and Kubernetes further than strictly necessary: diskless microVMs running in RAM, a network where nothing flows unless written in Git, and monitoring that stays up even when the cluster goes down."
 order: 1
 repo: https://github.com/Orysse/homelab-nix
-stack: [NixOS, microvm.nix, deploy-rs, k3s, Cilium, Hubble, Flux, Traefik, cert-manager, OpenBao, External Secrets, Pocket-ID, PostgreSQL, VictoriaMetrics, VictoriaLogs, Grafana, Umami, Renovate]
+repoSecondary: https://github.com/Orysse/homelab-cluster
+stack: [NixOS, microvm.nix, deploy-rs, k3s, Cilium, Hubble, Flux, Traefik, cert-manager, OpenBao, External Secrets, Pocket-ID, PostgreSQL, VictoriaMetrics, VictoriaLogs, Renovate]
 facts:
-  - [Host, "NixOS, deployed with deploy-rs and automatic rollback"]
-  - [Cluster, "3 disposable k3s microVMs, state kept on the host"]
-  - [Network, "Cilium in eBPF, WireGuard between nodes, everything denied by default"]
-  - [Secrets, "OpenBao and External Secrets, sops for bootstrap"]
-  - [Identity, "Pocket-ID, passkeys only, rights from groups"]
-  - [Monitoring, "VictoriaMetrics and VictoriaLogs on the host, alerts by email"]
-  - [Repos, "homelab-nix (host, Nix) and homelab-cluster (GitOps)"]
-highlights:
-  - title: Diskless VMs
-    text: "Three microVMs generated from a single topology file. No disk image: the root is a tmpfs, and only the node identity and k3s data are kept, on the host."
-  - title: Automatic rollback
-    text: "The host is deployed with deploy-rs. If it stops answering after activation, it rolls back on its own."
-  - title: Monitoring outlives the cluster
-    text: "Metrics, logs and alerts run on the host, outside the VMs. If the host goes down, Healthchecks.io raises the alarm."
-  - title: Everything denied by default
-    text: "Cilium network policies in every namespace, each allowed flow written in git. This site reaches nothing, not even DNS."
-  - title: Passwords nobody knows
-    text: "PostgreSQL passwords are created and rotated by OpenBao. Access goes through Pocket-ID, with passkeys only."
+  - [Hardware, "Intel NUC10i7FNH (12 threads, 16 GB RAM)"]
+  - [Host, "NixOS (flake-parts + import-tree), deployed via deploy-rs with auto-rollback"]
+  - [Cluster, "3 diskless QEMU microVMs (tmpfs root) generated via microvm.nix"]
+  - [Persistence, "Host btrfs pool, NFS volumes, and hourly btrbk snapshots"]
+  - [GitOps, "Three-stage Flux reconciliation (infra-controllers, infra-configs, apps) and Renovate"]
+  - [Network, "Cilium eBPF, node-to-node WireGuard, default-deny policies, and Hubble"]
+  - [Identity & Secrets, "Pocket-ID (OIDC passkeys), sops, OpenBao, and External Secrets"]
+  - [Observability, "VictoriaMetrics, VictoriaLogs, vmalert, and Alertmanager on the host"]
+  - [Repositories, "github.com/Orysse/homelab-nix · github.com/Orysse/homelab-cluster"]
 ---
 
-## Base: homelab-nix
+## Why build a playground
 
-The `homelab-nix` repository describes everything up to a k3s cluster with Flux installed. It is a dendritic flake (flake-parts and import-tree): each file in `modules/` declares a NixOS module, and `machines/nuc1.nix` puts them together.
+A homelab usually starts as a way to self-host a few everyday tools. Pretty quickly, what interested me wasn't the applications themselves, but figuring out how to describe and operate an entire infrastructure stack without ever touching a machine by hand. Once I fell into NixOS, I wanted to treat my home server not as a fragile production box, but as an experimentation ground where I could test opinionated architectural ideas end to end.
 
-One file, `modules/topology/topology.nix`, describes the network, the hosts and the nodes (role, memory, vCPU). It has its own schema, checked by `nix flake check`. Moving a node or changing its memory is a one-line change.
+Running a few containers directly on plain NixOS on a single Intel NUC would have been more than enough in practice. Instead, to confront real orchestration, network isolation, secret rotation, and failure-recovery problems, I split the physical machine into a full three-node Kubernetes cluster while stripping away the usual weight and state drift of virtual machines.
 
-The VMs are generated from that topology with microvm.nix. They have no disk image and their root is a tmpfs. Only the node identity and the k3s data are kept, on the host.
+## Declarative topology and diskless microVMs
 
-The cluster network, Cilium, is installed by the base when k3s starts: Flux needs it to run, so it cannot install it itself.
+The first repository, homelab-nix, describes everything from bare metal up to a running k3s cluster with Flux bootstrapped. It is organized as a dendritic flake using flake-parts and import-tree: every file in the module tree declares a self-contained NixOS module, which the host definition then assembles.
 
-The host is deployed with deploy-rs. If it stops answering after activation, it rolls back to the previous version by itself. A GitHub CI runs `nix flake check` on every push.
+At the center of the repository, a single topology file defines the network plan, the physical host, and all three cluster nodes along with their roles, memory, and vCPU allocations. That topology has its own schema validated on every push by nix flake check. Moving a node or changing its memory is a one-line edit, and microvm.nix generates all three QEMU virtual machines directly from that single source of truth.
 
-## What runs on the host
+None of these virtual machines has a disk image. Their root filesystem is mounted in RAM as a tmpfs and starts completely fresh on every reboot, sharing the host's Nix store read-only. Only the node identity and internal k3s state pass through to the physical disk. The host itself is deployed atomically over SSH with deploy-rs: if an activation ever breaks networking or stops the host from responding, deploy-rs automatically rolls the system back to the previous generation.
 
-Everything that keeps state stays outside the VMs:
+## Host-level persistence and out-of-cluster monitoring
 
-- pod volumes, over NFS on btrfs, with a btrbk snapshot every hour;
-- PostgreSQL, for the apps;
-- VictoriaMetrics and VictoriaLogs, for metrics and logs, including the Kubernetes API audit and the node journals;
-- vmalert and Alertmanager, which email the alerts;
-- the WireGuard VPN, the only admin access.
+A classic trap I wanted to avoid was running the observability stack and stateful databases inside the very Kubernetes cluster they depend on. When a CNI upgrade or control-plane issue takes Kubernetes down, in-cluster monitoring usually goes dark at the exact moment you need metrics and logs to debug the outage.
 
-Monitoring therefore keeps running when the cluster is down. Alertmanager also sends a constant signal to Healthchecks.io: if the host goes down, Healthchecks.io raises the alarm.
+Everything stateful or critical to monitoring therefore runs directly on the physical NixOS host, outside the virtual machines. Pod persistent volumes are served over NFS from the host's btrfs pool and snapshotted every hour with btrbk, alongside a shared PostgreSQL instance for application data. Likewise, VictoriaMetrics, VictoriaLogs, vmalert, and Alertmanager run natively on the host, continuously ingesting node journals and the full Kubernetes API audit log. Even if all three cluster nodes crash at once, monitoring stays up and sends email alerts; and if the physical NUC itself loses power or connectivity, a continuous heartbeat to Healthchecks.io stops and triggers an external alarm.
 
-## Content: homelab-cluster
+## Hand-off to Flux and staged GitOps reconciliation
 
-Flux applies the `homelab-cluster` repository in an order set by `dependsOn`:
+Because Flux needs working pod networking before it can run and reconcile repositories, it cannot install the cluster's CNI plugin by itself. The NixOS base therefore installs Cilium directly when k3s boots. To avoid duplicating IP addresses or domain names between Nix and Kubernetes YAML, the host exports its topology parameters into a Kubernetes ConfigMap that Flux substitutes across manifests in the second repository, homelab-cluster.
 
-1. `infra-controllers`: MetalLB, cert-manager, the NFS CSI driver, External Secrets and the OpenBao configuration operator;
-2. `infra-configs`: network, gateways, certificates, storage, monitoring, OpenBao, Pocket-ID and Headlamp;
-3. `apps`: this site, the Gatus status page and Umami, the site's analytics.
+Flux reconciles homelab-cluster in three strict stages ordered through dependsOn dependencies. First, infra-controllers brings up foundational operators: MetalLB, cert-manager, the NFS CSI driver, External Secrets, and the OpenBao configuration operator. Once those controllers report healthy, infra-configs applies network policies, Traefik gateways, TLS certificates, storage classes, OpenBao, Pocket-ID, and Headlamp. Finally, the apps layer deploys public workloads including this site, the Gatus status page, and Umami analytics. Every Helm chart and container image is pinned, with Renovate opening automated pull requests for updates.
 
-The host publishes its parameters in a ConfigMap that Flux substitutes into the manifests, so the network is defined once, on the Nix side. Images and charts are pinned, and Renovate opens the update pull requests.
+## Defense-in-depth security, passkey identity, and dynamic secrets
 
-## Identity
+On the security side, I wanted to enforce zero implicit trust across secrets, identity, and networking without making day-to-day operations painful. Kubernetes Secrets are encrypted at rest by k3s, and secret management is split into two tiers. In Git, sops encrypts only the minimal bootstrap material needed at boot, such as the key that unseals OpenBao. Every other secret lives inside OpenBao. The External Secrets operator then syncs secrets into Kubernetes using a single templated policy parameterized by namespace, guaranteeing that a workload can never read secrets belonging to another namespace. For databases, OpenBao dynamically generates and rotates PostgreSQL credentials on its own so no human ever knows or handles a database password.
 
-Pocket-ID is the OIDC provider, passkeys only. Grafana, OpenBao, kubectl and the Headlamp console use it, and Kubernetes rights come from groups. None of these tools has a local account.
+Identity follows the same principle. None of the internal tools has a local admin account or password anymore: Pocket-ID serves as the single OIDC provider and enforces passwordless WebAuthn passkeys exclusively. Grafana, OpenBao, the Headlamp console, and even command-line kubectl access authenticate through OIDC, with Kubernetes RBAC permissions mapped directly from OIDC group claims.
 
-## Secrets
-
-Secrets live in two layers. sops encrypts in git what is needed to boot, such as the key that unseals OpenBao. Everything else is in OpenBao.
-
-External Secrets copies secrets from OpenBao into Kubernetes Secrets. A templated policy limits each namespace to its own secrets. PostgreSQL passwords are created and rotated by OpenBao, and nobody knows them.
-
-## Security
-
-- Kubernetes secrets encrypted at rest.
-- Node-to-node traffic encrypted with WireGuard, by Cilium.
-- Cilium network policies in every namespace: everything is denied by default and each allowed flow is written in git. This site reaches nothing, not even DNS. Hubble shows the flows, blocked ones included.
-- Control-plane ports open to cluster nodes only.
-- HTTPS everywhere, with a Let's Encrypt wildcard certificate obtained over DNS-01, HSTS and security headers.
-- Admin interfaces on an internal gateway, reachable only from the local network and the VPN.
+At the network layer, Cilium runs in eBPF mode and encrypts all node-to-node traffic transparently with WireGuard. Every namespace enforces a default-deny CiliumNetworkPolicy for both ingress and egress. Every permitted connection between pods must be written explicitly in Git, and Hubble provides live visibility into allowed and dropped packets alike. As a concrete example, the container serving this website runs as unprivileged user 65534 with a read-only root filesystem and is blocked from making any outbound connection at all, including internal DNS queries. Finally, control-plane ports are restricted strictly to cluster nodes, and administrative dashboards sit behind an internal Traefik gateway reachable only over the host's WireGuard VPN, completely separate from the public gateway serving HTTPS with Let's Encrypt DNS-01 wildcard certificates and strict security headers.

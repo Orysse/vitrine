@@ -11,18 +11,18 @@ const { lang } = Astro.props;
 
 <Layout
   lang={lang}
-  title={`404 · ${profile.name}`}
+  title={`404 | ${profile.name}`}
   description={t(lang, "notfound")}
   alternates={{ fr: "/", en: "/en/" }}
   pole="none"
 >
-  <div class="col">
-    <section class="intro-block">
+  <div class="frame">
+    <div class="content-title">
       <h1>404</h1>
-      <p class="intro-lead">{t(lang, "notfound")}</p>
-      <div class="inline-actions">
-        <a class="text-link" href={home(lang)}>{t(lang, "notfound.hint")}</a>
-      </div>
-    </section>
+    </div>
+    <div class="reading-column">
+      <p>{t(lang, "notfound")}</p>
+      <p><a href={home(lang)}>← {t(lang, "notfound.hint")}</a></p>
+    </div>
   </div>
 </Layout>
