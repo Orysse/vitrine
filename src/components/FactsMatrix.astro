@@ -5,7 +5,7 @@ interface Props {
 const { facts } = Astro.props;
 ---
 
-<dl class="facts mt-5">
+<dl class="facts">
   {facts.map(([key, value]) => (
     <>
       <dt>{key}</dt>

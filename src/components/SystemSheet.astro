@@ -12,33 +12,31 @@ const data = project.data;
 const href = systemsUrl(lang, slug);
 ---
 
-<article class="g12 section-tight rule-strong">
-  <p class="label c1-2">0{data.order}</p>
-  <h3 class="c2-8 subtitle">
-    <a class="strong-link" href={href}>{data.title}</a>
-  </h3>
-  <p class="c2-8 body-lg">{data.summary}</p>
+<article class="doc-section">
+  <div class="section-head">
+    <h2>
+      <a class="text-link" href={href}>{data.title}</a>
+    </h2>
+    {data.repo && (
+      <a class="focus-tag muted-link" href={data.repo} rel="noopener">
+        {data.repo.replace("https://", "")}
+      </a>
+    )}
+  </div>
 
-  <ul class="c2-8 hl-list">
-    {data.highlights.map((highlight, i) => (
+  <p class="section-desc">{data.summary}</p>
+
+  <ul class="hl-list">
+    {data.highlights.map((highlight) => (
       <li>
-        <span class="n">{String(i + 1).padStart(2, "0")}</span>
-        <div>
-          <h3>{highlight.title}</h3>
-          <p>{highlight.text}</p>
-        </div>
+        <h3>{highlight.title}</h3>
+        <p>{highlight.text}</p>
       </li>
     ))}
   </ul>
 
-  <p class="c2-8">
-    <a class="big-link" href={href}>{t(lang, "systems.details")}</a>
-  </p>
-
-  {data.repo && (
-    <p class="c9-12">
-      <a class="label label-ink" href={data.repo} rel="noopener">{t(lang, "systems.repo")} · {data.repo.replace("https://github.com/", "")}</a>
-    </p>
-  )}
-  <p class="c9-12 label">{data.stack.join(" · ")}</p>
+  <div class="inline-actions">
+    <a class="text-link" href={href}>{t(lang, "index.read")} →</a>
+    <span class="focus-tag">{data.stack.slice(0, 8).join(" · ")}</span>
+  </div>
 </article>

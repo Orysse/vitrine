@@ -13,13 +13,6 @@ const alternates = { fr: colophonUrl("fr"), en: colophonUrl("en") };
 const image = `ghcr.io/orysse/vitrine:${build.version}`;
 const csp =
   "default-src 'none'; script-src 'self' https://pulse.abe.lc; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://pulse.abe.lc; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
-
-const keys: [string, string][] = [
-  ["1 - 4", t(lang, "help.key.poles")],
-  ["j / k", t(lang, "help.key.layers")],
-  ["i", t(lang, "help.key.inv")],
-  ["l", t(lang, "help.key.lang")],
-];
 ---
 
 <Layout
@@ -27,104 +20,50 @@ const keys: [string, string][] = [
   title={`${t(lang, "colophon.title")} · ${profile.name}`}
   description={t(lang, "colophon.intro")}
   alternates={alternates}
-  pole="colophon"
+  pole="none"
 >
-  <section class="g12 hero">
-    <p class="label c1-3">04 / {t(lang, "colophon.title")}</p>
-    <h1 class="c1-8 display">{t(lang, "colophon.title")}</h1>
-    <p class="c1-7 lede">{t(lang, "colophon.intro")}</p>
-  </section>
+  <div class="col">
+    <section class="intro-block">
+      <h1>{t(lang, "colophon.title")}</h1>
+      <p class="intro-lead">{t(lang, "colophon.intro")}</p>
+    </section>
 
-  <section class="g12 section-tight">
-    <p class="label c1-2">{t(lang, "colophon.build")}</p>
-    <div class="c2-12">
+    <section class="doc-section">
+      <div class="section-head">
+        <h2>{t(lang, "colophon.build")}</h2>
+      </div>
       <dl class="facts">
         <dt>{t(lang, "colophon.version")}</dt>
-        <dd><a class="strong-link" href={build.tagUrl}>{build.version}</a></dd>
+        <dd><a class="text-link" href={build.tagUrl}>{build.version}</a></dd>
         <dt>{t(lang, "colophon.revision")}</dt>
-        <dd>{build.revUrl ? <a class="strong-link" href={build.revUrl}>{build.rev}</a> : build.rev}</dd>
+        <dd>{build.revUrl ? <a class="text-link" href={build.revUrl}>{build.rev}</a> : build.rev}</dd>
         {build.date && (
           <>
             <dt>{t(lang, "colophon.date")}</dt>
-            <dd>
-              <time datetime={build.date}>{build.date}</time>
-            </dd>
+            <dd><time datetime={build.date}>{build.date}</time></dd>
           </>
         )}
         <dt>{t(lang, "colophon.image")}</dt>
-        <dd><span class="mono-inline">{image}</span></dd>
-      </dl>
-    </div>
-  </section>
-
-  <section class="g12 section-tight">
-    <p class="label c1-2">{t(lang, "colophon.chain")}</p>
-    <div class="c2-12">
-      <dl class="facts">
+        <dd><span class="focus-tag">{image}</span></dd>
         <dt>{t(lang, "systems.repo")}</dt>
         <dd>
-          <a class="strong-link" href={profile.links.source} rel="noopener">{profile.links.source.replace("https://", "")}</a>
+          <a class="text-link" href={profile.links.source} rel="noopener">
+            {profile.links.source.replace("https://", "")}
+          </a>
         </dd>
         <dt>{t(lang, "colophon.csp")}</dt>
-        <dd><span class="mono-inline">{csp}</span></dd>
+        <dd><span class="focus-tag">{csp}</span></dd>
       </dl>
-      <p class="body-lg mt-8">{t(lang, "colophon.stack")}</p>
-    </div>
-  </section>
+    </section>
 
-  <section class="g12 section-tight">
-    <p class="label c1-2">{t(lang, "colophon.keys")}</p>
-    <div class="c2-12">
-      <dl class="facts">
-        {keys.map(([combo, label]) => (
-          <>
-            <dt><kbd>{combo}</kbd></dt>
-            <dd>{label}</dd>
-          </>
-        ))}
-      </dl>
-    </div>
-  </section>
-
-  <section class="g12 section-tight">
-    <p class="label c1-2">{t(lang, "colophon.type")}</p>
-    <div class="c2-12">
-      <p class="body-lg">{t(lang, "colophon.typeText")}</p>
-      <p class="type-display">Geist Violin 0123456789</p>
-      <p class="label mt-4">Geist Mono · 0123456789 · #141312</p>
-    </div>
-  </section>
-
-  <section class="g12 section-tight">
-    <p class="label c1-2">{t(lang, "colophon.audio")}</p>
-    <div class="c2-12">
-      <p class="body-lg">{t(lang, "colophon.audioText")}</p>
-      <p class="mt-6">
-        <a class="big-link" href={synthUrl(lang)}>VTR-303 →</a>
-      </p>
-    </div>
-  </section>
+    <section class="doc-section">
+      <div class="section-head">
+        <h2>{t(lang, "colophon.audio")}</h2>
+      </div>
+      <p class="section-desc">{t(lang, "colophon.audioText")}</p>
+      <div class="inline-actions">
+        <a class="text-link" href={synthUrl(lang)}>VTR-303 →</a>
+      </div>
+    </section>
+  </div>
 </Layout>
-
-<style>
-  .mono-inline {
-    font-family: var(--font-mono);
-    font-size: 0.84em;
-    letter-spacing: 0.01em;
-    word-break: break-word;
-  }
-  .type-display {
-    margin: 2.5rem 0 0;
-    font-size: clamp(2.25rem, 6.5vw, 5.5rem);
-    line-height: 0.92;
-    letter-spacing: -0.055em;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-  kbd {
-    font-family: var(--font-mono);
-    border: 1px solid var(--line-strong);
-    padding: 0.15rem 0.45rem;
-    letter-spacing: 0.02em;
-  }
-</style>

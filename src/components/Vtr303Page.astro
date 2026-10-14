@@ -30,22 +30,20 @@ const help = {
   alternates={{ fr: synthUrl("fr"), en: synthUrl("en") }}
   pole="none"
 >
-  <section class="g12 hero">
-    <p class="label c1-3">EXTRA</p>
-    <h1 class="c1-8 display">VTR-303</h1>
-    <p class="c1-7 lede">{t(lang, "vtr.lead")}</p>
-  </section>
+  <div class="col">
+    <section class="intro-block">
+      <h1>VTR-303</h1>
+      <p class="intro-lead">{t(lang, "vtr.lead")}</p>
+    </section>
+  </div>
 
-  <section class="g12 section-tight">
-    <div class="c1-12">
-      <noscript><p class="body-lg">{t(lang, "vtr.nojs")}</p></noscript>
-      <Vtr303 lang={lang} />
-    </div>
-  </section>
+  <div class="col-wide">
+    <noscript><p class="section-desc">{t(lang, "vtr.nojs")}</p></noscript>
+    <Vtr303 lang={lang} />
+  </div>
 
-  <section class="g12 section-tight">
-    <p class="label c1-2">AIDE</p>
-    <div class="c2-12">
+  <div class="col">
+    <section class="doc-section">
       <dl class="facts">
         {help.map(([k, v]) => (
           <>
@@ -54,8 +52,8 @@ const help = {
           </>
         ))}
       </dl>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>
 
 <script>

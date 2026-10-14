@@ -8,121 +8,330 @@ const { lang } = Astro.props;
 
 const txt = {
   fr: {
-    z1: "01 · Ce qui est écrit",
-    z2: "02 · Ce qui tourne",
-    z3: "03 · Ce qui est gardé",
-    topology: "topology.nix",
-    topologyNote1: "un seul fichier décrit le réseau,",
-    topologyNote2: "les hôtes et les nœuds",
-    gen: "génère",
-    vm: "microVM",
-    vmRoot: "racine = tmpfs · pas d'image disque",
-    vmKeep: "gardé : identité + données k3s",
-    boundary: "Cilium : tout refusé par défaut. Les flux permis sont écrits dans git.",
-    state: "l'état s'échappe vers l'hôte",
-    host: "hôte NixOS",
-    btrfs: "btrfs + btrbk",
-    btrfsNote: "volumes NFS, snapshot toutes les heures",
-    obs: "VictoriaMetrics / VictoriaLogs",
-    obsNote: "métriques, logs, audit de l'API k8s",
-    pg: "PostgreSQL",
-    pgNote: "mots de passe créés par OpenBao",
-    alert: "vmalert + Alertmanager",
-    alertNote: "alertes par mail, hors des VMs",
-    survive: "Le monitoring tourne sur l'hôte : il survit au cluster.",
-    wireguard: "WireGuard : seul accès d'administration.",
-    flux: "Flux applique homelab-cluster dans un ordre fixé par dependsOn.",
+    figTitle: "Topologie déclarative NixOS, microVMs en tmpfs et persistance sur l'hôte",
+    figMeta: "homelab-nix · modules/topology/topology.nix → microvm.nix",
+    caption: "Les 3 nœuds Kubernetes tournent en RAM (tmpfs) sans image disque. Tout l'état durable et la supervision résident directement sur l'hôte NixOS.",
+    legend1: "Pointillés : mémoire volatile (tmpfs)",
+    legend2: "Trait plein : état persistant (btrfs)",
+    legend3: "Flèche pleine : flux de données / état",
+
+    z1Title: "1. Déclaration & déploiement (Git)",
+    z1Sub: "github.com/Orysse/homelab-nix",
+    z2Title: "2. Cluster k3s éphémère (3 × microVMs QEMU sans disque)",
+    z2Sub: "Généré par microvm.nix · racine en tmpfs",
+    z3Title: "3. Hôte physique NixOS (nuc1 · Intel NUC10i7FNH)",
+    z3Sub: "12 threads · 16 Go RAM · État & supervision hors-cluster",
+
+    topoTitle: "topology.nix",
+    topoPath: "modules/topology/topology.nix",
+    topoL1: "Source unique : plan réseau, hôtes,",
+    topoL2: "rôles k3s, vCPU et mémoire.",
+    topoL3: "Schéma validé par nix flake check.",
+
+    flakeTitle: "Flake dendritique",
+    flakePath: "flake-parts + import-tree",
+    flakeL1: "Chargement automatique de modules/",
+    flakeL2: "Assemblé dans machines/nuc1.nix.",
+
+    deployTitle: "deploy-rs (auto-rollback)",
+    deployPath: "modules/deploy.nix",
+    deployL1: "Activation atomique en SSH.",
+    deployL2: "Revient seul à la génération N-1",
+    deployL3: "si l'hôte ne répond plus.",
+
+    cmTitle: "ConfigMap réseau → Flux",
+    cmL1: "L'hôte exporte ses paramètres",
+    cmL2: "vers homelab-cluster (défini 1 fois).",
+
+    vm1Name: "vm-k3s-01 · control-plane",
+    vm2Name: "vm-k3s-02 · worker",
+    vm3Name: "vm-k3s-03 · worker",
+    vmTmpfs: "/ (racine) = tmpfs en RAM",
+    vmNoDisk: "Aucune image disque (.qcow2 / .raw)",
+    vmMount: "Montages hôte : node-id + /var/lib/rancher/k3s",
+
+    cniTitle: "Cilium eBPF + Flux GitOps",
+    cniL1: "Cilium installé au bootstrap k3s · WireGuard inter-nœuds",
+    cniL2: "Flux : infra-controllers → infra-configs → apps (dependsOn)",
+
+    btrfsTitle: "Stockage btrfs + btrbk",
+    btrfsPath: "Persistance sur disque hôte",
+    btrfsL1: "Volumes NFS des pods + état k3s.",
+    btrfsL2: "Snapshots btrbk toutes les heures.",
+
+    pgTitle: "PostgreSQL (sur l'hôte)",
+    pgPath: "Hors des microVMs",
+    pgL1: "Bases partagées des applications.",
+    pgL2: "Mots de passe tournés par OpenBao.",
+
+    obsTitle: "VictoriaMetrics & VictoriaLogs",
+    obsPath: "Supervision indépendante du cluster",
+    obsL1: "Métriques, journaux des nœuds",
+    obsL2: "et audit de l'API Kubernetes.",
+
+    alertTitle: "vmalert + Alertmanager",
+    alertPath: "Alerting & dead-man switch",
+    alertL1: "Alertes par mail + signal continu",
+    alertL2: "vers Healthchecks.io si l'hôte tombe.",
+
+    wgBar: "Accès d'administration : VPN WireGuard terminé sur l'hôte NixOS uniquement.",
+     arrowGen: "génère 3 VMs",
+    arrowDeploy: "active",
+    arrowState: "état & NFS",
+    arrowLogs: "métriques & audit",
   },
   en: {
-    z1: "01 · What is written",
-    z2: "02 · What runs",
-    z3: "03 · What is kept",
-    topology: "topology.nix",
-    topologyNote1: "one file describes the network,",
-    topologyNote2: "the hosts and the nodes",
-    gen: "generates",
-    vm: "microVM",
-    vmRoot: "root = tmpfs · no disk image",
-    vmKeep: "kept: node identity + k3s data",
-    boundary: "Cilium: everything denied by default. Allowed flows are written in git.",
-    state: "state escapes to the host",
-    host: "NixOS host",
-    btrfs: "btrfs + btrbk",
-    btrfsNote: "NFS volumes, snapshot every hour",
-    obs: "VictoriaMetrics / VictoriaLogs",
-    obsNote: "metrics, logs, k8s API audit",
-    pg: "PostgreSQL",
-    pgNote: "passwords created by OpenBao",
-    alert: "vmalert + Alertmanager",
-    alertNote: "alerts by mail, outside the VMs",
-    survive: "Monitoring runs on the host: it survives the cluster.",
-    wireguard: "WireGuard: the only admin access.",
-    flux: "Flux applies homelab-cluster in an order fixed by dependsOn.",
+    figTitle: "Declarative NixOS topology, tmpfs microVMs, and host-level persistence",
+    figMeta: "homelab-nix · modules/topology/topology.nix → microvm.nix",
+    caption: "All 3 Kubernetes nodes run in RAM (tmpfs) with no disk image. All durable state and monitoring live directly on the NixOS host.",
+    legend1: "Dashed: volatile memory (tmpfs)",
+    legend2: "Solid: persistent state (btrfs)",
+    legend3: "Solid arrow: state / data flow",
+
+    z1Title: "1. Declaration & deployment (Git)",
+    z1Sub: "github.com/Orysse/homelab-nix",
+    z2Title: "2. Ephemeral k3s cluster (3 × diskless QEMU microVMs)",
+    z2Sub: "Generated by microvm.nix · tmpfs root",
+    z3Title: "3. Physical NixOS host (nuc1 · Intel NUC10i7FNH)",
+    z3Sub: "12 threads · 16 GB RAM · Out-of-cluster state & monitoring",
+
+    topoTitle: "topology.nix",
+    topoPath: "modules/topology/topology.nix",
+    topoL1: "Single source of truth: network,",
+    topoL2: "hosts, k3s roles, vCPU, and RAM.",
+    topoL3: "Schema verified by nix flake check.",
+
+    flakeTitle: "Dendritic flake",
+    flakePath: "flake-parts + import-tree",
+    flakeL1: "Auto-loads every file in modules/",
+    flakeL2: "Assembled in machines/nuc1.nix.",
+
+    deployTitle: "deploy-rs (auto-rollback)",
+    deployPath: "modules/deploy.nix",
+    deployL1: "Atomic activation over SSH.",
+    deployL2: "Automatically rolls back to N-1",
+    deployL3: "if the host stops responding.",
+
+    cmTitle: "Network ConfigMap → Flux",
+    cmL1: "Host exports network parameters",
+    cmL2: "to homelab-cluster (defined once).",
+
+    vm1Name: "vm-k3s-01 · control-plane",
+    vm2Name: "vm-k3s-02 · worker",
+    vm3Name: "vm-k3s-03 · worker",
+    vmTmpfs: "/ (root) = tmpfs in RAM",
+    vmNoDisk: "No disk image (.qcow2 / .raw)",
+    vmMount: "Host mounts: node-id + /var/lib/rancher/k3s",
+
+    cniTitle: "Cilium eBPF + Flux GitOps",
+    cniL1: "Cilium bootstrapped with k3s · node-to-node WireGuard",
+    cniL2: "Flux: infra-controllers → infra-configs → apps (dependsOn)",
+
+    btrfsTitle: "btrfs storage + btrbk",
+    btrfsPath: "Host disk persistence",
+    btrfsL1: "Pod NFS volumes + k3s state.",
+    btrfsL2: "Hourly btrbk snapshots.",
+
+    pgTitle: "PostgreSQL (on host)",
+    pgPath: "Outside microVMs",
+    pgL1: "Shared application databases.",
+    pgL2: "Passwords rotated by OpenBao.",
+
+    obsTitle: "VictoriaMetrics & VictoriaLogs",
+    obsPath: "Cluster-independent monitoring",
+    obsL1: "Metrics, node systemd journals,",
+    obsL2: "and Kubernetes API audit logs.",
+
+    alertTitle: "vmalert + Alertmanager",
+    alertPath: "Alerting & dead-man switch",
+    alertL1: "Email alerts + continuous heartbeat",
+    alertL2: "to Healthchecks.io if host goes down.",
+
+    wgBar: "Admin access: WireGuard VPN terminated directly on the NixOS host.",
+    arrowGen: "generates 3 VMs",
+    arrowDeploy: "activates",
+    arrowState: "state & NFS",
+    arrowLogs: "metrics & audit",
   },
 }[lang];
 
-const vms = [90, 250, 410];
-const vmH = 110;
-const hostBoxes = [
-  { y: 170, t: txt.btrfs, n: txt.btrfsNote },
-  { y: 266, t: txt.obs, n: txt.obsNote },
-  { y: 362, t: txt.pg, n: txt.pgNote },
-  { y: 458, t: txt.alert, n: txt.alertNote },
+const vms = [
+  { y: 100, name: txt.vm1Name },
+  { y: 222, name: txt.vm2Name },
+  { y: 344, name: txt.vm3Name },
 ];
 ---
 
-<div class="diagram">
-  <svg viewBox="0 0 1280 700" role="img" aria-label={txt.boundary} preserveAspectRatio="xMidYMid meet">
-    <!-- zone labels -->
-    <text class="d-label" x="40" y="32">{txt.z1}</text>
-    <text class="d-label" x="430" y="32">{txt.z2}</text>
-    <text class="d-label" x="880" y="32">{txt.z3}</text>
+<figure class="diagram-bleed">
+  <div class="diagram-card">
+    <div class="diagram-header">
+      <span class="diagram-title">{txt.figTitle}</span>
+      <span class="diagram-meta">{txt.figMeta}</span>
+    </div>
 
-    <!-- 01 written -->
-    <rect class="d-box-fill" x="40" y="70" width="250" height="128" />
-    <text class="d-title" x="64" y="112">{txt.topology}</text>
-    <text class="d-note" x="64" y="142">{txt.topologyNote1}</text>
-    <text class="d-note" x="64" y="164">{txt.topologyNote2}</text>
+    <div class="diagram-scroll">
+      <svg viewBox="0 0 1160 610" role="img" aria-label={txt.figTitle} preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <pattern id="hatch-vm" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="8" class="d-rule" />
+          </pattern>
+          <marker id="ar-vm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="d-arrow" d="M 0 1 L 9 5 L 0 9 z" />
+          </marker>
+          <marker id="ar-vm-soft" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="d-arrow-soft" d="M 0 1 L 9 5 L 0 9 z" />
+          </marker>
+        </defs>
 
-    <!-- generates: fan out to the three VMs -->
-    {vms.map((y) => (
-      <path class="d-line-soft" d={`M 290 134 L 360 134 L 360 ${y + vmH / 2} L 430 ${y + vmH / 2}`} />
-    ))}
-    <text class="d-label" x="300" y="122">{txt.gen}</text>
+        <!-- ── ZONE 1: NIX DECLARATION (x=16, w=276) ── -->
+        <rect class="d-zone-sub" x="16" y="20" width="276" height="534" />
+        <rect class="d-band" x="16" y="20" width="276" height="48" />
+        <line class="d-rule" x1="16" y1="68" x2="292" y2="68" />
+        <text class="d-title" x="30" y="42">{txt.z1Title}</text>
+        <text class="d-label" x="30" y="58">{txt.z1Sub}</text>
 
-    <!-- 02 computed: three volatile VMs -->
-    <rect class="d-box-dash" x="396" y="52" width="380" height="502" />
-    {vms.map((y) => (
-      <>
-        <rect class="d-box" x="430" y={y} width="310" height={vmH} />
-        <text class="d-title" x="454" y={y + 36}>{txt.vm}</text>
-        <text class="d-label" x="454" y={y + 62}>{txt.vmRoot}</text>
-        <text class="d-label" x="454" y={y + 84}>{txt.vmKeep}</text>
-      </>
-    ))}
-    <text class="d-label" x="396" y="582">{txt.boundary}</text>
+        <!-- topology.nix box -->
+        <rect class="d-box" x="32" y="88" width="244" height="114" />
+        <rect class="d-box-inv" x="32" y="88" width="244" height="26" />
+        <text class="d-title-inv" x="44" y="105">{txt.topoTitle}</text>
+        <text class="d-label" x="44" y="130">{txt.topoPath}</text>
+        <text class="d-note" x="44" y="150">{txt.topoL1}</text>
+        <text class="d-note" x="44" y="166">{txt.topoL2}</text>
+        <text class="d-label-ink" x="44" y="188">{txt.topoL3}</text>
 
-    <!-- state escapes to the host -->
-    {vms.map((y) => (
-      <path class="d-line" d={`M 740 ${y + vmH / 2} L 880 ${y + vmH / 2}`} />
-    ))}
-    <text class="d-label" x="742" y={vms[1] + vmH / 2 - 12}>{txt.state}</text>
+        <!-- dendritic flake box -->
+        <rect class="d-box-soft" x="32" y="218" width="244" height="90" />
+        <text class="d-title-sm" x="44" y="240">{txt.flakeTitle}</text>
+        <text class="d-label" x="44" y="256">{txt.flakePath}</text>
+        <text class="d-note" x="44" y="276">{txt.flakeL1}</text>
+        <text class="d-note" x="44" y="292">{txt.flakeL2}</text>
 
-    <!-- 03 kept on the host -->
-    <rect class="d-box-fill" x="880" y="70" width="360" height="500" />
-    <text class="d-title" x="904" y="122">{txt.host}</text>
-    {hostBoxes.map((box) => (
-      <>
-        <rect class="d-box" x="904" y={box.y} width="312" height="78" />
-        <text class="d-title d-title-sm" x="924" y={box.y + 32}>{box.t}</text>
-        <text class="d-label" x="924" y={box.y + 56}>{box.n}</text>
-      </>
-    ))}
-    <text class="d-note" x="904" y="600">{txt.survive}</text>
+        <!-- deploy-rs box -->
+        <rect class="d-box" x="32" y="324" width="244" height="108" />
+        <text class="d-title-sm" x="44" y="346">{txt.deployTitle}</text>
+        <text class="d-label" x="44" y="362">{txt.deployPath}</text>
+        <text class="d-note" x="44" y="382">{txt.deployL1}</text>
+        <text class="d-note" x="44" y="398">{txt.deployL2}</text>
+        <text class="d-note" x="44" y="414">{txt.deployL3}</text>
 
-    <!-- closing band -->
-    <path class="d-line-soft" d="M 40 640 L 1240 640" />
-    <text class="d-label d-label-ink" x="40" y="668">{txt.wireguard}</text>
-    <text class="d-label" x="640" y="668">{txt.flux}</text>
-  </svg>
-</div>
+        <!-- ConfigMap substitution box -->
+        <rect class="d-box-soft" x="32" y="448" width="244" height="86" />
+        <text class="d-title-sm" x="44" y="470">{txt.cmTitle}</text>
+        <text class="d-note" x="44" y="492">{txt.cmL1}</text>
+        <text class="d-note" x="44" y="508">{txt.cmL2}</text>
+
+        <!-- ── ZONE 2: EPHEMERAL MICROVMS (x=364, w=392) ── -->
+        <rect fill="url(#hatch-vm)" x="364" y="20" width="392" height="534" />
+        <rect class="d-zone-dashed" x="364" y="20" width="392" height="534" />
+        <rect class="d-band" x="365" y="21" width="390" height="47" />
+        <line class="d-rule" x1="364" y1="68" x2="756" y2="68" />
+        <text class="d-title" x="380" y="42">{txt.z2Title}</text>
+        <text class="d-label" x="380" y="58">{txt.z2Sub}</text>
+
+        {vms.map((vm) => (
+          <>
+            <rect class="d-box" x="384" y={vm.y} width="352" height="106" />
+            <rect class="d-band" x="385" y={vm.y + 1} width="350" height="25" />
+            <line class="d-rule" x1="384" y1={vm.y + 26} x2="736" y2={vm.y + 26} />
+            <text class="d-title-sm" x="396" y={vm.y + 18}>{vm.name}</text>
+
+            <rect class="d-box-dash" x="396" y={vm.y + 36} width="160" height="58" />
+            <text class="d-label-ink" x="406" y={vm.y + 56}>{txt.vmTmpfs}</text>
+            <text class="d-label" x="406" y={vm.y + 76}>{txt.vmNoDisk}</text>
+
+            <rect class="d-box-soft" x="566" y={vm.y + 36} width="158" height="58" />
+            <text class="d-note" x="576" y={vm.y + 58}>virtiofs / NFS</text>
+            <text class="d-label" x="576" y={vm.y + 76}>node-id + k3s state</text>
+          </>
+        ))}
+
+        <!-- Cilium & Flux bar inside cluster -->
+        <rect class="d-box" x="384" y="464" width="352" height="72" />
+        <text class="d-title-sm" x="398" y="486">{txt.cniTitle}</text>
+        <text class="d-label" x="398" y="505">{txt.cniL1}</text>
+        <text class="d-label" x="398" y="523">{txt.cniL2}</text>
+
+        <!-- ── ZONE 3: NIXOS HOST PERSISTENCE & MONITORING (x=828, w=316) ── -->
+        <rect class="d-zone" x="828" y="20" width="316" height="534" />
+        <rect class="d-band" x="829" y="21" width="314" height="47" />
+        <line class="d-rule" x1="828" y1="68" x2="1144" y2="68" />
+        <text class="d-title" x="844" y="42">{txt.z3Title}</text>
+        <text class="d-label" x="844" y="58">{txt.z3Sub}</text>
+
+        <!-- btrfs + btrbk -->
+        <rect class="d-box-fill" x="846" y="92" width="280" height="98" />
+        <text class="d-title-sm" x="860" y="114">{txt.btrfsTitle}</text>
+        <text class="d-label" x="860" y="130">{txt.btrfsPath}</text>
+        <text class="d-note" x="860" y="152">{txt.btrfsL1}</text>
+        <text class="d-note" x="860" y="170">{txt.btrfsL2}</text>
+
+        <!-- PostgreSQL -->
+        <rect class="d-box" x="846" y="206" width="280" height="96" />
+        <text class="d-title-sm" x="860" y="228">{txt.pgTitle}</text>
+        <text class="d-label" x="860" y="244">{txt.pgPath}</text>
+        <text class="d-note" x="860" y="266">{txt.pgL1}</text>
+        <text class="d-note" x="860" y="284">{txt.pgL2}</text>
+
+        <!-- VictoriaMetrics & VictoriaLogs -->
+        <rect class="d-box-fill" x="846" y="318" width="280" height="98" />
+        <text class="d-title-sm" x="860" y="340">{txt.obsTitle}</text>
+        <text class="d-label" x="860" y="356">{txt.obsPath}</text>
+        <text class="d-note" x="860" y="378">{txt.obsL1}</text>
+        <text class="d-note" x="860" y="396">{txt.obsL2}</text>
+
+        <!-- vmalert + Alertmanager -->
+        <rect class="d-box" x="846" y="432" width="280" height="104" />
+        <text class="d-title-sm" x="860" y="454">{txt.alertTitle}</text>
+        <text class="d-label" x="860" y="470">{txt.alertPath}</text>
+        <text class="d-note" x="860" y="492">{txt.alertL1}</text>
+        <text class="d-note" x="860" y="510">{txt.alertL2}</text>
+
+        <!-- ── WIRES & FLOW ARROWS ── -->
+        <!-- topology.nix -> 3 VMs -->
+        <text class="d-label-ink" x="300" y="132">{txt.arrowGen}</text>
+        {vms.map((vm) => (
+          <path
+            class="d-line"
+            d={`M 276 145 L 328 145 L 328 ${vm.y + 52} L 380 ${vm.y + 52}`}
+            marker-end="url(#ar-vm)"
+          />
+        ))}
+        <circle class="d-dot" cx="328" cy="145" r="3" />
+
+        <!-- ConfigMap -> Flux -->
+        <path class="d-line-dash" d="M 276 496 L 380 496" marker-end="url(#ar-vm-soft)" />
+
+        <!-- VMs -> Host btrfs (state & NFS) -->
+        <text class="d-label-ink" x="760" y="128">{txt.arrowState}</text>
+        {vms.map((vm) => (
+          <path
+            class="d-line"
+            d={`M 736 ${vm.y + 56} L 786 ${vm.y + 56} L 786 142 L 842 142`}
+            marker-end="url(#ar-vm)"
+          />
+        ))}
+        <circle class="d-dot" cx="786" cy="156" r="3" />
+        <circle class="d-dot" cx="786" cy="278" r="3" />
+
+        <!-- Cluster -> VictoriaMetrics / Logs -->
+        <text class="d-label" x="758" y="446">{txt.arrowLogs}</text>
+        <path class="d-line-dash" d="M 736 485 L 804 485 L 804 368 L 842 368" marker-end="url(#ar-vm-soft)" />
+
+        <!-- Bottom WireGuard / deploy-rs bar -->
+        <rect class="d-box-soft" x="16" y="566" width="1128" height="32" />
+        <text class="d-label-ink" x="32" y="586">{txt.wgBar}</text>
+      </svg>
+    </div>
+
+    <figcaption class="diagram-caption">
+      <span>{txt.caption}</span>
+      <div class="diagram-legend">
+        <span>{txt.legend1}</span>
+        <span>·</span>
+        <span>{txt.legend2}</span>
+        <span>·</span>
+        <span>{txt.legend3}</span>
+      </div>
+    </figcaption>
+  </div>
+</figure>
