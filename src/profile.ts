@@ -3,20 +3,20 @@ import type { L10n } from "./i18n";
 export const profile = {
   name: "Abel Chartier",
   status: {
-    fr: "Étudiant ingénieur en 5e année à l'EPITA",
-    en: "Fifth-year engineering student at EPITA",
+    fr: "Étudiant en dernière année à l'EPITA",
+    en: "Final-year student at EPITA",
   } satisfies L10n,
   major: {
     fr: "Systèmes, Réseaux, Sécurité & Infrastructure",
     en: "Systems, Networks, Security & Infrastructure",
   } satisfies L10n,
   now: {
-    fr: "Contributeur à La Forge, l'équipe qui exploite l'infrastructure interne de l'EPITA, depuis février 2026",
-    en: "Contributor at La Forge, the team that runs EPITA's internal infrastructure, since February 2026",
+    fr: "Employé à temps partiel à La Forge, l'équipe IT de la pédagogie de l'EPITA, depuis février 2026",
+    en: "Part-time employee at La Forge, EPITA's teaching IT team, since February 2026",
   } satisfies L10n,
   looking: {
-    fr: "Ouvert aux opportunités de stage de fin d'études à partir de février 2027",
-    en: "Open to end-of-studies internship opportunities starting February 2027",
+    fr: "Je cherche un stage de fin d'études à partir de février 2027",
+    en: "Looking for an end-of-studies internship starting February 2027",
   } satisfies L10n,
   location: "Paris",
   spoken: {

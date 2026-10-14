@@ -1,6 +1,6 @@
 ---
 title: Config NixOS
-summary: "La configuration de mon ThinkPad pensée avec la même logique que mon homelab : une racine en mémoire vive qui s'efface à chaque extinction pour forcer chaque choix à être écrit dans Git, et des applications auto-portées empaquetées directement dans le store Nix avec nix-wrapper-modules."
+summary: "La configuration de mon ThinkPad, écrite avec la même logique que le homelab : une racine en mémoire vive effacée à chaque extinction, donc chaque choix doit être dans Git, et des applications empaquetées dans le store Nix avec nix-wrapper-modules."
 order: 2
 repo: https://github.com/Orysse/config
 stack: [NixOS, flake-parts, import-tree, nix-wrapper-modules, disko, preservation, lanzaboote, sops-nix, river]
@@ -18,9 +18,19 @@ facts:
 
 ## Pourquoi penser son poste comme du code
 
-Quand on utilise Linux tous les jours sur son ordinateur portable, le système finit toujours par accumuler des fichiers de configuration oubliés, des paquets installés pour un test rapide et de l'état caché au fond du dossier personnel. Au bout d'un an, on ne sait plus vraiment ce qui fait fonctionner la machine, et la réinstaller à l'identique sur un nouveau matériel devient impossible.
+Sur un ordinateur portable utilisé tous les jours, le système accumule des fichiers de configuration oubliés, des paquets installés pour un test et de l'état caché dans le dossier personnel. Au bout d'un an, on ne sait plus ce qui fait fonctionner la machine, et la réinstaller à l'identique sur un autre matériel devient difficile.
 
-Ce qui m'a passionné dans Nix, c'est justement la promesse inverse : pouvoir décrire une machine entière sous forme de code et obtenir exactement le même résultat à chaque construction. J'ai donc voulu appliquer à mon ThinkPad la même rigueur que sur mon serveur, en utilisant mon environnement de travail quotidien comme laboratoire pour pousser l'approche déclarative jusqu'au bout.
+Nix permet de décrire une machine entière sous forme de code et d'obtenir le même résultat à chaque construction. J'applique donc à mon ThinkPad la même méthode qu'à mon serveur et qu'aux images NixOS de La Forge, avec mon environnement de travail quotidien comme terrain d'essai.
+
+## Les outils autour de Nix
+
+- **flake-parts et import-tree** découpent la configuration en modules : un fichier ajouté est trouvé tout seul.
+- **nix-wrapper-modules** empaquette chaque programme avec sa configuration.
+- **disko** décrit le partitionnement du disque pour le refaire en une commande.
+- **preservation** liste les seuls fichiers qui survivent à l'effacement de la racine.
+- **lanzaboote** signe le démarrage avec mes propres clés Secure Boot.
+- **sops-nix** déchiffre les secrets avec la YubiKey ou la clé SSH de la machine.
+- **microvm.nix** et **deploy-rs** servent au homelab : le premier génère les machines virtuelles, le second déploie l'hôte avec retour arrière automatique.
 
 ## Des applications auto-portées avec nix-wrapper-modules
 

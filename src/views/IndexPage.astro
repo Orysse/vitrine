@@ -15,6 +15,13 @@ const projects = (await getCollection("projects", (entry) => entry.id.startsWith
 );
 
 const alternates = { fr: "/", en: "/en/" };
+
+const aboutParagraphs = [
+  "index.p1",
+  "index.p2",
+  "index.p3",
+  "index.p4",
+] as const;
 ---
 
 <Layout
@@ -30,10 +37,9 @@ const alternates = { fr: "/", en: "/en/" };
     </div>
 
     <div class="reading-column">
-      <p>{t(lang, "index.p1")}</p>
-      <p>{t(lang, "index.p2")}</p>
-      <p>{t(lang, "index.p3")}</p>
-      <p>{t(lang, "index.p4")}</p>
+      {aboutParagraphs.map((key) => (
+        <p>{t(lang, key)}</p>
+      ))}
     </div>
 
     {projects.map((project) => {

@@ -1,6 +1,6 @@
 ---
 title: NixOS Config
-summary: "My ThinkPad configuration built with the exact same mindset as my homelab: an in-memory root filesystem that wipes itself on every shutdown so every change has to live in Git, and self-contained applications packaged directly in the Nix store with nix-wrapper-modules."
+summary: "My ThinkPad configuration, written with the same logic as the homelab: a root filesystem in RAM wiped on every shutdown, so every choice has to be in Git, and applications packaged in the Nix store with nix-wrapper-modules."
 order: 2
 repo: https://github.com/Orysse/config
 stack: [NixOS, flake-parts, import-tree, nix-wrapper-modules, disko, preservation, lanzaboote, sops-nix, river]
@@ -18,9 +18,19 @@ facts:
 
 ## Why treat a laptop like code
 
-When you use a Linux laptop every day, the system inevitably accumulates stray dotfiles, packages installed for a quick five-minute test, and hidden state scattered across your home directory. After a year, you no longer really know what holds the machine together, and reproducing the setup cleanly on new hardware becomes guesswork.
+On a laptop used every day, the system accumulates forgotten dotfiles, packages installed for a quick test and hidden state in the home directory. After a year, you no longer know what makes the machine work, and reproducing it on other hardware becomes difficult.
 
-What hooked me on Nix was the exact opposite promise: describing an entire machine in code and getting the exact same result on every build. I wanted to apply the same engineering discipline to my daily ThinkPad as I do to my homelab, turning my personal workstation into a testing ground for declarative system patterns.
+Nix describes an entire machine in code and gives the same result on every build. I apply the same method to my ThinkPad as to my server and to the NixOS images at La Forge, with my daily workstation as the testbed.
+
+## The tools around Nix
+
+- **flake-parts and import-tree** split the configuration into modules: a file you add is found automatically.
+- **nix-wrapper-modules** packages each program with its configuration.
+- **disko** describes the disk partitioning so it can be redone with one command.
+- **preservation** lists the only files that survive the wipe of the root.
+- **lanzaboote** signs the boot with my own Secure Boot keys.
+- **sops-nix** decrypts secrets with the YubiKey or the machine's SSH key.
+- **microvm.nix** and **deploy-rs** are for the homelab: the first generates the virtual machines, the second deploys the host with automatic rollback.
 
 ## Self-contained applications with nix-wrapper-modules
 

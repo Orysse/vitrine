@@ -4,8 +4,10 @@
   start: "2024"
   end: null
   location: Le Kremlin-Bicêtre
-  stack: [Proxmox, Kubernetes]
+  stack: [OpenStack, Proxmox, Kubernetes]
   points:
+    - fr: "Installation d'OpenStack sur les serveurs de récupération de l'association, d'abord à distance depuis l'Indonésie (2024)."
+      en: "Installed OpenStack on the association's second-hand servers, first remotely from Indonesia (2024)."
     - fr: "Gestion de l'infrastructure de VMs de l'association avec Proxmox."
       en: "Manage the association's VM infrastructure with Proxmox."
     - fr: "Déploiement et maintenance des services de l'association sur Kubernetes."

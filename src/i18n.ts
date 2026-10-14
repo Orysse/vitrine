@@ -9,7 +9,7 @@ const ui = {
     "chassis.inv": "Thème",
     "chassis.inv.title": "Basculer le thème",
     "chassis.cv": "CV (PDF)",
-    "skip": "Aller au contenu",
+    skip: "Aller au contenu",
 
     "nav.index": "À propos",
     "nav.homelab": "Homelab",
@@ -22,34 +22,46 @@ const ui = {
     "nav.lang": "EN",
 
     "index.title": "À propos",
-    "index.p1": "Je suis étudiant en cinquième année à l'EPITA, dans la majeure Systèmes, Réseaux, Sécurité et Infrastructure. Depuis février 2026, je fais partie de La Forge, l'équipe qui exploite l'infrastructure interne de l'école : nous maintenons l'intranet utilisé pendant la piscine et les ateliers, développons des services internes déployés sur Kubernetes avec Argo CD, et construisons en code les images NixOS démarrées en netboot sur tout le parc des salles machines.",
-    "index.p2": "C'est en cherchant à comprendre comment décrire une machine entière sans jamais dépendre d'interventions manuelles que je me suis passionné pour Nix. Au fil des quatre dernières années, cette approche a changé ma façon de voir l'administration système : plutôt que d'empiler des configurations qui dérivent silencieusement avec le temps, j'aime partir d'une feuille blanche où chaque état, chaque paquet et chaque flux réseau existe uniquement parce qu'il a été déclaré dans Git.",
-    "index.p3": "En dehors des cours et de mes stages au CEA Saclay puis chez RedPill Group, j'entretiens mon propre laboratoire d'infrastructure à la maison ainsi que la configuration de mon ordinateur portable. Je ne les ai pas pensés comme des environnements de production sages, mais comme un terrain de jeu pour tester des idées jusqu'au bout : faire tourner un cluster Kubernetes dans des microVMs sans disque montées en mémoire vive, verrouiller tous les flux réseau par défaut en eBPF, effacer la racine de mon poste à chaque extinction, ou encore empaqueter chaque application avec sa propre configuration directement dans le store Nix via nix-wrapper-modules.",
-    "index.p4": "Je suis ouvert aux opportunités de stage de fin d'études de six mois à partir de février 2027, autour des systèmes, de l'infrastructure et de la sécurité. Si mon profil ou mes projets vous intéressent, n'hésitez pas à me contacter.",
+    "index.p1":
+      "Je suis en dernière année à l'EPITA, en majeure Systèmes, Réseaux et Sécurité. Je travaille aussi à temps partiel pour l'école, à La Forge, l'équipe qui s'occupe des besoins IT de la pédagogie.",
+    "index.p2":
+      "Nous développons les services de l'école (l'intranet utilisé pour la piscine, le Moodle, l'annuaire des étudiants), nous les hébergeons dans un datacenter en colocation à Ivry et nous mettons à disposition le parc informatique de l'EPITA (PIE).",
+    "index.p3":
+      "J'utilise Nix pour décrire des machines entières : au travail pour le parc PIE, qui démarre en netboot sur des images NixOS, et chez moi pour mon portable et un homelab sous Kubernetes.",
+    "index.p4":
+      "Je cherche un stage de fin d'études de six mois à partir de février 2027, en systèmes, infrastructure ou sécurité. N'hésitez pas à me contacter.",
 
-    "index.role": "Étudiant ingénieur en 5e année à l'EPITA (Systèmes, Réseaux, Sécurité & Infrastructure) et contributeur à La Forge.",
-    "index.lead": "Je construis et j'automatise des systèmes depuis quatre ans, à l'EPITA au sein de La Forge comme sur mon propre laboratoire NixOS et Kubernetes.",
-    "index.seeking": "Ouvert aux opportunités de stage de fin d'études (6 mois) à partir de février 2027.",
+    "index.role":
+      "Dernière année à l'EPITA (Systèmes, Réseaux, Sécurité), employé à temps partiel à La Forge.",
+    "index.lead":
+      "En dernière année à l'EPITA et employé à temps partiel à La Forge, où je développe et héberge les services de l'école et construis les images NixOS de son parc informatique.",
+    "index.seeking":
+      "Je cherche un stage de fin d'études de 6 mois à partir de février 2027.",
     "index.now": "En ce moment",
     "index.download": "Télécharger le CV (PDF)",
     "index.contact": "abel.chartier@gmail.com",
     "index.source": "github.com/Orysse",
     "index.register": "Projets",
-    "index.registerIntro": "Deux systèmes personnels que j'utilise comme terrain d'expérimentation autour de NixOS, Kubernetes et la gestion de l'état.",
+    "index.registerIntro":
+      "Mon homelab et la configuration de mon ordinateur portable, où je teste des idées autour de NixOS, Kubernetes et de la gestion de l'état.",
     "index.read": "LIRE",
     "index.served": "",
     "index.tech": "technologies",
 
     "focus.title": "Focus techniques",
     "focus.vms.title": "MicroVMs sans disque (tmpfs)",
-    "focus.vms.body": "Trois microVMs QEMU générées depuis un seul fichier topology.nix, montées en RAM sans image disque.",
+    "focus.vms.body":
+      "Trois microVMs QEMU générées depuis un seul fichier topology.nix, montées en RAM sans image disque.",
     "focus.net.title": "Réseau Cilium eBPF et identité sans mot de passe",
-    "focus.net.body": "Politiques default-deny par namespace, secrets tournés par OpenBao et authentification passkeys via Pocket-ID.",
+    "focus.net.body":
+      "Politiques default-deny par namespace, secrets tournés par OpenBao et authentification passkeys via Pocket-ID.",
     "focus.imp.title": "Poste NixOS éphémère en tmpfs",
-    "focus.imp.body": "Racine effacée à chaque extinction et outils autonomes empaquetés via nix-wrapper-modules.",
+    "focus.imp.body":
+      "Racine effacée à chaque extinction et outils autonomes empaquetés via nix-wrapper-modules.",
 
     "systems.title": "Projets",
-    "systems.intro": "Deux systèmes personnels pensés comme un terrain d'expérimentation autour de NixOS et Kubernetes.",
+    "systems.intro":
+      "Mon homelab et la configuration de mon ordinateur portable, où je teste des idées autour de NixOS, Kubernetes et de la gestion de l'état.",
     "systems.repo": "Dépôt",
     "systems.stack": "Technologies",
     "systems.facts": "Fiche technique",
@@ -63,7 +75,8 @@ const ui = {
 
     "resume.title": "CV",
     "resume.profile": "Profil",
-    "resume.intro": "Étudiant en 5e année à l'EPITA en Systèmes, Réseaux, Sécurité & Infrastructure. Je fais actuellement partie de La Forge, l'équipe qui exploite l'infrastructure interne de l'école. J'aime construire et automatiser des systèmes, et je m'y consacre sérieusement depuis 4 ans maintenant. Ouvert aux opportunités de stage à partir de février 2027.",
+    "resume.intro":
+      "En dernière année à l'EPITA (Systèmes, Réseaux, Sécurité & Infrastructure) et employé à temps partiel à La Forge depuis février 2026. J'y développe les services de l'école, je les héberge et je construis les images de son parc informatique. Je cherche un stage de fin d'études à partir de février 2027.",
     "resume.print": "Imprimer",
     "resume.experience": "Expérience professionnelle",
     "resume.education": "Formation",
@@ -71,18 +84,18 @@ const ui = {
     "resume.interests": "Centres d'intérêt",
     "resume.spoken": "Langues",
     "resume.downloads": "Télécharger le PDF",
-    "since": "depuis",
-    "to": "-",
+    since: "depuis",
+    to: "-",
 
     "studies.title": "Études",
     "studies.p1":
-      "La majeure Systèmes, Réseaux et Sécurité (SRS), ce sont deux années passées à décrire, déployer et défendre des systèmes. ADLIN commence par un parc de serveurs Linux à administrer entièrement avec Ansible : rôles, playbooks, services et comptes, tout est écrit dans un dépôt avant d'exister sur une machine. ARS pousse la logique jusqu'au bout : monter dans OpenStack une infrastructure fictive complète — contrôleur de domaine, serveur mail, PKI interne, mTLS — puis l'attaquer et la défendre, côté blue team comme red team.",
+      "La majeure Systèmes, Réseaux et Sécurité (SRS) dure deux ans. ADLIN part d'un parc de serveurs Linux à administrer entièrement avec Ansible : rôles, playbooks, services et comptes sont écrits dans un dépôt avant d'exister sur une machine. ARS monte dans OpenStack une infrastructure fictive complète (contrôleur de domaine, serveur mail, PKI interne, mTLS), puis l'attaque et la défend, côté blue team comme côté red team.",
     "studies.p2":
-      "La majeure s'intéresse aussi à ce que beaucoup de formations laissent de côté : Windows. WINSEC ouvre le capot pour de bon — fonctionnement du noyau et des services, mécanismes du système — puis en tire le durcissement et l'administration sécurisée. AGDA enchaîne côté Active Directory : comprendre un annuaire générique, ses objets, ses protocoles et ses délégations, puis enquêter sur un domaine compromis — forensic — et le remettre en état.",
+      "La majeure traite aussi Windows. WINSEC explique le fonctionnement du noyau et des services, puis en tire le durcissement et l'administration sécurisée. AGDA porte sur Active Directory : les objets, les protocoles et les délégations d'un annuaire, puis l'investigation (forensic) d'un domaine compromis et sa remise en état.",
     "studies.p3":
-      "Le reste du cursus alterne le regard de l'attaquant et celui de l'analyste. VIRO dissèque du code malveillant : anatomie d'une souche, rétro-ingénierie, techniques d'obfuscation et écriture de détections. SOC installe le réflexe complémentaire : remonter et corréler les événements, écrire des règles de détection qui sonnent juste, investiguer une alerte et répondre à un incident.",
+      "Deux cours changent de point de vue. VIRO dissèque du code malveillant : anatomie d'une souche, rétro-ingénierie, obfuscation, écriture de détections. SOC apprend à remonter et corréler des événements, écrire des règles de détection, investiguer une alerte et répondre à un incident.",
     "studies.p4":
-      "Pris ensemble, ces cours racontent trois fois la même histoire : un système qu'on sait décrire, un adversaire qu'on sait lire, une défense qu'on sait tenir. C'est la boucle que je retrouve chaque semaine à La Forge — et celle que je rejoue chez moi, sur un homelab qui n'a rien d'un environnement de production sage.",
+      "À La Forge et sur mon homelab, je fais surtout de l'infra. Ces cours me donnent l'autre point de vue, celui de l'attaquant et de l'analyste.",
 
     "colophon.title": "Informations",
     "colophon.intro": "Site statique construit avec Astro et Nix.",
@@ -99,7 +112,8 @@ const ui = {
     "colophon.built": "compilé le",
     "colophon.stack": "Astro, Nix, nginx.",
     "colophon.source": "GitHub",
-    "colophon.audioText": "Émulateur de Roland TB-303 en Web Audio (AudioWorklet).",
+    "colophon.audioText":
+      "Émulateur de Roland TB-303 en Web Audio (AudioWorklet).",
     "colophon.typeText": "IBM Plex Sans et IBM Plex Mono.",
 
     "help.key.poles": "Naviguer entre les pages",
@@ -108,7 +122,8 @@ const ui = {
     "help.key.lang": "Changer de langue (FR / EN)",
 
     "vtr.nav": "303",
-    "vtr.lead": "Un synthétiseur TB-303 minimaliste en Web Audio (AudioWorklet), avec séquenceur 16 pas.",
+    "vtr.lead":
+      "Un synthétiseur TB-303 minimaliste en Web Audio (AudioWorklet), avec séquenceur 16 pas.",
     "vtr.voice": "Voix",
     "vtr.length": "pas",
     "vtr.play": "▶ lecture",
@@ -128,7 +143,7 @@ const ui = {
     "vtr.unsupported": "Ce navigateur ne prend pas en charge AudioWorklet.",
     "vtr.nojs": "La 303 nécessite JavaScript (Web Audio).",
 
-    "notfound": "Cette page n'existe pas.",
+    notfound: "Cette page n'existe pas.",
     "notfound.hint": "Retour à l'accueil",
   },
   en: {
@@ -137,7 +152,7 @@ const ui = {
     "chassis.inv": "Theme",
     "chassis.inv.title": "Switch theme",
     "chassis.cv": "CV (PDF)",
-    "skip": "Skip to content",
+    skip: "Skip to content",
 
     "nav.index": "About",
     "nav.homelab": "Homelab",
@@ -150,34 +165,46 @@ const ui = {
     "nav.lang": "FR",
 
     "index.title": "About",
-    "index.p1": "I am a fifth-year engineering student at EPITA majoring in Systems, Networks, Security, and Infrastructure. Since February 2026, I have been part of La Forge, the team that runs the school's internal infrastructure: we maintain the intranet used for the first-year bootcamp and workshops, develop internal services deployed on Kubernetes with Argo CD, and build the NixOS images booted over the network across EPITA's student lab machines.",
-    "index.p2": "Trying to understand how to describe a whole machine without relying on manual setup is what got me hooked on Nix. Over the past four years, that mindset has shaped how I approach systems engineering: instead of maintaining configurations that quietly drift over time, I like starting from a clean slate where every piece of state, every package, and every network flow exists only because it is written down in Git.",
-    "index.p3": "Alongside my coursework and internships at CEA Saclay and RedPill Group, I run my own home infrastructure lab and workstation setup. Rather than treating them like conservative production boxes, I use them as an infrastructure playground to push ideas as far as they go: running a Kubernetes cluster inside diskless microVMs in RAM, locking down every network flow by default with eBPF, wiping my laptop's root filesystem on every shutdown, and bundling each application with its own configuration directly in the Nix store via nix-wrapper-modules.",
-    "index.p4": "I am open to six-month end-of-studies internship opportunities starting February 2027 in systems, infrastructure, or security. If my background or projects match what your team is building, feel free to reach out.",
+    "index.p1":
+      "I am in my final year at EPITA, in the Systems, Networks and Security major. I also work part-time for the school at La Forge, the team that handles the IT needs of teaching.",
+    "index.p2":
+      "We develop the school's services (the intranet used for the piscine, Moodle, the student directory), host them in a colocated datacenter in Ivry, and provide EPITA's machine fleet (PIE).",
+    "index.p3":
+      "I use Nix to describe entire machines: at work for the PIE fleet, which boots over the network on NixOS images, and at home for my laptop and a Kubernetes homelab.",
+    "index.p4":
+      "I am looking for a six-month end-of-studies internship starting February 2027, in systems, infrastructure or security. Feel free to reach out.",
 
-    "index.role": "Fifth-year engineering student at EPITA (Systems, Networks, Security & Infrastructure) and contributor at La Forge.",
-    "index.lead": "I have been building and automating systems for four years, both at EPITA within La Forge and on my own NixOS and Kubernetes playground.",
-    "index.seeking": "Open to 6-month end-of-studies internship opportunities starting February 2027.",
+    "index.role":
+      "Final year at EPITA (Systems, Networks, Security), part-time employee at La Forge.",
+    "index.lead":
+      "Final-year student at EPITA and part-time employee at La Forge, where I develop and host the school's services and build the NixOS images of its machine fleet.",
+    "index.seeking":
+      "Looking for a 6-month end-of-studies internship starting February 2027.",
     "index.now": "Currently",
     "index.download": "Download CV (PDF)",
     "index.contact": "abel.chartier@gmail.com",
     "index.source": "github.com/Orysse",
     "index.register": "Projects",
-    "index.registerIntro": "Two personal systems I use as an engineering playground around NixOS, Kubernetes, and state management.",
+    "index.registerIntro":
+      "My homelab and my laptop configuration, where I test ideas around NixOS, Kubernetes and state management.",
     "index.read": "READ",
     "index.served": "",
     "index.tech": "technologies",
 
     "focus.title": "Technical highlights",
     "focus.vms.title": "Diskless microVMs (tmpfs)",
-    "focus.vms.body": "Three QEMU microVMs generated from a single topology.nix file, running in RAM with no disk image.",
+    "focus.vms.body":
+      "Three QEMU microVMs generated from a single topology.nix file, running in RAM with no disk image.",
     "focus.net.title": "Cilium eBPF networking and passwordless identity",
-    "focus.net.body": "Default-deny namespace policies, credentials rotated by OpenBao, and passkey authentication via Pocket-ID.",
+    "focus.net.body":
+      "Default-deny namespace policies, credentials rotated by OpenBao, and passkey authentication via Pocket-ID.",
     "focus.imp.title": "Ephemeral tmpfs NixOS workstation",
-    "focus.imp.body": "Root wiped on every shutdown and self-contained user tools packaged via nix-wrapper-modules.",
+    "focus.imp.body":
+      "Root wiped on every shutdown and self-contained user tools packaged via nix-wrapper-modules.",
 
     "systems.title": "Projects",
-    "systems.intro": "Two personal systems built as an experimentation playground around NixOS and Kubernetes.",
+    "systems.intro":
+      "My homelab and my laptop configuration, where I test ideas around NixOS, Kubernetes and state management.",
     "systems.repo": "Repository",
     "systems.stack": "Technologies",
     "systems.facts": "Specifications",
@@ -191,7 +218,8 @@ const ui = {
 
     "resume.title": "CV",
     "resume.profile": "Summary",
-    "resume.intro": "Fifth-year EPITA student in Systems, Networks, Security & Infrastructure. I'm currently part of La Forge, the team that runs EPITA's internal infrastructure. I like building and automating systems, and I've been doing it seriously for 4 years now. Open to internship opportunities starting February 2027.",
+    "resume.intro":
+      "Final year at EPITA (Systems, Networks, Security & Infrastructure) and part-time employee at La Forge since February 2026. I develop the school's services, host them, and build the images of its machine fleet. Looking for an end-of-studies internship starting February 2027.",
     "resume.print": "Print",
     "resume.experience": "Professional Experience",
     "resume.education": "Education",
@@ -199,18 +227,18 @@ const ui = {
     "resume.interests": "Interests",
     "resume.spoken": "Languages",
     "resume.downloads": "Download PDF",
-    "since": "Since",
-    "to": "-",
+    since: "Since",
+    to: "-",
 
     "studies.title": "Studies",
     "studies.p1":
-      "The Systems, Networks and Security (SRS) major is two years spent describing, deploying and defending systems. ADLIN starts with a fleet of Linux servers to administer entirely with Ansible: roles, playbooks, services and accounts — everything is written in a repository before it exists on a machine. ARS follows the logic to the end: building a complete fictional infrastructure in OpenStack — domain controller, mail server, internal PKI, mTLS — then attacking and defending it, as blue team one day, red team the next.",
+      "The Systems, Networks and Security (SRS) major lasts two years. ADLIN starts from a fleet of Linux servers to administer entirely with Ansible: roles, playbooks, services and accounts are written in a repository before they exist on a machine. ARS builds a complete fictional infrastructure in OpenStack (domain controller, mail server, internal PKI, mTLS), then attacks and defends it, as blue team one day and red team the next.",
     "studies.p2":
-      "The major also covers what many curricula leave aside: Windows. WINSEC opens the hood for real — how the kernel, the services and the system mechanisms work — then turns that into hardening and secure administration. AGDA continues on Active Directory: understanding a generic directory, its objects, protocols and delegations, then investigating a compromised domain — forensics — and restoring it.",
+      "The major covers Windows too. WINSEC explains how the kernel and the services work, then derives hardening and secure administration from it. AGDA is about Active Directory: the objects, protocols and delegations of a directory, then the investigation (forensics) of a compromised domain and its restoration.",
     "studies.p3":
-      "The rest of the programme alternates between the attacker's view and the analyst's. VIRO dissects malware: anatomy of a strain, reverse engineering, obfuscation techniques and writing detections. SOC builds the complementary reflex: collecting and correlating events, writing detection rules that fire correctly, triaging an alert and responding to an incident.",
+      "Two courses change the point of view. VIRO dissects malware: anatomy of a strain, reverse engineering, obfuscation, writing detections. SOC teaches collecting and correlating events, writing detection rules, triaging an alert and responding to an incident.",
     "studies.p4":
-      "Taken together, these courses tell the same story three times: a system you know how to describe, an adversary you know how to read, a defence you know how to hold. It is the loop I run every week at La Forge — and the one I replay at home, on a homelab that is anything but a quiet production environment.",
+      "At La Forge and on my homelab, I mostly do infrastructure. These courses give me the other point of view, the attacker's and the analyst's.",
 
     "colophon.title": "Information",
     "colophon.intro": "Static site built with Astro and Nix.",
@@ -236,7 +264,8 @@ const ui = {
     "help.key.lang": "Switch language (FR / EN)",
 
     "vtr.nav": "303",
-    "vtr.lead": "A minimal TB-303 bass synthesizer in Web Audio (AudioWorklet), with a 16-step sequencer.",
+    "vtr.lead":
+      "A minimal TB-303 bass synthesizer in Web Audio (AudioWorklet), with a 16-step sequencer.",
     "vtr.voice": "Voice",
     "vtr.length": "steps",
     "vtr.play": "▶ play",
@@ -256,7 +285,7 @@ const ui = {
     "vtr.unsupported": "This browser does not support AudioWorklet.",
     "vtr.nojs": "The 303 needs JavaScript (Web Audio).",
 
-    "notfound": "This page does not exist.",
+    notfound: "This page does not exist.",
     "notfound.hint": "Back home",
   },
 } satisfies Record<Lang, Record<string, string>>;
@@ -278,16 +307,27 @@ export const systemsUrl = (lang: Lang, slug?: string): string => {
   const base = lang === "fr" ? "/systemes/" : "/en/systems/";
   return slug ? `${base}${slug}/` : base;
 };
-export const resumeUrl = (lang: Lang): string => (lang === "fr" ? "/parcours/" : "/en/resume/");
-export const studiesUrl = (lang: Lang): string => (lang === "fr" ? "/etudes/" : "/en/studies/");
-export const colophonUrl = (lang: Lang): string => (lang === "fr" ? "/colophon/" : "/en/colophon/");
+export const resumeUrl = (lang: Lang): string =>
+  lang === "fr" ? "/parcours/" : "/en/resume/";
+export const studiesUrl = (lang: Lang): string =>
+  lang === "fr" ? "/etudes/" : "/en/studies/";
+export const colophonUrl = (lang: Lang): string =>
+  lang === "fr" ? "/colophon/" : "/en/colophon/";
 
 export function navItems(lang: Lang): NavItem[] {
   return [
     { key: "index", label: t(lang, "nav.index"), href: home(lang) },
     { key: "studies", label: t(lang, "nav.studies"), href: studiesUrl(lang) },
-    { key: "homelab", label: t(lang, "nav.homelab"), href: systemsUrl(lang, "homelab") },
-    { key: "config", label: t(lang, "nav.config"), href: systemsUrl(lang, "config") },
+    {
+      key: "homelab",
+      label: t(lang, "nav.homelab"),
+      href: systemsUrl(lang, "homelab"),
+    },
+    {
+      key: "config",
+      label: t(lang, "nav.config"),
+      href: systemsUrl(lang, "config"),
+    },
     { key: "resume", label: t(lang, "nav.resume"), href: resumeUrl(lang) },
   ];
 }
@@ -302,16 +342,53 @@ export interface Pole {
 export function poles(lang: Lang): Pole[] {
   return [
     { n: "01", key: "index", label: t(lang, "nav.index"), href: home(lang) },
-    { n: "02", key: "systems", label: t(lang, "nav.systems"), href: systemsUrl(lang) },
-    { n: "03", key: "resume", label: t(lang, "nav.resume"), href: resumeUrl(lang) },
+    {
+      n: "02",
+      key: "systems",
+      label: t(lang, "nav.systems"),
+      href: systemsUrl(lang),
+    },
+    {
+      n: "03",
+      key: "resume",
+      label: t(lang, "nav.resume"),
+      href: resumeUrl(lang),
+    },
   ];
 }
 
-export const synthUrl = (lang: Lang): string => (lang === "fr" ? "/303/" : "/en/303/");
+export const synthUrl = (lang: Lang): string =>
+  lang === "fr" ? "/303/" : "/en/303/";
 
 const months = {
-  fr: ["Janv.", "Févr.", "Mars", "Avr.", "Mai", "Juin", "Juil.", "Août", "Sept.", "Oct.", "Nov.", "Déc."],
-  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  fr: [
+    "Janv.",
+    "Févr.",
+    "Mars",
+    "Avr.",
+    "Mai",
+    "Juin",
+    "Juil.",
+    "Août",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Déc.",
+  ],
+  en: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ],
 };
 
 export function month(value: string, lang: Lang): string {

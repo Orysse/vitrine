@@ -1,6 +1,6 @@
 ---
 title: Homelab
-summary: "Je n'ai pas construit ce homelab pour héberger des services de manière tranquille, mais pour avoir un terrain de jeu où pousser Nix et Kubernetes un peu plus loin que de raison : des microVMs sans disque qui tournent en RAM, un réseau où rien ne passe sans être écrit dans Git, et une supervision qui reste debout même quand le cluster tombe."
+summary: "Mon terrain d'essai pour Nix et Kubernetes à la maison : des microVMs sans disque qui tournent en RAM, un réseau où rien ne passe sans être écrit dans Git, et une supervision qui reste en place quand le cluster tombe."
 order: 1
 repo: https://github.com/Orysse/homelab-nix
 repoSecondary: https://github.com/Orysse/homelab-cluster
@@ -19,9 +19,9 @@ facts:
 
 ## Pourquoi ce laboratoire
 
-Au départ, un homelab sert souvent à remplacer quelques services cloud chez soi. Très vite, ce qui m'a intéressé n'était plus les applications elles-mêmes, mais la manière de décrire et de tenir toute une infrastructure sans jamais avoir à intervenir à la main sur une machine. En découvrant NixOS, j'ai eu envie de traiter mon serveur non pas comme un environnement de production figé, mais comme un terrain d'expérimentation où tester des choix d'architecture radicaux.
+Mon premier homelab était l'OpenStack installé sur les serveurs de récupération de L'Atelier. Celui-ci est chez moi, sur un seul Intel NUC. Quelques conteneurs directement sur l'hôte auraient suffi, mais je voulais rencontrer les vrais problèmes d'orchestration, d'isolation réseau, de gestion des secrets et de reprise sur panne. Je l'ai donc découpé en un cluster Kubernetes de trois nœuds, dans des machines virtuelles qui ne gardent aucun état.
 
-Sur un unique Intel NUC, faire tourner quelques conteneurs directement sur l'hôte aurait largement suffi. Mais pour me confronter aux vrais problèmes d'orchestration, d'isolation réseau, de gestion des secrets et de reprise sur panne, j'ai préféré découper la machine en un cluster Kubernetes complet de trois nœuds, tout en cherchant à éliminer l'inertie habituelle des machines virtuelles.
+Ce n'est pas un environnement de production. Je m'en sers pour essayer des choix que je ne ferais pas forcément au travail, avec NixOS pour tout décrire dans Git sans rien faire à la main.
 
 ## Topologie déclarative et microVMs sans disque
 
@@ -30,6 +30,8 @@ Le premier dépôt, homelab-nix, décrit l'intégralité du socle matériel et s
 Au cœur de ce dépôt, un unique fichier de topologie décrit le plan réseau, l'hôte et les trois nœuds du cluster avec leur rôle, leur mémoire vive et leurs processeurs virtuels. Ce fichier possède son propre schéma de validation vérifié à chaque commit par nix flake check. Redimensionner un nœud ou modifier le plan d'adressage tient en une seule ligne, et les trois machines virtuelles QEMU sont générées automatiquement à partir de cette définition via microvm.nix.
 
 Ces machines virtuelles n'ont aucune image disque. Leur système de fichiers racine est monté en mémoire vive dans un tmpfs et repart d'un état vierge à chaque redémarrage, en partageant le store Nix de l'hôte en lecture seule. Seuls l'identité du nœud et les données internes de k3s traversent vers le disque physique. Le déploiement de l'hôte lui-même passe par deploy-rs : si une mise à jour casse le réseau ou empêche la machine de répondre après l'activation, elle annule d'elle-même le déploiement et revient à la génération précédente.
+
+Je suis très content de microvm.nix : c'est une bien meilleure solution que ce que je pensais.
 
 ## Persistance sur l'hôte et supervision hors du cluster
 

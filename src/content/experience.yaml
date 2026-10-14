@@ -1,20 +1,20 @@
 - id: la-forge
   org: La Forge
   orgDetail: EPITA
-  role: { fr: Contributeur étudiant, en: Student Contributor }
+  role: { fr: Employé à temps partiel, en: Part-time employee }
   start: "2026-02"
   end: null
   location: Le Kremlin-Bicêtre
   stack: [NixOS, netboot, Java, Kubernetes, Argo CD]
   points:
-    - fr: "Développement et maintenance de l'intranet de l'EPITA, notamment utilisé pour la piscine et les ateliers."
-      en: "Build and maintain EPITA's intranet, used notably during the piscine (intensive first-year bootcamp) and workshops."
-    - fr: "Support interne auprès des outils de l'école, tant vis-à-vis des équipes pédagogiques que des élèves."
-      en: "Provide internal support for the school's tools, for both teaching staff and students."
-    - fr: "Développement de microservices Java internes, déployés sur Kubernetes via des workflows GitOps avec Argo CD."
-      en: "Develop internal Java microservices, deployed on Kubernetes via GitOps workflows with Argo CD."
-    - fr: "Construction et maintenance des images NixOS en Infrastructure as Code, déployées sur tout le parc des salles machines via netboot."
-      en: "Build and maintain NixOS images as Infrastructure as Code, deployed fleet-wide across EPITA's student lab machines over netboot."
+    - fr: "Développement et maintenance des services de l'école : l'intranet (utilisé notamment pour la piscine et les ateliers), le Moodle et l'annuaire des étudiants."
+      en: "Develop and maintain the school's services: the intranet (used notably for the piscine, the intensive first-year bootcamp, and workshops), Moodle and the student directory."
+    - fr: "Hébergement de ces services dans un datacenter en colocation à Ivry, avec des microservices Java déployés sur Kubernetes via Argo CD."
+      en: "Host these services in a colocated datacenter in Ivry, with Java microservices deployed on Kubernetes through Argo CD."
+    - fr: "Mise à disposition du parc informatique de l'EPITA (PIE) : construction et maintenance des images NixOS, démarrées en netboot."
+      en: "Provide EPITA's machine fleet (PIE): build and maintain the NixOS images, booted over the network."
+    - fr: "Support auprès des équipes pédagogiques et des élèves sur les outils de l'école."
+      en: "Support teaching staff and students on the school's tools."
 
 - id: cea
   org: CEA Saclay

@@ -1,6 +1,6 @@
 ---
 title: Homelab
-summary: "I didn't build this homelab just to quietly host a few services at home, but to have a real infrastructure playground where I could push Nix and Kubernetes further than strictly necessary: diskless microVMs running in RAM, a network where nothing flows unless written in Git, and monitoring that stays up even when the cluster goes down."
+summary: "My home testbed for Nix and Kubernetes: diskless microVMs running in RAM, a network where nothing flows unless it is written in Git, and monitoring that stays up when the cluster goes down."
 order: 1
 repo: https://github.com/Orysse/homelab-nix
 repoSecondary: https://github.com/Orysse/homelab-cluster
@@ -19,9 +19,9 @@ facts:
 
 ## Why build a playground
 
-A homelab usually starts as a way to self-host a few everyday tools. Pretty quickly, what interested me wasn't the applications themselves, but figuring out how to describe and operate an entire infrastructure stack without ever touching a machine by hand. Once I fell into NixOS, I wanted to treat my home server not as a fragile production box, but as an experimentation ground where I could test opinionated architectural ideas end to end.
+My first homelab was the OpenStack I installed on L'Atelier's second-hand servers. This one is at home, on a single Intel NUC. A few containers directly on the host would have been enough, but I wanted to run into the real problems of orchestration, network isolation, secret management and failure recovery. So I split it into a three-node Kubernetes cluster, in virtual machines that keep no state.
 
-Running a few containers directly on plain NixOS on a single Intel NUC would have been more than enough in practice. Instead, to confront real orchestration, network isolation, secret rotation, and failure-recovery problems, I split the physical machine into a full three-node Kubernetes cluster while stripping away the usual weight and state drift of virtual machines.
+It is not a production environment. I use it to try choices I would not necessarily make at work, with NixOS to describe everything in Git without doing anything by hand.
 
 ## Declarative topology and diskless microVMs
 
@@ -30,6 +30,8 @@ The first repository, homelab-nix, describes everything from bare metal up to a 
 At the center of the repository, a single topology file defines the network plan, the physical host, and all three cluster nodes along with their roles, memory, and vCPU allocations. That topology has its own schema validated on every push by nix flake check. Moving a node or changing its memory is a one-line edit, and microvm.nix generates all three QEMU virtual machines directly from that single source of truth.
 
 None of these virtual machines has a disk image. Their root filesystem is mounted in RAM as a tmpfs and starts completely fresh on every reboot, sharing the host's Nix store read-only. Only the node identity and internal k3s state pass through to the physical disk. The host itself is deployed atomically over SSH with deploy-rs: if an activation ever breaks networking or stops the host from responding, deploy-rs automatically rolls the system back to the previous generation.
+
+I am very happy with microvm.nix: it is a much better solution than I expected.
 
 ## Host-level persistence and out-of-cluster monitoring
 
