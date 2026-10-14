@@ -21,7 +21,7 @@ const extraIcons: Record<string, string> = {
 };
 
 // 30 marks, six columns, five rows: one line wider than tall.
-// Order: cloud-native infrastructure, then security, then languages.
+// Order: cloud-native infrastructure, then security, then languages & tools.
 // Every entry has an official mark. `slug` is a simple-icons slug or a key of
 // `extraIcons`; `img` points to an official raster in public/logos/.
 const tools: { slug?: string; label: string; url: string; img?: string }[] = [
@@ -50,16 +50,16 @@ const tools: { slug?: string; label: string; url: string; img?: string }[] = [
   // Sécurité
   { slug: "openbao", label: "OpenBao", url: "https://openbao.org" },
   { slug: "trivy", label: "Trivy", url: "https://trivy.dev" },
-  { slug: "letsencrypt", label: "Let's Encrypt", url: "https://letsencrypt.org" },
   { slug: "wireguard", label: "WireGuard", url: "https://www.wireguard.com" },
   { slug: "tailscale", label: "Tailscale", url: "https://tailscale.com" },
-  { slug: "pfsense", label: "pfSense", url: "https://www.pfsense.org" },
   { img: "/logos/stormshield.png", label: "Stormshield", url: "https://www.stormshield.com" },
 
-  // Langages
+  // Langages & outils
   { slug: "python", label: "Python", url: "https://www.python.org" },
   { slug: "openjdk", label: "Java", url: "https://openjdk.org" },
   { slug: "c", label: "C", url: "https://en.cppreference.com/w/c" },
+  { slug: "gnubash", label: "Bash", url: "https://www.gnu.org/software/bash/" },
+  { slug: "claudecode", label: "Claude Code", url: "https://claude.com/product/claude-code" },
 ];
 ---
 

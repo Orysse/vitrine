@@ -47,7 +47,7 @@
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 16px;
-    line-height: 1.95;
+    line-height: 2;
     font-weight: 400;
     font-feature-settings: "liga" 0;
     -webkit-font-smoothing: antialiased;
@@ -58,7 +58,7 @@
     padding: 0;
     font-size: 16px;
     font-weight: 400;
-    line-height: 1.95;
+    line-height: 2;
   }
   a, button {
     color: var(--ink);
@@ -108,9 +108,9 @@
     gap: 1rem 2rem;
   }
   .site-logo a {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     line-height: 1;
     color: #000000;
   }
@@ -128,11 +128,7 @@
     font-size: 14px;
     letter-spacing: 0.08em;
     line-height: 1;
-    color: #828282;
-  }
-  .menu-list a[aria-current="page"] {
     color: #000000;
-    font-weight: 500;
   }
   .lang-switch {
     margin-left: 30px;
@@ -168,7 +164,16 @@
     font-weight: 500;
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 1024px) {
+    .menu-list {
+      column-gap: 16px;
+    }
+    .lang-switch {
+      margin-left: 18px;
+    }
+  }
+
+  @media (max-width: 900px) {
     .site-header {
       height: auto;
       padding-block: 18px;
@@ -181,6 +186,7 @@
     }
     .global-menu {
       width: 100%;
+      align-items: flex-start;
       justify-content: space-between;
     }
     .menu-list {
@@ -201,7 +207,7 @@
 
   /* Offset page title at the left of the wide frame, merely bolder (16px, weight 600) */
   .content-title {
-    margin: 60px 0 56px;
+    margin: 70px 0 90px;
   }
   .content-title h1 {
     font-size: 16px;
@@ -217,7 +223,7 @@
     margin: 0 auto;
   }
   .reading-column p + p {
-    margin-top: 1.85rem;
+    margin-top: 2rem;
   }
   .reading-column a {
     text-decoration: underline;
@@ -226,13 +232,6 @@
   .reading-column a:hover {
     text-decoration: none;
     opacity: 1;
-  }
-
-  /* Divider between major blocks inside the reading column (Hara .column + .column) */
-  .reading-block + .reading-block {
-    margin-top: 80px;
-    padding-top: 80px;
-    border-top: 1px solid var(--line);
   }
 
   /* Hara top-column section header (wide 1px rule, bold 16px title on left, MORE/READ link on right) */
@@ -249,7 +248,7 @@
     border-bottom: 1px solid var(--line);
   }
   .column-header-top {
-    margin-top: 60px;
+    margin-top: 70px;
   }
   .column-header h1,
   .column-header h2 {
@@ -285,9 +284,9 @@
   }
   .essay-prose p {
     font-size: 16px;
-    line-height: 1.95;
+    line-height: 2;
     color: #000000;
-    margin: 0 0 28px;
+    margin: 0 0 32px;
   }
   .essay-prose a {
     text-decoration: underline;
@@ -470,6 +469,12 @@
     font-size: 15px;
     line-height: 1.6;
     color: var(--ink-2);
+  }
+  .cv-note {
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.85;
+    color: #000000;
   }
   .cv-points {
     margin-top: 14px;

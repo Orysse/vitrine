@@ -17,6 +17,7 @@ const ui = {
     "nav.vitrine": "Vitrine",
     "nav.systems": "Projets",
     "nav.resume": "CV",
+    "nav.studies": "Études",
     "nav.colophon": "Build",
     "nav.lang": "EN",
 
@@ -72,6 +73,16 @@ const ui = {
     "resume.downloads": "Télécharger le PDF",
     "since": "depuis",
     "to": "-",
+
+    "studies.title": "Études",
+    "studies.p1":
+      "La majeure Systèmes, Réseaux et Sécurité (SRS), ce sont deux années passées à décrire, déployer et défendre des systèmes. ADLIN commence par un parc de serveurs Linux à administrer entièrement avec Ansible : rôles, playbooks, services et comptes, tout est écrit dans un dépôt avant d'exister sur une machine. ARS pousse la logique jusqu'au bout : monter dans OpenStack une infrastructure fictive complète — contrôleur de domaine, serveur mail, PKI interne, mTLS — puis l'attaquer et la défendre, côté blue team comme red team.",
+    "studies.p2":
+      "La majeure s'intéresse aussi à ce que beaucoup de formations laissent de côté : Windows. WINSEC ouvre le capot pour de bon — fonctionnement du noyau et des services, mécanismes du système — puis en tire le durcissement et l'administration sécurisée. AGDA enchaîne côté Active Directory : comprendre un annuaire générique, ses objets, ses protocoles et ses délégations, puis enquêter sur un domaine compromis — forensic — et le remettre en état.",
+    "studies.p3":
+      "Le reste du cursus alterne le regard de l'attaquant et celui de l'analyste. VIRO dissèque du code malveillant : anatomie d'une souche, rétro-ingénierie, techniques d'obfuscation et écriture de détections. SOC installe le réflexe complémentaire : remonter et corréler les événements, écrire des règles de détection qui sonnent juste, investiguer une alerte et répondre à un incident.",
+    "studies.p4":
+      "Pris ensemble, ces cours racontent trois fois la même histoire : un système qu'on sait décrire, un adversaire qu'on sait lire, une défense qu'on sait tenir. C'est la boucle que je retrouve chaque semaine à La Forge — et celle que je rejoue chez moi, sur un homelab qui n'a rien d'un environnement de production sage.",
 
     "colophon.title": "Informations",
     "colophon.intro": "Site statique construit avec Astro et Nix.",
@@ -134,6 +145,7 @@ const ui = {
     "nav.vitrine": "Vitrine",
     "nav.systems": "Projects",
     "nav.resume": "CV",
+    "nav.studies": "Studies",
     "nav.colophon": "Build",
     "nav.lang": "FR",
 
@@ -189,6 +201,16 @@ const ui = {
     "resume.downloads": "Download PDF",
     "since": "Since",
     "to": "-",
+
+    "studies.title": "Studies",
+    "studies.p1":
+      "The Systems, Networks and Security (SRS) major is two years spent describing, deploying and defending systems. ADLIN starts with a fleet of Linux servers to administer entirely with Ansible: roles, playbooks, services and accounts — everything is written in a repository before it exists on a machine. ARS follows the logic to the end: building a complete fictional infrastructure in OpenStack — domain controller, mail server, internal PKI, mTLS — then attacking and defending it, as blue team one day, red team the next.",
+    "studies.p2":
+      "The major also covers what many curricula leave aside: Windows. WINSEC opens the hood for real — how the kernel, the services and the system mechanisms work — then turns that into hardening and secure administration. AGDA continues on Active Directory: understanding a generic directory, its objects, protocols and delegations, then investigating a compromised domain — forensics — and restoring it.",
+    "studies.p3":
+      "The rest of the programme alternates between the attacker's view and the analyst's. VIRO dissects malware: anatomy of a strain, reverse engineering, obfuscation techniques and writing detections. SOC builds the complementary reflex: collecting and correlating events, writing detection rules that fire correctly, triaging an alert and responding to an incident.",
+    "studies.p4":
+      "Taken together, these courses tell the same story three times: a system you know how to describe, an adversary you know how to read, a defence you know how to hold. It is the loop I run every week at La Forge — and the one I replay at home, on a homelab that is anything but a quiet production environment.",
 
     "colophon.title": "Information",
     "colophon.intro": "Static site built with Astro and Nix.",
@@ -247,7 +269,7 @@ export const l = (value: L10n, lang: Lang): string => value[lang];
 export const home = (lang: Lang): string => (lang === "fr" ? "/" : "/en/");
 
 export interface NavItem {
-  key: "index" | "homelab" | "config" | "resume";
+  key: "index" | "studies" | "homelab" | "config" | "resume";
   label: string;
   href: string;
 }
@@ -257,11 +279,13 @@ export const systemsUrl = (lang: Lang, slug?: string): string => {
   return slug ? `${base}${slug}/` : base;
 };
 export const resumeUrl = (lang: Lang): string => (lang === "fr" ? "/parcours/" : "/en/resume/");
+export const studiesUrl = (lang: Lang): string => (lang === "fr" ? "/etudes/" : "/en/studies/");
 export const colophonUrl = (lang: Lang): string => (lang === "fr" ? "/colophon/" : "/en/colophon/");
 
 export function navItems(lang: Lang): NavItem[] {
   return [
     { key: "index", label: t(lang, "nav.index"), href: home(lang) },
+    { key: "studies", label: t(lang, "nav.studies"), href: studiesUrl(lang) },
     { key: "homelab", label: t(lang, "nav.homelab"), href: systemsUrl(lang, "homelab") },
     { key: "config", label: t(lang, "nav.config"), href: systemsUrl(lang, "config") },
     { key: "resume", label: t(lang, "nav.resume"), href: resumeUrl(lang) },
