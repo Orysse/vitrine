@@ -64,7 +64,9 @@ const tools: { slug?: string; label: string; url: string; img?: string }[] = [
 ---
 
 <section class="tech-wall" aria-label={t(lang, "index.tech")}>
-  <h2 class="tech-wall-label">{t(lang, "index.tech")}</h2>
+  <div class="column-header">
+    <h2>{t(lang, "index.tech")}</h2>
+  </div>
   <ul class="tech-wall-grid">
     {tools.map((tool) => {
       const icon = tool.slug ? bySlug.get(tool.slug) : undefined;

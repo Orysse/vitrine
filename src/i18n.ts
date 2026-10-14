@@ -23,18 +23,18 @@ const ui = {
 
     "index.title": "À propos",
     "index.p1":
-      "Je suis en dernière année à l'EPITA, en majeure Systèmes, Réseaux et Sécurité. Je travaille aussi à temps partiel pour l'école, à La Forge, l'équipe qui s'occupe des besoins IT de la pédagogie.",
+      "Je suis étudiant en dernière année à l'EPITA, en majeure Systèmes, Réseaux et Sécurité. Je travaille aussi à temps partiel à La Forge, l'équipe qui s'occupe de l'IT de la pédagogie.",
     "index.p2":
-      "Nous développons les services de l'école (l'intranet utilisé pour la piscine, le Moodle, l'annuaire des étudiants), nous les hébergeons dans un datacenter en colocation à Ivry et nous mettons à disposition le parc informatique de l'EPITA (PIE).",
+      "À La Forge, nous développons les services de l'école (l'intranet de la piscine, le Moodle, l'annuaire des étudiants), nous les hébergeons dans un datacenter en colocation à Ivry et nous gérons le parc de machines des salles, le PIE.",
     "index.p3":
-      "J'utilise Nix pour décrire des machines entières : au travail pour le parc PIE, qui démarre en netboot sur des images NixOS, et chez moi pour mon portable et un homelab sous Kubernetes.",
+      "SRS est une majeure infra, systèmes, réseaux et sécurité, avec un angle gestion du SI : le socle d'une entreprise, avec serveur mail, Windows, GPO, Active Directory, SOC, SIEM et CERT. À La Forge, ce sont des besoins métier précis, sur une infrastructure cloud native dans notre propre OpenStack. Je suis le seul de ma promo à la fois dans le parcours DevOps (celui de La Forge) et dans la majeure SRS.",
     "index.p4":
-      "Je cherche un stage de fin d'études de six mois à partir de février 2027, en systèmes, infrastructure ou sécurité. N'hésitez pas à me contacter.",
+      "Je cherche un stage de fin d'études de six mois à partir de février 2027, en systèmes, infrastructure ou sécurité. Vous pouvez me contacter par mail.",
 
     "index.role":
-      "Dernière année à l'EPITA (Systèmes, Réseaux, Sécurité), employé à temps partiel à La Forge.",
+      "Dernière année à l'EPITA (SRS), à temps partiel à La Forge.",
     "index.lead":
-      "En dernière année à l'EPITA et employé à temps partiel à La Forge, où je développe et héberge les services de l'école et construis les images NixOS de son parc informatique.",
+      "Étudiant en dernière année à l'EPITA, à temps partiel à La Forge. Je cherche un stage de fin d'études à partir de février 2027.",
     "index.seeking":
       "Je cherche un stage de fin d'études de 6 mois à partir de février 2027.",
     "index.now": "En ce moment",
@@ -43,25 +43,14 @@ const ui = {
     "index.source": "github.com/Orysse",
     "index.register": "Projets",
     "index.registerIntro":
-      "Mon homelab et la configuration de mon ordinateur portable, où je teste des idées autour de NixOS, Kubernetes et de la gestion de l'état.",
+      "Mon homelab et la configuration de mon portable, tous les deux sous NixOS.",
     "index.read": "LIRE",
     "index.served": "",
-    "index.tech": "technologies",
-
-    "focus.title": "Focus techniques",
-    "focus.vms.title": "MicroVMs sans disque (tmpfs)",
-    "focus.vms.body":
-      "Trois microVMs QEMU générées depuis un seul fichier topology.nix, montées en RAM sans image disque.",
-    "focus.net.title": "Réseau Cilium eBPF et identité sans mot de passe",
-    "focus.net.body":
-      "Politiques default-deny par namespace, secrets tournés par OpenBao et authentification passkeys via Pocket-ID.",
-    "focus.imp.title": "Poste NixOS éphémère en tmpfs",
-    "focus.imp.body":
-      "Racine effacée à chaque extinction et outils autonomes empaquetés via nix-wrapper-modules.",
+    "index.tech": "Technologies",
 
     "systems.title": "Projets",
     "systems.intro":
-      "Mon homelab et la configuration de mon ordinateur portable, où je teste des idées autour de NixOS, Kubernetes et de la gestion de l'état.",
+      "Mon homelab et la configuration de mon portable, tous les deux sous NixOS.",
     "systems.repo": "Dépôt",
     "systems.stack": "Technologies",
     "systems.facts": "Fiche technique",
@@ -76,7 +65,7 @@ const ui = {
     "resume.title": "CV",
     "resume.profile": "Profil",
     "resume.intro":
-      "En dernière année à l'EPITA (Systèmes, Réseaux, Sécurité & Infrastructure) et employé à temps partiel à La Forge depuis février 2026. J'y développe les services de l'école, je les héberge et je construis les images de son parc informatique. Je cherche un stage de fin d'études à partir de février 2027.",
+      "Dernière année à l'EPITA (SRS). À temps partiel à La Forge depuis février 2026. Je cherche un stage de fin d'études à partir de février 2027.",
     "resume.print": "Imprimer",
     "resume.experience": "Expérience professionnelle",
     "resume.education": "Formation",
@@ -89,13 +78,13 @@ const ui = {
 
     "studies.title": "Études",
     "studies.p1":
-      "La majeure Systèmes, Réseaux et Sécurité (SRS) dure deux ans. ADLIN part d'un parc de serveurs Linux à administrer entièrement avec Ansible : rôles, playbooks, services et comptes sont écrits dans un dépôt avant d'exister sur une machine. ARS monte dans OpenStack une infrastructure fictive complète (contrôleur de domaine, serveur mail, PKI interne, mTLS), puis l'attaque et la défend, côté blue team comme côté red team.",
+      "SRS est la majeure infra, systèmes, réseaux et sécurité, avec un angle gestion du SI dans l'infrastructure. Elle dure deux ans. En ADLIN, on administre un parc de serveurs Linux avec Ansible. En ARS, on monte une infrastructure complète dans OpenStack (contrôleur de domaine, serveur mail, PKI interne, mTLS), puis on l'attaque et on la défend.",
     "studies.p2":
-      "La majeure traite aussi Windows. WINSEC explique le fonctionnement du noyau et des services, puis en tire le durcissement et l'administration sécurisée. AGDA porte sur Active Directory : les objets, les protocoles et les délégations d'un annuaire, puis l'investigation (forensic) d'un domaine compromis et sa remise en état.",
+      "WINSEC porte sur le fonctionnement du noyau et des services Windows, et sur leur durcissement. AGDA porte sur Active Directory : objets, protocoles, délégations, puis forensic d'un domaine compromis.",
     "studies.p3":
-      "Deux cours changent de point de vue. VIRO dissèque du code malveillant : anatomie d'une souche, rétro-ingénierie, obfuscation, écriture de détections. SOC apprend à remonter et corréler des événements, écrire des règles de détection, investiguer une alerte et répondre à un incident.",
+      "VIRO est un cours d'analyse de malwares : rétro-ingénierie, obfuscation, détections. SOC couvre la corrélation d'événements, les règles de détection et la réponse à incident.",
     "studies.p4":
-      "À La Forge et sur mon homelab, je fais surtout de l'infra. Ces cours me donnent l'autre point de vue, celui de l'attaquant et de l'analyste.",
+      "La Forge est l'autre versant : des besoins métier précis sur une infrastructure cloud native. Je suis le seul de ma promo à la fois dans le parcours DevOps (celui de La Forge) et dans la majeure SRS.",
 
     "colophon.title": "Informations",
     "colophon.intro": "Site statique construit avec Astro et Nix.",
@@ -166,18 +155,18 @@ const ui = {
 
     "index.title": "About",
     "index.p1":
-      "I am in my final year at EPITA, in the Systems, Networks and Security major. I also work part-time for the school at La Forge, the team that handles the IT needs of teaching.",
+      "I am a final-year student at EPITA, in the Systems, Networks and Security major. I also work part-time at La Forge, the team in charge of IT for teaching.",
     "index.p2":
-      "We develop the school's services (the intranet used for the piscine, Moodle, the student directory), host them in a colocated datacenter in Ivry, and provide EPITA's machine fleet (PIE).",
+      "At La Forge, we develop the school's services (the piscine intranet, Moodle, the student directory), host them in a colocated datacenter in Ivry, and manage the lab machines, the PIE.",
     "index.p3":
-      "I use Nix to describe entire machines: at work for the PIE fleet, which boots over the network on NixOS images, and at home for my laptop and a Kubernetes homelab.",
+      "SRS is an infrastructure, systems, networks and security major, with an IT-management angle: the foundation of a company, with mail servers, Windows, GPOs, Active Directory, SOC, SIEM and CERT. At La Forge, it is precise business needs, on a cloud native infrastructure in our own OpenStack. I am the only one in my class in both the DevOps track (the La Forge one) and the SRS major.",
     "index.p4":
-      "I am looking for a six-month end-of-studies internship starting February 2027, in systems, infrastructure or security. Feel free to reach out.",
+      "I am looking for a six-month end-of-studies internship starting February 2027, in systems, infrastructure or security. You can reach me by email.",
 
     "index.role":
-      "Final year at EPITA (Systems, Networks, Security), part-time employee at La Forge.",
+      "Final year at EPITA (SRS), part-time at La Forge.",
     "index.lead":
-      "Final-year student at EPITA and part-time employee at La Forge, where I develop and host the school's services and build the NixOS images of its machine fleet.",
+      "Final-year student at EPITA, part-time at La Forge. Looking for an end-of-studies internship starting February 2027.",
     "index.seeking":
       "Looking for a 6-month end-of-studies internship starting February 2027.",
     "index.now": "Currently",
@@ -186,25 +175,14 @@ const ui = {
     "index.source": "github.com/Orysse",
     "index.register": "Projects",
     "index.registerIntro":
-      "My homelab and my laptop configuration, where I test ideas around NixOS, Kubernetes and state management.",
+      "My homelab and my laptop configuration, both on NixOS.",
     "index.read": "READ",
     "index.served": "",
-    "index.tech": "technologies",
-
-    "focus.title": "Technical highlights",
-    "focus.vms.title": "Diskless microVMs (tmpfs)",
-    "focus.vms.body":
-      "Three QEMU microVMs generated from a single topology.nix file, running in RAM with no disk image.",
-    "focus.net.title": "Cilium eBPF networking and passwordless identity",
-    "focus.net.body":
-      "Default-deny namespace policies, credentials rotated by OpenBao, and passkey authentication via Pocket-ID.",
-    "focus.imp.title": "Ephemeral tmpfs NixOS workstation",
-    "focus.imp.body":
-      "Root wiped on every shutdown and self-contained user tools packaged via nix-wrapper-modules.",
+    "index.tech": "Technologies",
 
     "systems.title": "Projects",
     "systems.intro":
-      "My homelab and my laptop configuration, where I test ideas around NixOS, Kubernetes and state management.",
+      "My homelab and my laptop configuration, both on NixOS.",
     "systems.repo": "Repository",
     "systems.stack": "Technologies",
     "systems.facts": "Specifications",
@@ -219,7 +197,7 @@ const ui = {
     "resume.title": "CV",
     "resume.profile": "Summary",
     "resume.intro":
-      "Final year at EPITA (Systems, Networks, Security & Infrastructure) and part-time employee at La Forge since February 2026. I develop the school's services, host them, and build the images of its machine fleet. Looking for an end-of-studies internship starting February 2027.",
+      "Final year at EPITA (SRS). Part-time at La Forge since February 2026. Looking for an end-of-studies internship starting February 2027.",
     "resume.print": "Print",
     "resume.experience": "Professional Experience",
     "resume.education": "Education",
@@ -232,13 +210,13 @@ const ui = {
 
     "studies.title": "Studies",
     "studies.p1":
-      "The Systems, Networks and Security (SRS) major lasts two years. ADLIN starts from a fleet of Linux servers to administer entirely with Ansible: roles, playbooks, services and accounts are written in a repository before they exist on a machine. ARS builds a complete fictional infrastructure in OpenStack (domain controller, mail server, internal PKI, mTLS), then attacks and defends it, as blue team one day and red team the next.",
+      "SRS is the infrastructure, systems, networks and security major, with an IT-management angle on infrastructure. It lasts two years. In ADLIN, we administer a fleet of Linux servers with Ansible. In ARS, we build a complete infrastructure in OpenStack (domain controller, mail server, internal PKI, mTLS), then attack and defend it.",
     "studies.p2":
-      "The major covers Windows too. WINSEC explains how the kernel and the services work, then derives hardening and secure administration from it. AGDA is about Active Directory: the objects, protocols and delegations of a directory, then the investigation (forensics) of a compromised domain and its restoration.",
+      "WINSEC covers how the Windows kernel and services work, and how to harden them. AGDA covers Active Directory: objects, protocols, delegations, then forensics on a compromised domain.",
     "studies.p3":
-      "Two courses change the point of view. VIRO dissects malware: anatomy of a strain, reverse engineering, obfuscation, writing detections. SOC teaches collecting and correlating events, writing detection rules, triaging an alert and responding to an incident.",
+      "VIRO is a malware analysis course: reverse engineering, obfuscation, detections. SOC covers event correlation, detection rules and incident response.",
     "studies.p4":
-      "At La Forge and on my homelab, I mostly do infrastructure. These courses give me the other point of view, the attacker's and the analyst's.",
+      "La Forge is the other side: precise business needs on a cloud native infrastructure. I am the only one in my class in both the DevOps track (the La Forge one) and the SRS major.",
 
     "colophon.title": "Information",
     "colophon.intro": "Static site built with Astro and Nix.",

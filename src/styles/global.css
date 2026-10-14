@@ -268,31 +268,31 @@
   }
 
   /* ── Project Essay Prose (Flat topology, zero relief) ── */
-  .essay-prose {
+  .project-body {
     max-width: var(--col-reading);
     margin: 0 auto;
   }
-  .essay-prose h2 {
+  .project-body h2 {
     font-size: 16px;
     font-weight: 600;
     line-height: 1.6;
     margin: 64px 0 20px;
     color: #000000;
   }
-  .essay-prose h2:first-child {
+  .project-body h2:first-child {
     margin-top: 0;
   }
-  .essay-prose p {
+  .project-body p {
     font-size: 16px;
     line-height: 2;
     color: #000000;
     margin: 0 0 32px;
   }
-  .essay-prose a {
+  .project-body a {
     text-decoration: underline;
     text-underline-offset: 0.22em;
   }
-  .essay-prose a:hover {
+  .project-body a:hover {
     text-decoration: none;
     opacity: 1;
   }
@@ -374,19 +374,6 @@
   /* ── Nendo-style Monochrome Technology Logo Wall ── */
   .tech-wall {
     margin-top: 100px;
-    padding-top: 48px;
-    border-top: 1px solid var(--line);
-    display: grid;
-    grid-template-columns: 180px minmax(0, 1fr);
-    column-gap: 40px;
-    row-gap: 32px;
-    align-items: start;
-  }
-  .tech-wall-label {
-    font-size: 15px;
-    letter-spacing: 0.06em;
-    line-height: 1.4;
-    color: #000000;
   }
   .tech-wall-grid {
     display: grid;
@@ -422,9 +409,6 @@
     color: #333333;
   }
   @media (max-width: 960px) {
-    .tech-wall {
-      grid-template-columns: 1fr;
-    }
     .tech-wall-grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }

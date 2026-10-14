@@ -11,7 +11,7 @@ const l = {
     aria: "Schéma minimal du homelab : topologie Nix, 3 microVMs sans disque en tmpfs et persistance sur l'hôte",
     caption: "Pointillés : mémoire vive volatile (tmpfs). Trait plein : état conservé sur l'hôte NixOS.",
     git: "topology.nix",
-    gitSub: "deploy-rs (auto-rollback)",
+    gitSub: "un attribute set par nœud",
     clusterZone: "CLUSTER K3S ÉPHÉMÈRE · 3 MICROVMS QEMU (RACINE TMPFS, SANS DISQUE)",
     vm1: "vm-k3s-01",
     vm1Sub: "control-plane",
@@ -20,21 +20,19 @@ const l = {
     vm3: "vm-k3s-03",
     vm3Sub: "worker",
     mesh: "Cilium eBPF (default-deny · WireGuard) · Flux GitOps · OpenBao · Pocket-ID",
-    hostZone: "HÔTE NIXOS PHYSIQUE (INTEL NUC) · ÉTAT & SUPERVISION HORS CLUSTER",
+    hostZone: "HÔTE NIXOS · ÉTAT HORS CLUSTER",
     btrfs: "btrfs + btrbk",
     btrfsSub: "état k3s & NFS",
     pg: "PostgreSQL",
     pgSub: "bases applicatives",
-    obs: "VictoriaMetrics / Logs",
-    obsSub: "métriques & journaux",
-    alert: "Alertmanager",
-    alertSub: "mail & Healthchecks.io",
+    ghost: "vm-k3s-N",
+    ghostSub: "une entrée de plus",
   },
   en: {
     aria: "Minimal homelab schematic: Nix topology, 3 diskless tmpfs microVMs, and host-level persistence",
-    caption: "Dashed line: volatile RAM (tmpfs). Solid line: state and monitoring kept on the NixOS host.",
+    caption: "Dashed line: volatile RAM (tmpfs). Solid line: state kept on the NixOS host.",
     git: "topology.nix",
-    gitSub: "deploy-rs (auto-rollback)",
+    gitSub: "one attribute set per node",
     clusterZone: "EPHEMERAL K3S CLUSTER · 3 DISKLESS QEMU MICROVMS (TMPFS ROOT)",
     vm1: "vm-k3s-01",
     vm1Sub: "control-plane",
@@ -43,15 +41,13 @@ const l = {
     vm3: "vm-k3s-03",
     vm3Sub: "worker",
     mesh: "Cilium eBPF (default-deny · WireGuard) · Flux GitOps · OpenBao · Pocket-ID",
-    hostZone: "PHYSICAL NIXOS HOST (INTEL NUC) · OUT-OF-CLUSTER STATE & MONITORING",
+    hostZone: "NIXOS HOST · STATE OUTSIDE THE CLUSTER",
     btrfs: "btrfs + btrbk",
     btrfsSub: "k3s state & NFS",
     pg: "PostgreSQL",
     pgSub: "app databases",
-    obs: "VictoriaMetrics / Logs",
-    obsSub: "metrics & audit logs",
-    alert: "Alertmanager",
-    alertSub: "email & Healthchecks.io",
+    ghost: "vm-k3s-N",
+    ghostSub: "one more entry",
   },
 }[lang];
 ---
@@ -76,44 +72,41 @@ const l = {
     <text x="38" y="110" font-size="10.5" letter-spacing="0.08em" fill="#828282">{l.clusterZone}</text>
 
     <!-- 3 microVMs -->
-    <rect x="38" y="122" width="212" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" stroke-dasharray="3 3" />
-    <text x="144" y="144" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.vm1}</text>
-    <text x="144" y="160" text-anchor="middle" font-size="11" fill="#828282">{l.vm1Sub} · tmpfs</text>
+    <rect x="38" y="122" width="156" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" stroke-dasharray="3 3" />
+    <text x="116" y="144" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.vm1}</text>
+    <text x="116" y="160" text-anchor="middle" font-size="11" fill="#828282">{l.vm1Sub} · tmpfs</text>
 
-    <rect x="274" y="122" width="212" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" stroke-dasharray="3 3" />
-    <text x="380" y="144" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.vm2}</text>
-    <text x="380" y="160" text-anchor="middle" font-size="11" fill="#828282">{l.vm2Sub} · tmpfs</text>
+    <rect x="216" y="122" width="156" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" stroke-dasharray="3 3" />
+    <text x="294" y="144" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.vm2}</text>
+    <text x="294" y="160" text-anchor="middle" font-size="11" fill="#828282">{l.vm2Sub} · tmpfs</text>
 
-    <rect x="510" y="122" width="212" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" stroke-dasharray="3 3" />
-    <text x="616" y="144" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.vm3}</text>
-    <text x="616" y="160" text-anchor="middle" font-size="11" fill="#828282">{l.vm3Sub} · tmpfs</text>
+    <rect x="394" y="122" width="156" height="50" fill="#ffffff" stroke="#000000" stroke-width="1" stroke-dasharray="3 3" />
+    <text x="472" y="144" text-anchor="middle" font-size="13" font-weight="500" fill="#000000">{l.vm3}</text>
+    <text x="472" y="160" text-anchor="middle" font-size="11" fill="#828282">{l.vm3Sub} · tmpfs</text>
+
+    <rect x="572" y="122" width="156" height="50" fill="#ffffff" stroke="#c8c8c8" stroke-width="1" stroke-dasharray="3 3" />
+    <text x="650" y="144" text-anchor="middle" font-size="13" font-weight="500" fill="#828282">{l.ghost}</text>
+    <text x="650" y="160" text-anchor="middle" font-size="11" fill="#828282">{l.ghostSub}</text>
 
     <text x="380" y="196" text-anchor="middle" font-size="11.5" fill="#555555">{l.mesh}</text>
 
     <!-- Connectors from cluster to host -->
-    <line x1="144" y1="212" x2="144" y2="244" stroke="#000000" stroke-width="1" marker-end="url(#arr-hm)" />
-    <line x1="380" y1="212" x2="380" y2="244" stroke="#000000" stroke-width="1" marker-end="url(#arr-hm)" />
-    <line x1="616" y1="212" x2="616" y2="244" stroke="#000000" stroke-width="1" marker-end="url(#arr-hm)" />
+    <line x1="116" y1="212" x2="116" y2="244" stroke="#000000" stroke-width="1" marker-end="url(#arr-hm)" />
+    <line x1="294" y1="212" x2="294" y2="244" stroke="#000000" stroke-width="1" marker-end="url(#arr-hm)" />
+    <line x1="472" y1="212" x2="472" y2="244" stroke="#000000" stroke-width="1" marker-end="url(#arr-hm)" />
 
     <!-- 3. Bottom physical host zone (solid) -->
     <rect x="20" y="248" width="720" height="100" fill="#ffffff" stroke="#000000" stroke-width="1" />
     <text x="38" y="268" font-size="10.5" letter-spacing="0.08em" fill="#828282">{l.hostZone}</text>
 
-    <rect x="38" y="280" width="156" height="52" fill="#ffffff" stroke="#c8c8c8" stroke-width="1" />
-    <text x="116" y="302" text-anchor="middle" font-size="12.5" font-weight="500" fill="#000000">{l.btrfs}</text>
-    <text x="116" y="319" text-anchor="middle" font-size="11" fill="#828282">{l.btrfsSub}</text>
+    <rect x="38" y="280" width="340" height="52" fill="#ffffff" stroke="#c8c8c8" stroke-width="1" />
+    <text x="208" y="302" text-anchor="middle" font-size="12.5" font-weight="500" fill="#000000">{l.btrfs}</text>
+    <text x="208" y="319" text-anchor="middle" font-size="11" fill="#828282">{l.btrfsSub}</text>
 
-    <rect x="214" y="280" width="156" height="52" fill="#ffffff" stroke="#c8c8c8" stroke-width="1" />
-    <text x="292" y="302" text-anchor="middle" font-size="12.5" font-weight="500" fill="#000000">{l.pg}</text>
-    <text x="292" y="319" text-anchor="middle" font-size="11" fill="#828282">{l.pgSub}</text>
+    <rect x="398" y="280" width="324" height="52" fill="#ffffff" stroke="#c8c8c8" stroke-width="1" />
+    <text x="560" y="302" text-anchor="middle" font-size="12.5" font-weight="500" fill="#000000">{l.pg}</text>
+    <text x="560" y="319" text-anchor="middle" font-size="11" fill="#828282">{l.pgSub}</text>
 
-    <rect x="390" y="280" width="166" height="52" fill="#ffffff" stroke="#c8c8c8" stroke-width="1" />
-    <text x="473" y="302" text-anchor="middle" font-size="12.5" font-weight="500" fill="#000000">{l.obs}</text>
-    <text x="473" y="319" text-anchor="middle" font-size="11" fill="#828282">{l.obsSub}</text>
-
-    <rect x="576" y="280" width="146" height="52" fill="#ffffff" stroke="#c8c8c8" stroke-width="1" />
-    <text x="649" y="302" text-anchor="middle" font-size="12.5" font-weight="500" fill="#000000">{l.alert}</text>
-    <text x="649" y="319" text-anchor="middle" font-size="11" fill="#828282">{l.alertSub}</text>
   </svg>
   <figcaption class="epure-caption">{l.caption}</figcaption>
 </figure>

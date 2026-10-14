@@ -37,7 +37,7 @@ Self-hosted (`font-src 'self'`) via `@fontsource/ibm-plex-sans`.
 |---|---|---|---|---|---|
 | **Header / Nav / Lang (`FR \| EN`)** | `IBM Plex Sans` | `14px` | `400` / `600` | `1.0` | `0.08em` |
 | **Offset Page / Section Title (`h1`, `.column-header h2`)** | `IBM Plex Sans` | `16px` | `600` | `1.4` | `0.08em` |
-| **Essay Subheading (`.essay-prose h2`)** | `IBM Plex Sans` | `16px` | `600` | `1.6` | `0` |
+| **Essay Subheading (`.project-body h2`)** | `IBM Plex Sans` | `16px` | `600` | `1.6` | `0` |
 | **Narrative Prose (`body`, `p`)** | `IBM Plex Sans` | `16px` | `400` | `1.95` | `0` |
 | **Bottom Credits / Specs (`.entry-credit`)** | `IBM Plex Sans` | `15px` | `400` / `600` | `1.75` | `0` |
 
