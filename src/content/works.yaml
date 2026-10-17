@@ -150,10 +150,10 @@
     fr: "Une infra d'association, sur du vrai matériel."
     en: "An association's infrastructure, on real hardware."
   body:
-    - fr: "Je suis vice-trésorier et tech lead de l'association. J'y maintiens l'infrastructure sur des serveurs physiques : les VMs tournent sous Proxmox, les services sont déployés sur Kubernetes. J'ai aussi tenté d'y installer OpenStack, d'abord à distance depuis l'Indonésie en 2024 ; le projet n'a pas abouti."
-      en: "I am vice-treasurer and tech lead of the association. I maintain its infrastructure on physical servers: the VMs run on Proxmox, the services are deployed on Kubernetes. I also tried to set up OpenStack there, first remotely from Indonesia in 2024; the project did not make it."
+    - fr: "Je suis vice-trésorier et tech lead de l'association. J'y maintiens l'infrastructure sur des serveurs physiques : les VMs tournent sous Proxmox, les services sont déployés sur Kubernetes. J'y ai aussi installé OpenStack, d'abord à distance depuis l'Indonésie en 2024. Il fonctionnait, mais les besoins de l'association n'en demandaient pas tant : j'y ai renoncé."
+      en: "I am vice-treasurer and tech lead of the association. I maintain its infrastructure on physical servers: the VMs run on Proxmox, the services are deployed on Kubernetes. I also set up OpenStack there, first remotely from Indonesia in 2024. It worked, but the association's needs did not call for that much, so I dropped it."
   materials:
-    - { key: { fr: serveurs, en: servers }, value: "physiques" }
+    - { key: { fr: serveurs, en: servers }, value: "bare metal" }
     - { key: { fr: vms, en: vms }, value: Proxmox }
     - { key: { fr: services, en: services }, value: Kubernetes }
   images:
