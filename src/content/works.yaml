@@ -21,16 +21,16 @@
   body:
     - fr: "La Forge est l'IT de la pédagogie de l'EPITA. J'y construis avec Nix les images du parc des salles machines, plus de 1000 PC répartis sur 6 sites, et je les distribue en iPXE."
       en: "La Forge is the IT team behind EPITA's teaching. I build the images for the machine rooms with Nix, over 1000 PCs across 6 sites, and ship them over iPXE."
-    - fr: "L'école tourne sur son propre cloud OpenStack, dans un datacenter en colocation à Ivry, avec des microservices Java déployés sur Kubernetes par Argo CD. J'y développe des fonctionnalités pour le Moodle et l'intranet (piscines, projets) et pour l'annuaire des étudiants."
-      en: "The school runs on its own OpenStack cloud, in a colocated datacenter in Ivry, with Java microservices deployed on Kubernetes by Argo CD. I develop features for Moodle and the intranet (piscines, projects) and for the student directory."
-    - fr: "J'assure aussi le support auprès des équipes pédagogiques et des élèves."
-      en: "I also support the teaching staff and the students."
+    - fr: "L'infrastructure héberge l'intranet et le Moodle : cloud OpenStack de l'école, datacenter en colocation à Ivry, microservices Java déployés sur Kubernetes par Argo CD. La Forge gère aussi l'annuaire des étudiants pour ces services, avec les données de scolarité : parcours, classe, promo, droits dans l'école, accès aux salles."
+      en: "The infrastructure hosts the intranet and Moodle: the school's OpenStack cloud, a colocated datacenter in Ivry, Java microservices deployed on Kubernetes by Argo CD. La Forge also runs the student directory for these services, with the schooling data: curriculum, class, cohort, rights within the school, room access."
+    - fr: "Je développe sur l'intranet (piscines, projets) et j'assure le support auprès des équipes pédagogiques et des élèves."
+      en: "I develop on the intranet (piscines, projects) and support the teaching staff and the students."
   materials:
     - { key: { fr: build, en: build }, value: Nix }
     - { key: { fr: boot, en: boot }, value: iPXE }
     - { key: { fr: cloud, en: cloud }, value: OpenStack }
     - { key: { fr: déploiement, en: deploy }, value: "Kubernetes, Argo CD" }
-    - { key: { fr: services, en: services }, value: "Java, Moodle, intranet" }
+    - { key: { fr: services, en: services }, value: "Java, intranet, Moodle, annuaire" }
   images:
     - src: /img/placeholder-dc.svg
       alt:
