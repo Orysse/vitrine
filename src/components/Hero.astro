@@ -1,0 +1,22 @@
+---
+import { t, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section class="hero wrap" aria-labelledby="hero-title">
+  <h1 id="hero-title">
+    <span class="hero-name">{profile.name}</span>
+    <span class="hero-line">{t(lang, "hero.line1")}</span>
+    <span class="hero-line">{t(lang, "hero.line2")}</span>
+    <span class="hero-line">{t(lang, "hero.line3")}</span>
+  </h1>
+  <div class="hero-meta">
+    <p>{t(lang, "hero.role")}</p>
+    <p class="hero-looking">{profile.looking[lang]}.</p>
+  </div>
+</section>

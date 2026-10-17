@@ -1,8 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Home from "../../views/Home.astro";
 import { t } from "../../i18n";
 ---
 
 <Base lang="en" title={t("en", "site.title")} description={t("en", "site.description")}>
-  <main id="main"></main>
+  <Home lang="en" />
 </Base>

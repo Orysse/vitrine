@@ -1,5 +1,12 @@
 ---
+import "@fontsource/hanken-grotesk/latin-400.css";
+import "@fontsource/hanken-grotesk/latin-800.css";
+import "@fontsource/ibm-plex-mono/latin-400.css";
+import "@fontsource/ibm-plex-mono/latin-500.css";
+import "../styles/tokens.css";
+import "../styles/page.css";
 import { langs, path, t, type Lang } from "../i18n";
+import { profile } from "../profile";
 
 interface Props {
   lang: Lang;
@@ -24,13 +31,17 @@ const site = Astro.site ?? new URL("https://vitrine.abe.lc");
   </head>
   <body>
     <a class="skip" href="#main">{t(lang, "nav.skip")}</a>
-    <header>
-      <a
-        href={path(other)}
-        hreflang={other}
-        lang={other}
-        aria-label={t(lang, "lang.switch.label")}>{t(lang, "lang.switch")}</a
-      >
+    <header class="bar wrap">
+      <a href={path(lang)}>{t(lang, "bar.site")}</a>
+      <nav>
+        <a class="cv" href={profile.cv[lang]}>{t(lang, "bar.cv")}</a>
+        <a
+          href={path(other)}
+          hreflang={other}
+          lang={other}
+          aria-label={t(lang, "lang.switch.label")}>{t(lang, "lang.switch")}</a
+        >
+      </nav>
     </header>
     <slot />
   </body>

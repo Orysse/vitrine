@@ -15,8 +15,8 @@ export const profile = {
     en: "Part-time employee at La Forge, EPITA's teaching IT team, since February 2026",
   } satisfies L10n,
   looking: {
-    fr: "Je cherche un stage de fin d'études à partir de février 2027",
-    en: "Looking for an end-of-studies internship starting February 2027",
+    fr: "Je cherche un stage de fin d'études de 6 mois à partir de février 2027",
+    en: "Looking for a 6-month end-of-studies internship starting February 2027",
   } satisfies L10n,
   location: "Paris",
   spoken: {

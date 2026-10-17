@@ -1,0 +1,15 @@
+:root {
+  /* Palette: paper, ink, and one signal. --signal is only for work numbers and impact figures. */
+  --paper: #f1ede4;
+  --ink: #16140f;
+  --signal: #e8431c;
+  --ink-soft: #5b564a; /* secondary text, 5.9:1 on --paper */
+  --hair: #16140f40; /* thin rules between materials */
+
+  --font-display: "Hanken Grotesk", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --measure: 38rem;
+  --max: 90rem;
+}

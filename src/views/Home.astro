@@ -1,0 +1,14 @@
+---
+import Hero from "../components/Hero.astro";
+import type { Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<main id="main">
+  <Hero lang={lang} />
+  <!-- Works, Education, Marquee, Beer and Footer land in Tasks 4 and 5. -->
+</main>
