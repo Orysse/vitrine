@@ -1,14 +1,9 @@
-- id: music
-  order: 1
-  label: { fr: Musique, en: Music }
-  text: { fr: "Piano, audiophile", en: "Piano, audiophile" }
-
 - id: beer
-  order: 2
-  label: { fr: "Bière & zythologie", en: "Beer & zythology" }
-  text: { fr: "LATEB, EPITA", en: "LATEB, EPITA" }
-
-- id: homelab
-  order: 3
-  label: { fr: Homelab, en: Homelab }
-  text: { fr: "Linux, Nix, microvm.nix", en: "Linux, Nix, microvm.nix" }
+  order: 1
+  label: { fr: Bière, en: Beer }
+  text:
+    fr: "Brasseur amateur, et membre du club de zythologie LATEB de l'EPITA."
+    en: "Home brewer, and member of EPITA's LATEB brewing club."
+  now:
+    fr: "En ce moment : une sour à l'orange sanguine."
+    en: "Right now: a blood orange sour."

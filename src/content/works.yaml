@@ -1,0 +1,158 @@
+# The five fiches. Facts come from the spec §4.2 and the CV; nothing is invented.
+# Images marked `placeholder: true` wait for photos from Abel.
+
+- id: forge
+  number: 1
+  kind: pro
+  org: "La Forge, EPITA"
+  status: { fr: "CDD à temps partiel", en: "Part-time contract" }
+  start: "2026-02"
+  end: null
+  tag:
+    fr: "Forge EPITA · 5 sites · 1500 postes"
+    en: "Forge EPITA · 5 sites · 1500 machines"
+  line:
+    fr: "Les images NixOS qui démarrent en réseau sur tout le parc de l'école."
+    en: "The NixOS images that boot over the network on the school's whole machine fleet."
+  impact:
+    fr: "1500 postes, une seule image."
+    en: "1500 machines, one image."
+  figure: "1500"
+  body:
+    - fr: "La Forge est l'IT de la pédagogie de l'EPITA. J'y construis avec Nix les images du parc des salles machines, 1500 PC répartis sur 5 sites, et je les distribue en iPXE."
+      en: "La Forge is the IT team behind EPITA's teaching. I build the images for the machine rooms with Nix, 1500 PCs across 5 sites, and ship them over iPXE."
+    - fr: "L'école tourne sur son propre cloud OpenStack, dans un datacenter en colocation à Ivry, avec des microservices Java déployés sur Kubernetes par Argo CD. J'y développe des fonctionnalités pour le Moodle et l'intranet (piscines, projets) et pour l'annuaire des étudiants."
+      en: "The school runs on its own OpenStack cloud, in a colocated datacenter in Ivry, with Java microservices deployed on Kubernetes by Argo CD. I develop features for Moodle and the intranet (piscines, projects) and for the student directory."
+    - fr: "J'assure aussi le support auprès des équipes pédagogiques et des élèves."
+      en: "I also support the teaching staff and the students."
+  materials:
+    - { key: { fr: build, en: build }, value: Nix }
+    - { key: { fr: boot, en: boot }, value: iPXE }
+    - { key: { fr: cloud, en: cloud }, value: OpenStack }
+    - { key: { fr: déploiement, en: deploy }, value: "Kubernetes, Argo CD" }
+    - { key: { fr: services, en: services }, value: "Java, Moodle, intranet" }
+  images:
+    - src: /img/placeholder-dc.svg
+      alt:
+        fr: "Photo à venir : le datacenter en colocation à Ivry."
+        en: "Photo to come: the colocated datacenter in Ivry."
+      placeholder: true
+    - src: /img/placeholder-salle.svg
+      alt:
+        fr: "Photo à venir : une salle machines de l'école."
+        en: "Photo to come: one of the school's machine rooms."
+      placeholder: true
+
+- id: cea
+  number: 2
+  kind: pro
+  org: CEA Saclay
+  status: { fr: Stage, en: Internship }
+  start: "2025-09"
+  end: "2026-01"
+  tag:
+    fr: "CEA Saclay · TRUST · simulation thermohydraulique"
+    en: "CEA Saclay · TRUST · thermohydraulics simulation"
+  line:
+    fr: "Une CI montée de zéro pour une équipe de chercheurs."
+    en: "A CI built from scratch for a team of researchers."
+  impact:
+    fr: "Une CI de zéro, pour des chercheurs."
+    en: "A CI from scratch, for researchers."
+  body:
+    - fr: "TRUST est la plateforme de simulation thermohydraulique du CEA. L'équipe n'avait pas de CI : seule existait une instance GitLab, celle d'un autre laboratoire."
+      en: "TRUST is the CEA's thermohydraulics simulation platform. The team had no CI: the only thing in place was a GitLab instance, borrowed from another lab."
+    - fr: "J'ai écrit les pipelines CI/CD et déployé l'infrastructure en code : runners GitLab, cache d'artefacts S3 sur MinIO, supervision Prometheus et Grafana. J'ai aussi branché au pipeline principal les tests de non-régression des projets satellites de TRUST."
+      en: "I wrote the CI/CD pipelines and deployed the infrastructure as code: GitLab runners, an S3 artifact cache on MinIO, Prometheus and Grafana monitoring. I also plugged the non-regression tests of TRUST's satellite projects into the main pipeline."
+  materials:
+    - { key: { fr: ci, en: ci }, value: GitLab CI }
+    - { key: { fr: runners, en: runners }, value: GitLab Runner }
+    - { key: { fr: cache, en: cache }, value: "MinIO (S3)" }
+    - { key: { fr: supervision, en: monitoring }, value: "Prometheus, Grafana" }
+
+- id: redpill
+  number: 3
+  kind: pro
+  org: RedPill Group
+  status: { fr: Stage, en: Internship }
+  start: "2024-07"
+  end: "2024-08"
+  tag:
+    fr: "Migration vers Kubernetes · OVHcloud"
+    en: "Migration to Kubernetes · OVHcloud"
+  line:
+    fr: "Une infrastructure migrée vers un cluster Kubernetes sur OVHcloud."
+    en: "An infrastructure migrated to a Kubernetes cluster on OVHcloud."
+  impact:
+    fr: "Une infra migrée vers Kubernetes."
+    en: "An infrastructure moved to Kubernetes."
+  body:
+    - fr: "J'ai participé à la migration d'une infrastructure vers un cluster Kubernetes entièrement cloud, hébergé chez OVHcloud, avec des workflows de déploiement Terraform et Helm."
+      en: "I took part in migrating an infrastructure to a fully cloud-hosted Kubernetes cluster at OVHcloud, with Terraform and Helm deployment workflows."
+    - fr: "Avant le déploiement, je validais les choix d'infrastructure sur des prototypes Kubernetes locaux avec Kind."
+      en: "Before rollout, I validated the infrastructure choices on local Kubernetes prototypes with Kind."
+  materials:
+    - { key: { fr: cloud, en: cloud }, value: OVHcloud }
+    - { key: { fr: infra, en: infra }, value: Terraform }
+    - { key: { fr: paquets, en: packaging }, value: Helm }
+    - { key: { fr: prototypes, en: prototypes }, value: Kind }
+
+- id: homelab
+  number: 4
+  kind: perso
+  org: Homelab
+  status: { fr: "Projet perso", en: "Personal project" }
+  start: null
+  end: null
+  tag:
+    fr: "NixOS · k3s · Cilium · Flux"
+    en: "NixOS · k3s · Cilium · Flux"
+  line:
+    fr: "Un cluster Kubernetes décrit par un fichier de topologie, sans disque et fermé par défaut."
+    en: "A Kubernetes cluster described by one topology file, diskless and closed by default."
+  impact:
+    fr: "3 nœuds, aucun disque."
+    en: "3 nodes, no disk."
+  figure: "3"
+  body:
+    - fr: "Un seul fichier de topologie décrit le réseau, l'hôte et les nœuds : ajouter un nœud, c'est ajouter une entrée, et microvm.nix génère la machine. Les nœuds k3s sont des microVMs sans état, leur racine est un tmpfs qui repart vierge à chaque démarrage."
+      en: "A single topology file describes the network, the host and the nodes: adding a node means adding an entry, and microvm.nix generates the machine. The k3s nodes are stateless microVMs, their root is a tmpfs that starts fresh at every boot."
+    - fr: "Cilium refuse tout par défaut et chaque flux est écrit dans Git. Les secrets sont dans OpenBao, l'accès passe par des passkeys, et CrowdSec filtre l'entrée publique."
+      en: "Cilium denies everything by default and every flow is written in Git. Secrets live in OpenBao, access goes through passkeys, and CrowdSec filters the public entry point."
+    - fr: "Je sais que ce n'est pas de la production, mais je le construis comme si ça en était."
+      en: "I know it is not production, but I build it as if it were."
+  materials:
+    - { key: { fr: hôte, en: host }, value: "NixOS, deploy-rs" }
+    - { key: { fr: nœuds, en: nodes }, value: "k3s en microVMs (microvm.nix)" }
+    - { key: { fr: réseau, en: network }, value: "Cilium, WireGuard, refus par défaut" }
+    - { key: { fr: gitops, en: gitops }, value: Flux }
+    - { key: { fr: identité, en: identity }, value: "Pocket-ID (passkeys), OpenBao, External Secrets" }
+    - { key: { fr: sécurité, en: security }, value: CrowdSec }
+  links:
+    - { label: homelab-nix, url: "https://github.com/Orysse/homelab-nix" }
+    - { label: homelab-cluster, url: "https://github.com/Orysse/homelab-cluster" }
+    - { label: config, url: "https://github.com/Orysse/config" }
+
+- id: atelier
+  number: 5
+  kind: asso
+  org: "L'Atelier, EPITA"
+  status: { fr: Association, en: Student association }
+  start: "2024"
+  end: null
+  tag:
+    fr: "Vice-trésorier · tech lead"
+    en: "Vice-treasurer · tech lead"
+  line:
+    fr: "Un OpenStack monté sur des serveurs de récupération, d'abord à distance depuis l'Indonésie."
+    en: "An OpenStack built on second-hand servers, first remotely from Indonesia."
+  impact:
+    fr: "OpenStack sur des serveurs de récupération."
+    en: "OpenStack on second-hand servers."
+  body:
+    - fr: "Je suis vice-trésorier et tech lead de l'association. J'ai installé OpenStack sur ses serveurs de récupération, d'abord à distance depuis l'Indonésie en 2024, puis géré ses VMs sous Proxmox et déployé ses services sur Kubernetes."
+      en: "I am vice-treasurer and tech lead of the association. I installed OpenStack on its second-hand servers, first remotely from Indonesia in 2024, then managed its VMs on Proxmox and deployed its services on Kubernetes."
+  materials:
+    - { key: { fr: cloud, en: cloud }, value: OpenStack }
+    - { key: { fr: vms, en: vms }, value: Proxmox }
+    - { key: { fr: services, en: services }, value: Kubernetes }

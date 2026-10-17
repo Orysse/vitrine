@@ -1,20 +1,23 @@
 - id: epita
-  org: EPITA (École Pour l'Informatique et les Techniques Avancées)
-  role: { fr: "Diplôme d'ingénieur en Systèmes, Réseaux, Sécurité & Infrastructure", en: "Engineering Degree in Systems, Networks, Security & Infrastructure" }
+  org: EPITA
+  orgDetail: École Pour l'Informatique et les Techniques Avancées
+  role:
+    fr: "Diplôme d'ingénieur, majeure Systèmes, Réseaux, Sécurité & Infrastructure"
+    en: "Engineering degree, Systems, Networks, Security & Infrastructure major"
   start: "2022"
   end: null
   location: Le Kremlin-Bicêtre
   points:
-    - fr: "Réseaux avancés (OSI/TCP-IP, OSPF, BGP, architecture LAN/WAN multi-sites) et administration de systèmes Linux/Windows."
-      en: "Advanced networking (OSI/TCP-IP, OSPF, BGP, multi-site LAN/WAN design) and Linux/Windows systems administration."
-    - fr: "Durcissement Windows/AD, sécurité offensive (analyse de malwares, reverse engineering, exploitation de binaires, tests d'intrusion), et cryptographie appliquée/PKI."
-      en: "Windows/AD hardening, offensive security (malware analysis, reverse engineering, binary exploitation, penetration testing), and applied cryptography/PKI."
-    - fr: "Réponse à incident SOC/SIEM, lutte informationnelle, et politique de sécurité des SI & conformité."
-      en: "SOC/SIEM incident response, information warfare, and IS security policy & compliance."
+    - fr: "Cycle préparatoire intégré, puis majeure SRS."
+      en: "Integrated preparatory cycle, then the SRS major."
 
 - id: its
   org: Institut Teknologi Sepuluh Nopember (ITS)
-  role: { fr: "Semestre d'échange universitaire", en: "Exchange Semester" }
+  role: { fr: "Semestre d'échange universitaire", en: "Exchange semester" }
   start: "2024-02"
   end: "2024-07"
   location: Surabaya, Indonésie
+
+- id: bac
+  org: Baccalauréat
+  role: { fr: "Baccalauréat scientifique", en: "Scientific baccalauréat" }
