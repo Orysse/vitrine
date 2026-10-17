@@ -1,0 +1,24 @@
+---
+import { getEntry } from "astro:content";
+import type { Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const beer = (await getEntry("interests", "beer"))?.data;
+---
+
+{
+  beer && (
+    <section class="beer wrap" aria-labelledby="beer-title">
+      <h2 id="beer-title" class="beer-title">
+        {beer.label[lang]}
+      </h2>
+      <div class="beer-text">
+        <p>{beer.text[lang]}</p>
+        {beer.now && <p class="beer-now">{beer.now[lang]}</p>}
+      </div>
+    </section>
+  )
+}

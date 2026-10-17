@@ -1,0 +1,45 @@
+---
+import { iconPath, tools } from "../tools";
+import { t, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section class="marquee" aria-label={t(lang, "marquee.label")}>
+  <div class="marquee-row">
+    {
+      [false, true].map((duplicate) => (
+        <ul class="marquee-track" aria-hidden={duplicate ? "true" : undefined}>
+          {tools.map((tool) => {
+            const path = tool.slug ? iconPath(tool.slug) : undefined;
+            return (
+              <li>
+                <a
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={duplicate ? undefined : tool.label}
+                  title={duplicate ? undefined : tool.label}
+                  tabindex={duplicate ? "-1" : undefined}
+                >
+                  {tool.img ? (
+                    <img src={tool.img} alt="" width="32" height="32" decoding="async" />
+                  ) : (
+                    path && (
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d={path} />
+                      </svg>
+                    )
+                  )}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ))
+    }
+  </div>
+</section>

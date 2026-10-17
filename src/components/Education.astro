@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import { formatRange } from "../dates";
+import { t, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+// Most recent first; the entry with no date (the baccalauréat) comes last.
+const entries = (await getCollection("education")).sort((a, b) =>
+  (b.data.start ?? "").localeCompare(a.data.start ?? ""),
+);
+---
+
+<section class="education wrap" aria-labelledby="education-title">
+  <h2 id="education-title" class="section-label">{t(lang, "education.title")}</h2>
+  <ul>
+    {
+      entries.map((e) => (
+        <li>
+          <span class="edu-org">{e.data.org}</span>
+          <span class="edu-role">{e.data.role[lang]}</span>
+          {e.data.start && (
+            <span class="edu-dates">
+              {formatRange(lang, e.data.start, e.data.end ?? null, t(lang, "work.today"))}
+            </span>
+          )}
+          {e.data.points.map((p) => (
+            <span class="edu-point">{p[lang]}</span>
+          ))}
+        </li>
+      ))
+    }
+  </ul>
+</section>

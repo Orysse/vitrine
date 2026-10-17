@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { formatRange } from "../dates";
 import { t, type Lang } from "../i18n";
 
 interface Props {
@@ -9,16 +10,7 @@ interface Props {
 }
 const { id, work, lang } = Astro.props;
 
-const month = (value: string): string => {
-  if (!value.includes("-")) return value;
-  const [y, m] = value.split("-").map(Number);
-  return new Intl.DateTimeFormat(lang, { month: "short", year: "numeric", timeZone: "UTC" }).format(
-    new Date(Date.UTC(y, m - 1, 1)),
-  );
-};
-const dates = work.start
-  ? `${month(work.start)} – ${work.end ? month(work.end) : t(lang, "work.today")}`
-  : "—";
+const dates = work.start ? formatRange(lang, work.start, work.end, t(lang, "work.today")) : "—";
 
 // The impact title with its figure set apart (and in --signal).
 const impact = work.impact[lang];

@@ -1,0 +1,63 @@
+import * as icons from "simple-icons";
+
+type SimpleIcon = { slug: string; path: string; title: string };
+const bySlug = new Map<string, SimpleIcon>(
+  Object.values(icons as unknown as Record<string, SimpleIcon>)
+    .filter((i) => i && typeof i.slug === "string")
+    .map((i) => [i.slug, i]),
+);
+
+// simple-icons dropped Microsoft brands; this is the official four-pane Windows
+// mark from Material Design Icons, on the same 24x24 grid.
+const extraIcons: Record<string, string> = {
+  windows: "M3 12V6.75l6-1.32v6.48zm17-9v8.75l-10 .15V5.21zM3 13l6 .09v6.81l-6-1.15zm17 .25V22l-10-1.91V13.1z",
+};
+
+export type Tool = { slug?: string; label: string; url: string; img?: string };
+
+/** SVG path (24x24 grid) for a simple-icons slug or one of `extraIcons`. */
+export function iconPath(slug: string): string | undefined {
+  return bySlug.get(slug)?.path ?? extraIcons[slug];
+}
+
+// 30 marks, six columns, five rows: one line wider than tall.
+// Order: cloud-native infrastructure, then security, then languages & tools.
+// Every entry has an official mark. `slug` is a simple-icons slug or a key of
+// `extraIcons`; `img` points to an official raster in public/logos/.
+export const tools: Tool[] = [
+  // Infra & cloud-native
+  { slug: "linux", label: "Linux", url: "https://kernel.org" },
+  { slug: "nixos", label: "NixOS", url: "https://nixos.org" },
+  { slug: "windows", label: "Windows", url: "https://www.microsoft.com/windows" },
+  { slug: "kubernetes", label: "Kubernetes", url: "https://kubernetes.io" },
+  { slug: "docker", label: "Docker", url: "https://www.docker.com" },
+  { slug: "helm", label: "Helm", url: "https://helm.sh" },
+  { slug: "flux", label: "Flux", url: "https://fluxcd.io" },
+  { slug: "argo", label: "Argo CD", url: "https://argo-cd.readthedocs.io" },
+  { slug: "opentofu", label: "OpenTofu", url: "https://opentofu.org" },
+  { slug: "ansible", label: "Ansible", url: "https://docs.ansible.com" },
+  { slug: "proxmox", label: "Proxmox", url: "https://www.proxmox.com" },
+  { slug: "ovh", label: "OVHcloud", url: "https://www.ovhcloud.com" },
+  { slug: "cloudflare", label: "Cloudflare", url: "https://www.cloudflare.com" },
+  { slug: "cilium", label: "Cilium", url: "https://cilium.io" },
+  { slug: "traefikproxy", label: "Traefik", url: "https://traefik.io" },
+  { slug: "postgresql", label: "PostgreSQL", url: "https://www.postgresql.org" },
+  { slug: "apachekafka", label: "Kafka", url: "https://kafka.apache.org" },
+  { slug: "victoriametrics", label: "VictoriaMetrics", url: "https://victoriametrics.com" },
+  { slug: "prometheus", label: "Prometheus", url: "https://prometheus.io" },
+  { slug: "grafana", label: "Grafana", url: "https://grafana.com" },
+
+  // Sécurité
+  { slug: "openbao", label: "OpenBao", url: "https://openbao.org" },
+  { slug: "trivy", label: "Trivy", url: "https://trivy.dev" },
+  { slug: "wireguard", label: "WireGuard", url: "https://www.wireguard.com" },
+  { slug: "tailscale", label: "Tailscale", url: "https://tailscale.com" },
+  { img: "/logos/stormshield.png", label: "Stormshield", url: "https://www.stormshield.com" },
+
+  // Langages & outils
+  { slug: "python", label: "Python", url: "https://www.python.org" },
+  { slug: "openjdk", label: "Java", url: "https://openjdk.org" },
+  { slug: "c", label: "C", url: "https://en.cppreference.com/w/c" },
+  { slug: "gnubash", label: "Bash", url: "https://www.gnu.org/software/bash/" },
+  { slug: "claudecode", label: "Claude Code", url: "https://claude.com/product/claude-code" },
+];

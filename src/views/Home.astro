@@ -1,6 +1,10 @@
 ---
 import Hero from "../components/Hero.astro";
 import Works from "../components/Works.astro";
+import Education from "../components/Education.astro";
+import Marquee from "../components/Marquee.astro";
+import Beer from "../components/Beer.astro";
+import Footer from "../components/Footer.astro";
 import type { Lang } from "../i18n";
 
 interface Props {
@@ -12,5 +16,8 @@ const { lang } = Astro.props;
 <main id="main">
   <Hero lang={lang} />
   <Works lang={lang} />
-  <!-- Education, Marquee, Beer and Footer land in Task 5. -->
+  <Education lang={lang} />
+  <Marquee lang={lang} />
+  <Beer lang={lang} />
 </main>
+<Footer lang={lang} />

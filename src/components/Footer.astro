@@ -1,0 +1,18 @@
+---
+import { t, type Lang } from "../i18n";
+import { profile } from "../profile";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<footer class="foot wrap">
+  <nav>
+    <a href={profile.links.github}>{t(lang, "footer.github")}</a>
+    <a href={profile.links.linkedin}>{t(lang, "footer.linkedin")}</a>
+    <a href={`mailto:${profile.email}`}>{t(lang, "footer.email")}</a>
+  </nav>
+  <p>© {profile.name}</p>
+</footer>
