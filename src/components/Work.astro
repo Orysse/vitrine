@@ -1,0 +1,125 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { t, type Lang } from "../i18n";
+
+interface Props {
+  id: string;
+  work: CollectionEntry<"works">["data"];
+  lang: Lang;
+}
+const { id, work, lang } = Astro.props;
+
+const month = (value: string): string => {
+  if (!value.includes("-")) return value;
+  const [y, m] = value.split("-").map(Number);
+  return new Intl.DateTimeFormat(lang, { month: "short", year: "numeric", timeZone: "UTC" }).format(
+    new Date(Date.UTC(y, m - 1, 1)),
+  );
+};
+const dates = work.start
+  ? `${month(work.start)} – ${work.end ? month(work.end) : t(lang, "work.today")}`
+  : "—";
+
+// The impact title with its figure set apart (and in --signal).
+const impact = work.impact[lang];
+const [before, after] = work.figure ? impact.split(work.figure) : [impact, ""];
+---
+
+<details class="work" id={id} name="works">
+  <summary>
+    <span class="work-n">{String(work.number).padStart(2, "0")}</span>
+    <span class="work-head">
+      <span class="work-tag">{work.tag[lang]}</span>
+      <span class="work-org">{work.org}</span>
+      <span class="work-line">{work.line[lang]}</span>
+    </span>
+    <span class="work-meta">
+      <span>{work.status[lang]}</span>
+      <span>{dates}</span>
+    </span>
+  </summary>
+
+  <div class="work-body">
+    <div class="work-text">
+      <h3 class="work-impact">
+        {
+          work.figure ? (
+            <>
+              {before}
+              <em class="figure">{work.figure}</em>
+              {after}
+            </>
+          ) : (
+            impact
+          )
+        }
+      </h3>
+      {work.body.map((p) => <p>{p[lang]}</p>)}
+    </div>
+
+    <div class="work-aside">
+      <dl class="materials">
+        {
+          work.materials.map((m) => (
+            <div>
+              <dt>{m.key[lang]}</dt>
+              <dd>{m.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      {
+        work.links.length > 0 && (
+          <p class="links">
+            <span class="links-label">{t(lang, "work.links")}</span>
+            {work.links.map((l) => (
+              <a href={l.url}>{l.label}</a>
+            ))}
+          </p>
+        )
+      }
+    </div>
+
+    {
+      work.images.length > 0 && (
+        <div class="work-images">
+          {work.images.map((img) => (
+            <img src={img.src} alt={img.alt[lang]} width="800" height="500" />
+          ))}
+        </div>
+      )
+    }
+
+    {
+      id === "homelab" && (
+        <svg
+          class="schematic"
+          viewBox="0 0 400 220"
+          role="img"
+          aria-label={t(lang, "schematic.alt")}
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="4" y="4" width="392" height="212" stroke-dasharray="6 5" />
+          <text x="14" y="26" stroke="none" fill="currentColor">
+            {t(lang, "schematic.zone")}
+          </text>
+          <rect x="20" y="44" width="360" height="92" />
+          <text x="30" y="64" stroke="none" fill="currentColor">
+            {t(lang, "schematic.host")}
+          </text>
+          {[0, 1, 2].map((i) => (
+            <g>
+              <rect x={36 + i * 116} y="76" width="100" height="48" />
+              <text x={46 + i * 116} y="104" stroke="none" fill="currentColor">
+                {t(lang, "schematic.vm")}
+              </text>
+            </g>
+          ))}
+          <path d="M200 136 V176 M200 176 H80 M200 176 H320" />
+        </svg>
+      )
+    }
+  </div>
+</details>

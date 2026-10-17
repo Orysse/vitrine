@@ -19,24 +19,29 @@ const entry = z.object({
   points: z.array(l10n).default([]),
 });
 
-const work = z.object({
-  number: z.number().int(), // 1..5, rendered "01"
-  kind: z.enum(["pro", "perso", "asso"]),
-  org: z.string(),
-  status: l10n, // "CDD à temps partiel", "Stage", "Projet perso", "Association"
-  start: month.nullable(),
-  end: month.nullable(),
-  tag: l10n, // mono label shown in the closed row
-  line: l10n, // one-sentence result, closed state
-  impact: l10n, // impact title, open state
-  figure: z.string().optional(), // the number set in --signal, must appear in impact
-  body: z.array(l10n).min(1).max(3), // short paragraphs
-  materials: z.array(z.object({ key: l10n, value: z.string() })),
-  images: z
-    .array(z.object({ src: z.string(), alt: l10n, placeholder: z.boolean() }))
-    .default([]),
+const work = z
+  .object({
+    number: z.number().int(), // 1..5, rendered "01"
+    kind: z.enum(["pro", "perso", "asso"]),
+    org: z.string(),
+    status: l10n, // "CDD à temps partiel", "Stage", "Projet perso", "Association"
+    start: month.nullable(),
+    end: month.nullable(),
+    tag: l10n, // mono label shown in the closed row
+    line: l10n, // one-sentence result, closed state
+    impact: l10n, // impact title, open state
+    figure: z.string().optional(), // the number set in --signal, must appear in impact
+    body: z.array(l10n).min(1).max(3), // short paragraphs
+    materials: z.array(z.object({ key: l10n, value: z.string() })),
+    images: z
+      .array(z.object({ src: z.string(), alt: l10n, placeholder: z.boolean() }))
+      .default([]),
   links: z.array(z.object({ label: z.string(), url: z.url() })).default([]),
-});
+  })
+  .refine((w) => !w.figure || (w.impact.fr.includes(w.figure) && w.impact.en.includes(w.figure)), {
+    message: "figure must appear in the impact title, in both languages",
+    path: ["figure"],
+  });
 
 export const collections = {
   works: defineCollection({ loader: file("src/content/works.yaml"), schema: work }),

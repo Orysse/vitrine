@@ -1,0 +1,16 @@
+---
+import { getCollection } from "astro:content";
+import { t, type Lang } from "../i18n";
+import Work from "./Work.astro";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const works = (await getCollection("works")).sort((a, b) => a.data.number - b.data.number);
+---
+
+<section class="works wrap" aria-labelledby="works-title">
+  <h2 id="works-title" class="section-label">{t(lang, "works.title")}</h2>
+  {works.map((work) => <Work id={work.id} work={work.data} lang={lang} />)}
+</section>

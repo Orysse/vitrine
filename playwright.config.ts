@@ -6,7 +6,10 @@ export default defineConfig({
   testDir: "tests/e2e",
   fullyParallel: true,
   reporter: "list",
-  use: { baseURL: "http://localhost:8080" },
+  // Firefox from nixpkgs sometimes hangs the first navigation of a fresh context under parallel load,
+  // even on /healthz (reproduced outside the suite). A retry shows up as "flaky" in the report.
+  retries: 2,
+  use: { baseURL: "http://localhost:8080", navigationTimeout: 10_000 },
   projects: [
     { name: "firefox", use: { ...devices["Desktop Firefox"] } },
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
