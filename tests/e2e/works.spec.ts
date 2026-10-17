@@ -67,3 +67,24 @@ test("phone width: an open fiche does not scroll the page sideways", async ({ pa
     expect(scrollWidth, route).toBeLessThanOrEqual(clientWidth);
   }
 });
+
+test("print opens every fiche, and restores the previous state afterwards", async ({ page }) => {
+  await page.goto("/#cea");
+  await expect(open(page, "cea")).toHaveAttribute("open", "");
+  await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+  await expect(page.locator("details.work[open]")).toHaveCount(5);
+  await page.evaluate(() => window.dispatchEvent(new Event("afterprint")));
+  await expect(page.locator("details.work[open]")).toHaveCount(1);
+  await expect(open(page, "cea")).toHaveAttribute("open", "");
+  // exclusivity is back
+  await page.locator("#forge summary").click();
+  await expect(page.locator("details.work[open]")).toHaveCount(1);
+});
+
+test("print stylesheet: no marquee, no paper background", async ({ page }) => {
+  await page.goto("/");
+  await page.emulateMedia({ media: "print" });
+  await expect(page.locator(".marquee")).toBeHidden();
+  const bg = await page.locator("body").evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(bg).toBe("rgba(0, 0, 0, 0)");
+});

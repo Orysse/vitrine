@@ -461,3 +461,21 @@ a {
 .foot p {
   margin: 0;
 }
+
+@media print {
+  body {
+    background: none;
+    font-size: 11pt;
+  }
+  .marquee,
+  .skip,
+  .work-meta::after {
+    display: none;
+  }
+  .work {
+    break-inside: avoid;
+  }
+  .hero-line {
+    font-size: 4rem;
+  }
+}
