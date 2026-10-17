@@ -1,0 +1,11 @@
+---
+import Base from "../../layouts/Base.astro";
+import { path, t } from "../../i18n";
+---
+
+<Base lang="en" title={t("en", "notfound.title")} description={t("en", "site.description")}>
+  <main id="main">
+    <h1>{t("en", "notfound.title")}</h1>
+    <a href={path("en")}>{t("en", "notfound.back")}</a>
+  </main>
+</Base>
