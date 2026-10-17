@@ -5,3 +5,5 @@ result
 result-*
 
 .superpowers/
+playwright-report/
+test-results/

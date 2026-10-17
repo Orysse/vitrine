@@ -39,9 +39,6 @@
           env = {
             SITE_URL = siteUrl;
             ASTRO_TELEMETRY_DISABLED = "1";
-            # For the colophon: the build sandbox has no .git to ask.
-            VITRINE_REV = rev;
-            VITRINE_DATE = toString (self.lastModified or 0);
           };
           installPhase = ''
             runHook preInstall
@@ -110,7 +107,16 @@
 
       # nix develop, then: npm install && npm run dev
       devShells = forAllSystems (pkgs: {
-        default = pkgs.mkShell { packages = [ pkgs.nodejs ]; };
+        default = pkgs.mkShell {
+          packages = [
+            pkgs.nodejs
+            pkgs.playwright-driver.browsers
+          ];
+          env = {
+            PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+            PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+          };
+        };
       });
 
       checks = forAllSystems (pkgs: {

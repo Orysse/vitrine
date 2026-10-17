@@ -1,5 +1,11 @@
 ---
-import NotFoundPage from "../views/NotFoundPage.astro";
+import Base from "../layouts/Base.astro";
+import { path, t } from "../i18n";
 ---
 
-<NotFoundPage lang="fr" />
+<Base lang="fr" title={t("fr", "notfound.title")} description={t("fr", "site.description")}>
+  <main id="main">
+    <h1>{t("fr", "notfound.title")}</h1>
+    <a href={path("fr")}>{t("fr", "notfound.back")}</a>
+  </main>
+</Base>

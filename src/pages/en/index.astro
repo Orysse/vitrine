@@ -1,5 +1,8 @@
 ---
-import IndexPage from "../../views/IndexPage.astro";
+import Base from "../../layouts/Base.astro";
+import { t } from "../../i18n";
 ---
 
-<IndexPage lang="en" />
+<Base lang="en" title={t("en", "site.title")} description={t("en", "site.description")}>
+  <main id="main"></main>
+</Base>

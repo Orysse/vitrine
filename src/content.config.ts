@@ -1,5 +1,5 @@
 import { defineCollection } from "astro:content";
-import { file, glob } from "astro/loaders";
+import { file } from "astro/loaders";
 import { z } from "astro/zod";
 
 // Every human-readable string exists in both languages.
@@ -19,25 +19,9 @@ const entry = z.object({
 });
 
 export const collections = {
-  experience: defineCollection({ loader: file("src/content/experience.yaml"), schema: entry }),
   education: defineCollection({ loader: file("src/content/education.yaml"), schema: entry }),
-  associations: defineCollection({ loader: file("src/content/associations.yaml"), schema: entry }),
   interests: defineCollection({
     loader: file("src/content/interests.yaml"),
     schema: z.object({ order: z.number(), label: l10n, text: l10n }),
-  }),
-  // One Markdown file per project and language: src/content/projects/<lang>/<slug>.md
-  projects: defineCollection({
-    loader: glob({ pattern: "**/*.md", base: "src/content/projects" }),
-    schema: z.object({
-      title: z.string(),
-      summary: z.string(),
-      order: z.number(),
-      repo: z.url().optional(),
-      repoSecondary: z.url().optional(),
-      highlights: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
-      stack: z.array(z.string()).default([]),
-      facts: z.array(z.tuple([z.string(), z.string()])).default([]),
-    }),
   }),
 };

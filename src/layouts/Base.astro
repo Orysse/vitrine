@@ -1,0 +1,37 @@
+---
+import { langs, path, t, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+}
+const { lang, title, description } = Astro.props;
+const other: Lang = lang === "fr" ? "en" : "fr";
+const site = Astro.site ?? new URL("https://vitrine.abe.lc");
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={new URL(path(lang), site)} />
+    {langs.map((l) => <link rel="alternate" hreflang={l} href={new URL(path(l), site)} />)}
+  </head>
+  <body>
+    <a class="skip" href="#main">{t(lang, "nav.skip")}</a>
+    <header>
+      <a
+        href={path(other)}
+        hreflang={other}
+        lang={other}
+        aria-label={t(lang, "lang.switch.label")}>{t(lang, "lang.switch")}</a
+      >
+    </header>
+    <slot />
+  </body>
+</html>
