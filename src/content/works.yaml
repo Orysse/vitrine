@@ -30,7 +30,7 @@
     - { key: { fr: boot, en: boot }, value: iPXE }
     - { key: { fr: cloud, en: cloud }, value: OpenStack }
     - { key: { fr: déploiement, en: deploy }, value: "Kubernetes, Argo CD" }
-    - { key: { fr: services, en: services }, value: "Java, intranet, Moodle, annuaire" }
+    - { key: { fr: services, en: services }, value: { fr: "Java, intranet, Moodle, annuaire", en: "Java, intranet, Moodle, directory" } }
   images:
     - src: /img/placeholder-dc.svg
       alt:
@@ -121,10 +121,10 @@
     - fr: "Je sais que ce n'est pas de la production, mais je le construis comme si ça en était."
       en: "I know it is not production, but I build it as if it were."
   materials:
-    - { key: { fr: topologie, en: topology }, value: "Nix, un fichier de topologie" }
-    - { key: { fr: nœuds, en: nodes }, value: "Kubernetes (k3s), racine en tmpfs" }
+    - { key: { fr: topologie, en: topology }, value: { fr: "Nix, un fichier de topologie", en: "Nix, a single topology file" } }
+    - { key: { fr: nœuds, en: nodes }, value: { fr: "Kubernetes (k3s), racine en tmpfs", en: "Kubernetes (k3s), tmpfs root" } }
     - { key: { fr: déploiement, en: deploy }, value: deploy-rs }
-    - { key: { fr: réseau, en: network }, value: "Cilium, WireGuard, refus par défaut" }
+    - { key: { fr: réseau, en: network }, value: { fr: "Cilium, WireGuard, refus par défaut", en: "Cilium, WireGuard, default deny" } }
     - { key: { fr: gitops, en: gitops }, value: Flux }
     - { key: { fr: identité, en: identity }, value: "Pocket-ID (passkeys), OpenBao, External Secrets" }
     - { key: { fr: sécurité, en: security }, value: CrowdSec }

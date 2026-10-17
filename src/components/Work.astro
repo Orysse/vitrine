@@ -56,7 +56,7 @@ const [before, after] = work.figure ? impact.split(work.figure) : [impact, ""];
           work.materials.map((m) => (
             <div>
               <dt>{m.key[lang]}</dt>
-              <dd>{m.value}</dd>
+              <dd>{typeof m.value === "string" ? m.value : m.value[lang]}</dd>
             </div>
           ))
         }

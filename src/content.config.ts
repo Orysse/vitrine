@@ -32,7 +32,8 @@ const work = z
     impact: l10n, // impact title, open state
     figure: z.string().optional(), // the number set in --signal, must appear in impact
     body: z.array(l10n).min(1).max(3), // short paragraphs
-    materials: z.array(z.object({ key: l10n, value: z.string() })),
+    // `value` is a plain string when it is language-neutral (tool names), l10n otherwise.
+    materials: z.array(z.object({ key: l10n, value: z.union([z.string(), l10n]) })),
     images: z
       .array(z.object({ src: z.string(), alt: l10n, placeholder: z.boolean() }))
       .default([]),
