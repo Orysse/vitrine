@@ -227,7 +227,7 @@ a {
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   }
   .work-images,
-  .schematic {
+  .flow {
     grid-column: 1 / -1;
   }
 }
@@ -292,15 +292,94 @@ a {
   width: 100%;
   height: auto;
 }
-.schematic {
-  width: 100%;
-  max-width: 40rem;
-  height: auto;
-  color: var(--ink);
+/* Homelab: the path from one file to a cluster. A row of boxes on wide screens, a column on phones. */
+.flow {
+  margin: 0;
 }
-.schematic text {
+.flow figcaption {
+  margin-bottom: 1rem;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.flow > ol {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.flow > ol > li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 2px solid var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+/* connector: a short bar and a head, drawn in CSS */
+.flow > ol > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 1.5rem;
+  top: 100%;
+  width: 0.9rem;
+  height: 2.25rem;
+  background: var(--ink);
+  clip-path: polygon(30% 0, 70% 0, 70% 55%, 100% 55%, 50% 100%, 0 55%, 30% 55%);
+}
+.flow-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+.flow-title {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+}
+.flow p {
+  margin: 0;
+}
+.flow code {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+.flow-note {
+  color: var(--ink-soft);
+}
+.flow ul {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.flow ul li {
+  padding-block: 0.4rem;
+  border-top: 1px solid var(--hair);
+}
+@media (min-width: 56rem) {
+  .flow > ol {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2.25rem;
+  }
+  .flow > ol > li:not(:last-child)::after {
+    left: 100%;
+    top: 1.5rem;
+    width: 2.25rem;
+    height: 0.9rem;
+    clip-path: polygon(0 30%, 55% 30%, 55% 0, 100% 50%, 55% 100%, 55% 70%, 0 70%);
+  }
 }
 
 /* Education: quiet. */

@@ -1,0 +1,110 @@
+---
+import type { Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// The path from one file to a running cluster, as the homelab-nix code does it.
+// Code names stay as they are in the repositories; no addresses, no hardware.
+const copy = {
+  fr: {
+    caption: "Du fichier de topologie au cluster",
+    steps: [
+      {
+        label: "1 · écrire",
+        title: "topology.nix",
+        text: "Réseau, hôtes, nœuds, point d'entrée : un seul fichier. Ajouter un nœud tient en une entrée.",
+        code: 'kube-4 = { role = "agent"; … };',
+      },
+      {
+        label: "2 · vérifier",
+        title: "schéma et règles",
+        text: "IP en double, IP hors du sous-réseau, nœud rattaché à un hôte inconnu, aucun serveur.",
+        code: "nix flake check",
+        note: "Ça échoue avant tout déploiement.",
+      },
+      {
+        label: "3 · générer",
+        title: "ce que la topologie produit",
+        parts: [
+          "L'hôte : réseau, stockage, secrets.",
+          "Un nœud par entrée, racine tmpfs, k3s en server ou agent.",
+          "Cilium : WireGuard, refus par défaut.",
+        ],
+      },
+      {
+        label: "4 · livrer",
+        title: "deploy-rs",
+        text: "Retour arrière automatique si le déploiement casse l'hôte.",
+        parts: [
+          "La topologie part dans le ConfigMap cluster-vars : aucune adresse n'est écrite deux fois.",
+          "Flux lit cluster-vars et applique homelab-cluster : la plateforme et les apps.",
+        ],
+      },
+    ],
+  },
+  en: {
+    caption: "From the topology file to the cluster",
+    steps: [
+      {
+        label: "1 · write",
+        title: "topology.nix",
+        text: "Network, hosts, nodes, entry point: a single file. Adding a node is one entry.",
+        code: 'kube-4 = { role = "agent"; … };',
+      },
+      {
+        label: "2 · check",
+        title: "schema and rules",
+        text: "Duplicate IPs, IPs outside the subnet, a node tied to an unknown host, no server.",
+        code: "nix flake check",
+        note: "It fails before anything is deployed.",
+      },
+      {
+        label: "3 · generate",
+        title: "what the topology produces",
+        parts: [
+          "The host: network, storage, secrets.",
+          "One node per entry, tmpfs root, k3s as server or agent.",
+          "Cilium: WireGuard, default deny.",
+        ],
+      },
+      {
+        label: "4 · ship",
+        title: "deploy-rs",
+        text: "Automatic rollback if the deployment breaks the host.",
+        parts: [
+          "The topology goes out in the cluster-vars ConfigMap: no address is written twice.",
+          "Flux reads cluster-vars and applies homelab-cluster: the platform and the apps.",
+        ],
+      },
+    ],
+  },
+} as const;
+const { caption, steps } = copy[lang];
+---
+
+<figure class="flow">
+  <figcaption>{caption}</figcaption>
+  <ol>
+    {
+      steps.map((s) => (
+        <li>
+          <span class="flow-label">{s.label}</span>
+          <strong class="flow-title">{s.title}</strong>
+          {"text" in s && <p>{s.text}</p>}
+          {"code" in s && <code>{s.code}</code>}
+          {"note" in s && <p class="flow-note">{s.note}</p>}
+          {"parts" in s && (
+            <ul>
+              {s.parts.map((p) => (
+                <li>{p}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</figure>
