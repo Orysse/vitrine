@@ -7,9 +7,11 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-// Most recent first; the entry with no date (the baccalauréat) comes last.
+// Ongoing first, then by end date; the entry with no date (the baccalauréat) comes last.
+const key = (d: { start?: string; end?: string | null }) =>
+  !d.start ? "" : d.end === null || d.end === undefined ? "9999" : d.end;
 const entries = (await getCollection("education")).sort((a, b) =>
-  (b.data.start ?? "").localeCompare(a.data.start ?? ""),
+  key(b.data).localeCompare(key(a.data)),
 );
 ---
 
