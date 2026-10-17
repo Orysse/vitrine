@@ -2,6 +2,16 @@
 
 One entry per tag. Each tag publishes `ghcr.io/orysse/vitrine:X.Y.Z`.
 
+## 2.0.0 (2026-10-17)
+
+Rebuilt from scratch as a single page: the project sheet.
+
+- One page, French at `/` and English at `/en/`: hero, five expandable works (Forge, CEA, RedPill, homelab, L'Atelier), education, tech marquee, beer, contact.
+- Cream paper, warm ink, one signal colour; Hanken Grotesk and IBM Plex Mono, self-hosted. No client framework, one 600-byte script, no analytics.
+- Strict CSP with nothing inline (`pulse.abe.lc` dropped). Port 8080 and `/healthz` unchanged.
+- Old URLs (`/systemes/...`, `/projets/...`, `/parcours/`, `/colophon/`, `/303/` and their `/en/` twins) redirect to `/` or to the fiche anchor.
+- Removed: separate project pages, resume/studies/colophon pages, VTR-303, density and polarity switches, analytics.
+
 ## 0.13.0 (2026-10-14)
 
 Full-width grid minimalism, honest copy, diagrams that explain the systems.
