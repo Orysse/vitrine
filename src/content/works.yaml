@@ -9,18 +9,18 @@
   start: "2026-02"
   end: null
   tag:
-    fr: "Forge EPITA · 5 sites · 1500 postes"
-    en: "Forge EPITA · 5 sites · 1500 machines"
+    fr: "Forge EPITA · 6 sites · 1000+ postes"
+    en: "Forge EPITA · 6 sites · 1000+ machines"
   line:
     fr: "Les images NixOS qui démarrent en réseau sur tout le parc de l'école."
     en: "The NixOS images that boot over the network on the school's whole machine fleet."
   impact:
-    fr: "1500 postes, une seule image."
-    en: "1500 machines, one image."
-  figure: "1500"
+    fr: "Plus de 1000 postes, démarrés par le réseau."
+    en: "Over 1000 machines, booted over the network."
+  figure: "1000"
   body:
-    - fr: "La Forge est l'IT de la pédagogie de l'EPITA. J'y construis avec Nix les images du parc des salles machines, 1500 PC répartis sur 5 sites, et je les distribue en iPXE."
-      en: "La Forge is the IT team behind EPITA's teaching. I build the images for the machine rooms with Nix, 1500 PCs across 5 sites, and ship them over iPXE."
+    - fr: "La Forge est l'IT de la pédagogie de l'EPITA. J'y construis avec Nix les images du parc des salles machines, plus de 1000 PC répartis sur 6 sites, et je les distribue en iPXE."
+      en: "La Forge is the IT team behind EPITA's teaching. I build the images for the machine rooms with Nix, over 1000 PCs across 6 sites, and ship them over iPXE."
     - fr: "L'école tourne sur son propre cloud OpenStack, dans un datacenter en colocation à Ivry, avec des microservices Java déployés sur Kubernetes par Argo CD. J'y développe des fonctionnalités pour le Moodle et l'intranet (piscines, projets) et pour l'annuaire des étudiants."
       en: "The school runs on its own OpenStack cloud, in a colocated datacenter in Ivry, with Java microservices deployed on Kubernetes by Argo CD. I develop features for Moodle and the intranet (piscines, projects) and for the student directory."
     - fr: "J'assure aussi le support auprès des équipes pédagogiques et des élèves."
@@ -54,16 +54,16 @@
     fr: "CEA Saclay · TRUST · simulation thermohydraulique"
     en: "CEA Saclay · TRUST · thermohydraulics simulation"
   line:
-    fr: "Une CI montée de zéro pour une équipe de chercheurs."
-    en: "A CI built from scratch for a team of researchers."
+    fr: "Une CI vieillissante remise à niveau pour une équipe de chercheurs."
+    en: "An aging CI brought up to date for a team of researchers."
   impact:
-    fr: "Une CI de zéro, pour des chercheurs."
-    en: "A CI from scratch, for researchers."
+    fr: "Une CI vieillissante, remise à neuf."
+    en: "An aging CI, made new."
   body:
-    - fr: "TRUST est la plateforme de simulation thermohydraulique du CEA. L'équipe n'avait pas de CI : seule existait une instance GitLab, celle d'un autre laboratoire."
-      en: "TRUST is the CEA's thermohydraulics simulation platform. The team had no CI: the only thing in place was a GitLab instance, borrowed from another lab."
-    - fr: "J'ai écrit les pipelines CI/CD et déployé l'infrastructure en code : runners GitLab, cache d'artefacts S3 sur MinIO, supervision Prometheus et Grafana. J'ai aussi branché au pipeline principal les tests de non-régression des projets satellites de TRUST."
-      en: "I wrote the CI/CD pipelines and deployed the infrastructure as code: GitLab runners, an S3 artifact cache on MinIO, Prometheus and Grafana monitoring. I also plugged the non-regression tests of TRUST's satellite projects into the main pipeline."
+    - fr: "TRUST est la plateforme de simulation thermohydraulique du CEA. L'équipe avait déjà une CI, mais elle vieillissait et devait être modernisée."
+      en: "TRUST is the CEA's thermohydraulics simulation platform. The team already had a CI, but it was getting old and needed modernizing."
+    - fr: "J'ai repris les pipelines CI/CD GitLab et déployé l'infrastructure en code : runners GitLab, cache d'artefacts S3 sur MinIO, supervision Prometheus et Grafana. J'ai aussi branché au pipeline principal les tests de non-régression des projets satellites de TRUST (Baltik)."
+      en: "I reworked the GitLab CI/CD pipelines and deployed the infrastructure as code: GitLab runners, an S3 artifact cache on MinIO, Prometheus and Grafana monitoring. I also plugged the non-regression tests of TRUST's satellite projects (Baltik) into the main pipeline."
   materials:
     - { key: { fr: ci, en: ci }, value: GitLab CI }
     - { key: { fr: runners, en: runners }, value: GitLab Runner }
@@ -105,25 +105,25 @@
   start: null
   end: null
   tag:
-    fr: "NixOS · k3s · Cilium · Flux"
-    en: "NixOS · k3s · Cilium · Flux"
+    fr: "NixOS · Kubernetes · Cilium · Flux"
+    en: "NixOS · Kubernetes · Cilium · Flux"
   line:
-    fr: "Un cluster Kubernetes décrit par un fichier de topologie, sans disque et fermé par défaut."
-    en: "A Kubernetes cluster described by one topology file, diskless and closed by default."
+    fr: "Une bibliothèque Nix pour définir ce qu'est un cluster, et sa topologie écrite en code."
+    en: "A Nix library to define what a cluster is, with its topology written as code."
   impact:
-    fr: "3 nœuds, aucun disque."
-    en: "3 nodes, no disk."
-  figure: "3"
+    fr: "La topologie d'un cluster, écrite en code."
+    en: "A cluster's topology, written as code."
   body:
-    - fr: "Un seul fichier de topologie décrit le réseau, l'hôte et les nœuds : ajouter un nœud, c'est ajouter une entrée, et microvm.nix génère la machine. Les nœuds k3s sont des microVMs sans état, leur racine est un tmpfs qui repart vierge à chaque démarrage."
-      en: "A single topology file describes the network, the host and the nodes: adding a node means adding an entry, and microvm.nix generates the machine. The k3s nodes are stateless microVMs, their root is a tmpfs that starts fresh at every boot."
+    - fr: "Une bibliothèque Nix définit ce qu'est un cluster. Un seul fichier de topologie décrit le réseau, l'hôte et les nœuds : ajouter un nœud, c'est ajouter une entrée. Les nœuds Kubernetes ont une racine en tmpfs et repartent vierges à chaque démarrage, l'état vit ailleurs."
+      en: "A Nix library defines what a cluster is. A single topology file describes the network, the host and the nodes: adding a node means adding an entry. The Kubernetes nodes have a tmpfs root and start fresh at every boot, the state lives elsewhere."
     - fr: "Cilium refuse tout par défaut et chaque flux est écrit dans Git. Les secrets sont dans OpenBao, l'accès passe par des passkeys, et CrowdSec filtre l'entrée publique."
       en: "Cilium denies everything by default and every flow is written in Git. Secrets live in OpenBao, access goes through passkeys, and CrowdSec filters the public entry point."
     - fr: "Je sais que ce n'est pas de la production, mais je le construis comme si ça en était."
       en: "I know it is not production, but I build it as if it were."
   materials:
-    - { key: { fr: hôte, en: host }, value: "NixOS, deploy-rs" }
-    - { key: { fr: nœuds, en: nodes }, value: "k3s en microVMs (microvm.nix)" }
+    - { key: { fr: topologie, en: topology }, value: "Nix, un fichier de topologie" }
+    - { key: { fr: nœuds, en: nodes }, value: "Kubernetes (k3s), racine en tmpfs" }
+    - { key: { fr: déploiement, en: deploy }, value: deploy-rs }
     - { key: { fr: réseau, en: network }, value: "Cilium, WireGuard, refus par défaut" }
     - { key: { fr: gitops, en: gitops }, value: Flux }
     - { key: { fr: identité, en: identity }, value: "Pocket-ID (passkeys), OpenBao, External Secrets" }
@@ -144,15 +144,21 @@
     fr: "Vice-trésorier · tech lead"
     en: "Vice-treasurer · tech lead"
   line:
-    fr: "Un OpenStack monté sur des serveurs de récupération, d'abord à distance depuis l'Indonésie."
-    en: "An OpenStack built on second-hand servers, first remotely from Indonesia."
+    fr: "Je maintiens l'infrastructure de l'association sur de vrais serveurs : Proxmox et Kubernetes."
+    en: "I maintain the association's infrastructure on real servers: Proxmox and Kubernetes."
   impact:
-    fr: "OpenStack sur des serveurs de récupération."
-    en: "OpenStack on second-hand servers."
+    fr: "Une infra d'association, sur du vrai matériel."
+    en: "An association's infrastructure, on real hardware."
   body:
-    - fr: "Je suis vice-trésorier et tech lead de l'association. J'ai installé OpenStack sur ses serveurs de récupération, d'abord à distance depuis l'Indonésie en 2024, puis géré ses VMs sous Proxmox et déployé ses services sur Kubernetes."
-      en: "I am vice-treasurer and tech lead of the association. I installed OpenStack on its second-hand servers, first remotely from Indonesia in 2024, then managed its VMs on Proxmox and deployed its services on Kubernetes."
+    - fr: "Je suis vice-trésorier et tech lead de l'association. J'y maintiens l'infrastructure sur des serveurs physiques : les VMs tournent sous Proxmox, les services sont déployés sur Kubernetes. J'ai aussi tenté d'y installer OpenStack, d'abord à distance depuis l'Indonésie en 2024 ; le projet n'a pas abouti."
+      en: "I am vice-treasurer and tech lead of the association. I maintain its infrastructure on physical servers: the VMs run on Proxmox, the services are deployed on Kubernetes. I also tried to set up OpenStack there, first remotely from Indonesia in 2024; the project did not make it."
   materials:
-    - { key: { fr: cloud, en: cloud }, value: OpenStack }
+    - { key: { fr: serveurs, en: servers }, value: "physiques" }
     - { key: { fr: vms, en: vms }, value: Proxmox }
     - { key: { fr: services, en: services }, value: Kubernetes }
+  images:
+    - src: /img/placeholder-serveurs.svg
+      alt:
+        fr: "Photo à venir : les serveurs de l'association."
+        en: "Photo to come: the association's servers."
+      placeholder: true

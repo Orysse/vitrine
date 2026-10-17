@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <pattern id="h" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="14" stroke="#16140f" stroke-opacity="0.18" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="#e6e0d2"/>
+  <rect width="800" height="500" fill="url(#h)"/>
+  <rect x="1.5" y="1.5" width="797" height="497" fill="none" stroke="#16140f" stroke-width="3"/>
+  <text x="32" y="56" font-family="IBM Plex Mono, monospace" font-size="22" fill="#16140f">photo à venir / photo to come</text>
+  <text x="32" y="468" font-family="IBM Plex Mono, monospace" font-size="20" fill="#16140f">serveurs · servers</text>
+</svg>

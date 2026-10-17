@@ -7,8 +7,8 @@ export const profile = {
     en: "Final-year student at EPITA",
   } satisfies L10n,
   major: {
-    fr: "Systèmes, Réseaux, Sécurité & Infrastructure",
-    en: "Systems, Networks, Security & Infrastructure",
+    fr: "Système, Réseau et Sécurité",
+    en: "Systems, Networks and Security",
   } satisfies L10n,
   now: {
     fr: "Employé à temps partiel à La Forge, l'équipe IT de la pédagogie de l'EPITA, depuis février 2026",
