@@ -51,6 +51,7 @@ const [before, after] = work.figure ? impact.split(work.figure) : [impact, ""];
     </div>
 
     <div class="work-aside">
+      {work.logo && <img class="work-logo" src={work.logo.src} alt={work.logo.alt[lang]} width="613" height="287" />}
       <dl class="materials">
         {
           work.materials.map((m) => (

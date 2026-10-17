@@ -156,6 +156,9 @@
     - { key: { fr: serveurs, en: servers }, value: "bare metal" }
     - { key: { fr: vms, en: vms }, value: Proxmox }
     - { key: { fr: services, en: services }, value: Kubernetes }
+  logo:
+    src: /logos/atelier.svg
+    alt: { fr: "Logo de L'Atelier", en: "L'Atelier logo" }
   images:
     - src: /img/placeholder-serveurs.svg
       alt:
