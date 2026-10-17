@@ -44,6 +44,12 @@
         fr: "Photo à venir : une salle machines de l'école."
         en: "Photo to come: one of the school's machine rooms."
       placeholder: true
+  logo:
+    src: /logos/forge.png
+    alt: { fr: "Logo de La Forge", en: "La Forge logo" }
+    width: 480
+    height: 480
+
 
 - id: cea
   number: 2
@@ -103,6 +109,12 @@
     - { key: { fr: infra, en: infra }, value: Terraform }
     - { key: { fr: paquets, en: packaging }, value: Helm }
     - { key: { fr: prototypes, en: prototypes }, value: Kind }
+  logo:
+    src: /logos/redpill.svg
+    alt: { fr: "Logo de RedPill", en: "RedPill logo" }
+    width: 22
+    height: 32
+
 
 - id: homelab
   number: 4

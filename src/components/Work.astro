@@ -13,6 +13,9 @@ const { id, work, lang } = Astro.props;
 
 const dates = work.start ? formatRange(lang, work.start, work.end, t(lang, "work.today")) : "—";
 
+// Logos are sized by shape: wide wordmarks, standard marks, compact (square or tall) emblems.
+const ratio = work.logo ? work.logo.width / work.logo.height : 0;
+
 // The impact title with its figure set apart (and in --signal).
 const impact = work.impact[lang];
 const [before, after] = work.figure ? impact.split(work.figure) : [impact, ""];
@@ -51,7 +54,7 @@ const [before, after] = work.figure ? impact.split(work.figure) : [impact, ""];
     </div>
 
     <div class="work-aside">
-      {work.logo && <img class="work-logo" src={work.logo.src} alt={work.logo.alt[lang]} width={work.logo.width} height={work.logo.height} />}
+      {work.logo && <img class:list={["work-logo", ratio > 4 ? "work-logo--wide" : ratio < 1.5 ? "work-logo--compact" : ""]} src={work.logo.src} alt={work.logo.alt[lang]} width={work.logo.width} height={work.logo.height} />}
       <dl class="materials">
         {
           work.materials.map((m) => (

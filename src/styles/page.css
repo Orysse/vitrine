@@ -250,9 +250,19 @@ a {
 
 .work-logo {
   display: block;
-  width: min(16rem, 75%);
+  width: min(12rem, 75%);
   height: auto;
   margin-bottom: 1.5rem;
+}
+.work-logo--wide {
+  width: min(18rem, 100%);
+}
+.work-logo--compact {
+  width: auto;
+  max-width: 40%;
+  height: 5rem;
+  object-fit: contain;
+  object-position: left;
 }
 
 .materials {
