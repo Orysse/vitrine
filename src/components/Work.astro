@@ -51,7 +51,7 @@ const [before, after] = work.figure ? impact.split(work.figure) : [impact, ""];
     </div>
 
     <div class="work-aside">
-      {work.logo && <img class="work-logo" src={work.logo.src} alt={work.logo.alt[lang]} width="613" height="287" />}
+      {work.logo && <img class="work-logo" src={work.logo.src} alt={work.logo.alt[lang]} width={work.logo.width} height={work.logo.height} />}
       <dl class="materials">
         {
           work.materials.map((m) => (
@@ -78,7 +78,7 @@ const [before, after] = work.figure ? impact.split(work.figure) : [impact, ""];
       work.images.length > 0 && (
         <div class="work-images">
           {work.images.map((img) => (
-            <img src={img.src} alt={img.alt[lang]} width="800" height="500" />
+            <img src={img.src} alt={img.alt[lang]} width={img.width} height={img.height} />
           ))}
         </div>
       )

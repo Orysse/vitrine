@@ -35,10 +35,18 @@ const work = z
     // `value` is a plain string when it is language-neutral (tool names), l10n otherwise.
     materials: z.array(z.object({ key: l10n, value: z.union([z.string(), l10n]) })),
     images: z
-      .array(z.object({ src: z.string(), alt: l10n, placeholder: z.boolean() }))
+      .array(
+      z.object({
+        src: z.string(),
+        alt: l10n,
+        placeholder: z.boolean(),
+        width: z.number().int().default(800),
+        height: z.number().int().default(500),
+      }),
+    )
       .default([]),
   links: z.array(z.object({ label: z.string(), url: z.url() })).default([]),
-    logo: z.object({ src: z.string(), alt: l10n }).optional(), // the organisation's own mark
+    logo: z.object({ src: z.string(), alt: l10n, width: z.number().int(), height: z.number().int() }).optional(), // the organisation's own mark
   })
   .refine((w) => !w.figure || (w.impact.fr.includes(w.figure) && w.impact.en.includes(w.figure)), {
     message: "figure must appear in the impact title, in both languages",

@@ -250,7 +250,7 @@ a {
 
 .work-logo {
   display: block;
-  width: min(14rem, 70%);
+  width: min(16rem, 75%);
   height: auto;
   margin-bottom: 1.5rem;
 }
@@ -289,15 +289,24 @@ a {
   color: var(--ink-soft);
 }
 
+/* Photos keep their own ratio: a row at one height, wrapping, full width on phones. */
 .work-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 1rem;
 }
 .work-images img {
   display: block;
-  width: 100%;
-  height: auto;
+  width: auto;
+  max-width: 100%;
+  height: 24rem;
+}
+@media (max-width: 40rem) {
+  .work-images img {
+    width: 100%;
+    height: auto;
+  }
 }
 /* Homelab: the path from one file to a cluster. A row of boxes on wide screens, a column on phones. */
 .flow {

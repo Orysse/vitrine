@@ -32,11 +32,13 @@
     - { key: { fr: déploiement, en: deploy }, value: "Kubernetes, Argo CD" }
     - { key: { fr: services, en: services }, value: { fr: "Java, intranet, Moodle, annuaire", en: "Java, intranet, Moodle, directory" } }
   images:
-    - src: /img/placeholder-dc.svg
+    - src: /img/dc-ivry.jpg
       alt:
-        fr: "Photo à venir : le datacenter en colocation à Ivry."
-        en: "Photo to come: the colocated datacenter in Ivry."
-      placeholder: true
+        fr: "Une allée de baies dans le datacenter en colocation à Ivry."
+        en: "An aisle of racks in the colocated datacenter in Ivry."
+      placeholder: false
+      width: 480
+      height: 640
     - src: /img/placeholder-salle.svg
       alt:
         fr: "Photo à venir : une salle machines de l'école."
@@ -69,6 +71,11 @@
     - { key: { fr: runners, en: runners }, value: GitLab Runner }
     - { key: { fr: cache, en: cache }, value: "MinIO (S3)" }
     - { key: { fr: supervision, en: monitoring }, value: "Prometheus, Grafana" }
+  logo:
+    src: /logos/trust.png
+    alt: { fr: "Logo de la plateforme TRUST", en: "TRUST platform logo" }
+    width: 720
+    height: 110
 
 - id: redpill
   number: 3
@@ -159,6 +166,8 @@
   logo:
     src: /logos/atelier.svg
     alt: { fr: "Logo de L'Atelier", en: "L'Atelier logo" }
+    width: 613
+    height: 287
   images:
     - src: /img/placeholder-serveurs.svg
       alt:
