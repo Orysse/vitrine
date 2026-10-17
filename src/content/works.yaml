@@ -54,16 +54,16 @@
     fr: "CEA Saclay · TRUST · simulation thermohydraulique"
     en: "CEA Saclay · TRUST · thermohydraulics simulation"
   line:
-    fr: "Une CI vieillissante remise à niveau pour une équipe de chercheurs."
-    en: "An aging CI brought up to date for a team of researchers."
+    fr: "La CI de TRUST, un script lancé chaque nuit sur des PC de chercheurs, refaite sur GitLab CI."
+    en: "TRUST's CI, a script run every night on researchers' PCs, rebuilt on GitLab CI."
   impact:
-    fr: "Une CI vieillissante, remise à neuf."
-    en: "An aging CI, made new."
+    fr: "D'un script de nuit à une CI standard."
+    en: "From a nightly script to a standard CI."
   body:
-    - fr: "TRUST est la plateforme de simulation thermohydraulique du CEA. L'équipe avait déjà une CI, mais elle vieillissait et devait être modernisée."
-      en: "TRUST is the CEA's thermohydraulics simulation platform. The team already had a CI, but it was getting old and needed modernizing."
-    - fr: "J'ai repris les pipelines CI/CD GitLab et déployé l'infrastructure en code : runners GitLab, cache d'artefacts S3 sur MinIO, supervision Prometheus et Grafana. J'ai aussi branché au pipeline principal les tests de non-régression des projets satellites de TRUST (Baltik)."
-      en: "I reworked the GitLab CI/CD pipelines and deployed the infrastructure as code: GitLab runners, an S3 artifact cache on MinIO, Prometheus and Grafana monitoring. I also plugged the non-regression tests of TRUST's satellite projects (Baltik) into the main pipeline."
+    - fr: "TRUST est la plateforme de simulation thermohydraulique du CEA. Sa CI était un script shell lancé chaque nuit sur les PC des chercheurs, laissés allumés pour l'occasion."
+      en: "TRUST is the CEA's thermohydraulics simulation platform. Its CI was a shell script run every night on researchers' PCs, left switched on for the purpose."
+    - fr: "Je l'ai revue pour qu'elle réponde mieux au besoin et s'exécute de façon plus standard : pipelines GitLab CI/CD, runners GitLab, cache d'artefacts S3 sur MinIO, supervision Prometheus et Grafana déployés en code. Les tests de non-régression des projets satellites de TRUST (Baltik) sont branchés au pipeline principal."
+      en: "I reworked it to fit the need better and to run in a more standard way: GitLab CI/CD pipelines, GitLab runners, an S3 artifact cache on MinIO, Prometheus and Grafana monitoring deployed as code. The non-regression tests of TRUST's satellite projects (Baltik) are plugged into the main pipeline."
   materials:
     - { key: { fr: ci, en: ci }, value: GitLab CI }
     - { key: { fr: runners, en: runners }, value: GitLab Runner }
