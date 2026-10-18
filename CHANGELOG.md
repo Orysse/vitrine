@@ -2,6 +2,15 @@
 
 One entry per tag. Each tag publishes `ghcr.io/orysse/vitrine:X.Y.Z`.
 
+## 2.1.0 (2026-10-18)
+
+The works read as clickable.
+
+- Rows: huge uppercase name that scrolls on hover, short text swapped for an outlined "Voir" pill that slides in from the side.
+- One shared blob follows the mouse on a leash, behind the text, with a picture per work (photo, logos) swapped by a wavy wipe. Fine pointers only.
+- Phones and touch: no hover effects; each row is a number, a name that wraps, a small pill and the short text under it.
+- Header: language link on the left, CV as an outlined pill on the right, site link removed. Faster tech marquee.
+
 ## 2.0.0 (2026-10-17)
 
 Rebuilt from scratch as a single page: the project sheet.

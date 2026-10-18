@@ -24,14 +24,21 @@ const [before, after] = work.figure ? impact.split(work.figure) : [impact, ""];
 <details class="work" id={id} name="works">
   <summary>
     <span class="work-n">{String(work.number).padStart(2, "0")}</span>
-    <span class="work-head">
-      <span class="work-tag">{work.tag[lang]}</span>
-      <span class="work-org">{work.org}</span>
-      <span class="work-line">{work.line[lang]}</span>
+    <span class="work-org">
+      <span class="work-track">
+        {work.org}
+        <span class="work-dup" aria-hidden="true">{work.org}</span>
+      </span>
     </span>
-    <span class="work-meta">
-      <span>{work.status[lang]}</span>
-      <span>{dates}</span>
+    <span class="work-side">
+      <span class="work-info">
+        <span>{work.tag[lang]}</span>
+        <span>{work.start ? `${work.status[lang]} · ${dates}` : work.status[lang]}</span>
+      </span>
+      <span class="work-view" aria-hidden="true">
+        <span class="work-view-open">{t(lang, "work.open")}</span>
+        <span class="work-view-close">{t(lang, "work.close")}</span>
+      </span>
     </span>
   </summary>
 

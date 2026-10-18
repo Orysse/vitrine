@@ -50,7 +50,7 @@ a {
   transform: none;
 }
 
-/* Top bar */
+/* Top bar: the language on the left, the CV as an outlined pill on the right, like the rows below. */
 .bar {
   display: flex;
   align-items: center;
@@ -59,24 +59,22 @@ a {
   padding-block: 1.1rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  letter-spacing: 0.02em;
-}
-.bar nav {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .bar .cv {
-  padding: 0.35rem 0.7rem;
+  padding: 0.4rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.bar .cv:hover,
+.bar .cv:focus-visible {
   background: var(--ink);
   color: var(--paper);
-  text-decoration: none;
-}
-.bar .cv:hover {
-  background: var(--paper);
-  color: var(--ink);
-  outline: 1.5px solid var(--ink);
-  outline-offset: -1.5px;
 }
 
 /* Hero: the page's first impact moment. Oversized, tight, with the second line pushed in. */
@@ -118,6 +116,11 @@ a {
 .hero-meta p {
   margin: 0;
 }
+.hero-side {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
 .hero-looking {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -143,6 +146,8 @@ a {
 
 /* Works: a list of closed rows, one open at a time. */
 .works {
+  /* The rows span the whole page, like the names and the pills they hold. */
+  max-width: none;
   padding-block: clamp(2rem, 5vw, 4rem);
 }
 .work {
@@ -153,67 +158,218 @@ a {
 }
 .work summary {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 0.5rem clamp(1rem, 3vw, 2.5rem);
-  align-items: start;
-  padding-block: 1.25rem;
+  grid-template-columns: auto minmax(0, 1fr) clamp(13rem, 20vw, 26rem);
+  gap: 0.75rem clamp(1rem, 3vw, 2.5rem);
+  align-items: center;
+  padding-block: clamp(1.25rem, 3vw, 2.5rem);
   cursor: pointer;
   list-style: none;
 }
 .work summary::-webkit-details-marker {
   display: none;
 }
-.work summary:hover .work-org {
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 0.12em;
-}
 .work-n {
+  align-self: start;
   min-width: 2ch;
   color: var(--signal);
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
 }
-.work-head {
-  display: grid;
-  gap: 0.35rem;
-}
-.work-tag,
-.work-meta {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  line-height: 1.4;
-}
+
+/* The name is set huge. The row is exactly as wide as the text, so at rest there is one copy.
+   On hover it scrolls by its own width, and a second copy slides in behind it; when the
+   pointer leaves, the lap in progress is finished. */
 .work-org {
-  font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: clamp(1.75rem, 5.2vw, 6.5rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
-.work-line {
-  max-width: var(--measure);
-  color: var(--ink-soft);
+.work-track {
+  position: relative;
+  display: block;
+  width: max-content;
+  padding-right: 0.45em;
 }
-.work-meta {
+.work-dup {
+  position: absolute;
+  top: 0;
+  left: 100%;
+}
+/* The script lets it run while the row is hovered and stops it at the end of the lap. */
+.work-track {
+  animation: ticker 2.6s linear infinite paused;
+}
+.work-track.run {
+  animation-play-state: running;
+}
+@keyframes ticker {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* The right side: a few lines, swapped for "View" on hover. The pill comes in from the side. */
+.work-side {
   display: grid;
-  justify-items: end;
-  gap: 0.2rem;
+  overflow: hidden;
+  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+  line-height: 1.45;
   text-align: right;
 }
-.work-meta::after {
-  content: "+";
-  margin-top: 0.4rem;
-  font-size: 1.4rem;
-  font-weight: 500;
-  line-height: 1;
+.work-info,
+.work-view {
+  grid-area: 1 / 1;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.work[open] .work-meta::after {
-  content: "−";
+.work-info {
+  display: grid;
+  gap: 0.15rem;
+  align-content: center;
+  justify-items: end;
 }
-.work[open] .work-line {
+.work-view {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-height: clamp(3.25rem, 6vw, 5.5rem);
+  border: 3px solid currentColor;
+  border-radius: 999px;
+  font-size: clamp(1.25rem, 2.6vw, 2.75rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transform: translateX(110%);
+}
+.work-view-close,
+.work[open] .work-view-open {
   display: none;
+}
+.work[open] .work-view-close {
+  display: inline;
+}
+.work[open] .work-view {
+  transform: none;
+}
+.work[open] .work-info {
+  transform: translateX(-110%);
+}
+@media (hover: hover) and (min-width: 48.01rem) {
+  .work summary:hover .work-view {
+    transform: none;
+  }
+  .work summary:hover .work-info {
+    transform: translateX(-110%);
+  }
+}
+
+/* Phones, and anything without hover: no ticker, no swap, no blob. The row is a number, the name
+   (it wraps), a small pill that says what a tap does, and the short text under the name. */
+@media (max-width: 48rem), (hover: none) {
+  .work summary {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "n org view"
+      ". info info";
+    align-items: start;
+    gap: 0.5rem 0.9rem;
+    padding-block: 1.25rem;
+  }
+  .work-n {
+    grid-area: n;
+  }
+  .work-org {
+    grid-area: org;
+    overflow: visible;
+    font-size: clamp(1.5rem, 7vw, 2.25rem);
+    line-height: 1.05;
+    white-space: normal;
+  }
+  .work-track {
+    width: auto;
+    padding-right: 0;
+    animation: none;
+  }
+  .work-dup {
+    display: none;
+  }
+  .work-side {
+    display: contents;
+  }
+  .work-info {
+    grid-area: info;
+    justify-items: start;
+    font-size: 0.9rem;
+    text-align: left;
+    opacity: 0.75;
+  }
+  .work-view {
+    grid-area: view;
+    min-height: 0;
+    padding: 0.3rem 0.8rem;
+    border-width: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    transform: none;
+  }
+  .work[open] .work-info {
+    transform: none;
+  }
+  .reveal {
+    display: none;
+  }
+}
+
+/* One shared blob, fixed to the viewport and behind the text. The script drags it after the
+   mouse (--x, --y), on a leash anchored left of the middle, and redraws its outline every frame
+   (--blob, a clip-path). The picture inside is never distorted, only pulled towards the mouse
+   (--ix, --iy). A new picture is wiped in along a moving squiggle, from below or above by
+   row order (the script draws the clip-path). */
+.reveal {
+  position: fixed;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  z-index: -1;
+  width: clamp(26rem, 44vw, 50rem);
+  aspect-ratio: 5 / 6;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+.reveal-pane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ink);
+  clip-path: var(--blob, none);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.reveal.show .reveal-pane {
+  opacity: 1;
+}
+.reveal img {
+  position: absolute;
+  inset: -12%;
+  width: 124%;
+  height: 124%;
+  object-fit: cover;
+  translate: var(--ix, 0) var(--iy, 0);
+  opacity: 0;
+}
+.reveal img.leaving {
+  z-index: 1;
+  opacity: 1;
+}
+.reveal img.on {
+  z-index: 2;
+  opacity: 1;
 }
 
 .work-body {
@@ -471,7 +627,7 @@ a {
   margin: 0;
   padding: 0;
   list-style: none;
-  animation: marquee-slide 70s linear infinite;
+  animation: marquee-slide 8s linear infinite;
 }
 .marquee:hover .marquee-track,
 .marquee:focus-within .marquee-track {
@@ -500,6 +656,14 @@ a {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .work-track,
+  .work-info,
+  .work-view,
+  .reveal-pane,
+  .reveal img {
+    transition: none;
+    animation: none !important;
+  }
   .marquee-track {
     animation: none;
   }
@@ -574,7 +738,7 @@ a {
   }
   .marquee,
   .skip,
-  .work-meta::after {
+  .reveal {
     display: none;
   }
   .work {

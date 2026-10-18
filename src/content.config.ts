@@ -47,6 +47,8 @@ const work = z
       .default([]),
   links: z.array(z.object({ label: z.string(), url: z.url() })).default([]),
     logo: z.object({ src: z.string(), alt: l10n, width: z.number().int(), height: z.number().int() }).optional(), // the organisation's own mark
+    // Decorative image shown under the cursor when hovering the closed row (fine pointers only).
+    reveal: z.object({ src: z.string(), width: z.number().int(), height: z.number().int() }).optional(),
   })
   .refine((w) => !w.figure || (w.impact.fr.includes(w.figure) && w.impact.en.includes(w.figure)), {
     message: "figure must appear in the impact title, in both languages",

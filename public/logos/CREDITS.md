@@ -6,3 +6,5 @@
 - `trust.png`: the TRUST platform logo from cea-trust-platform.github.io (MIT repository), resized to 720 px wide.
 - `forge.png`: the logo of La Forge (EPITA), from cri.epita.fr, recoloured in the site's ink and resized to 480 px.
 - `redpill.svg`: the mark of Redpill (redpill.paris), the three bars of its site header, repainted in the site's ink.
+- `public/img/reveal-*.svg`: hover-reveal images for RedPill (its mark in white on red), L'Atelier (its mark in ink on yellow) and the homelab (the simple-icons NixOS and Kubernetes marks in their brand blues), generated from the logos above.
+- `public/img/reveal-cea.jpg`: a crop of the illustration on the TRUST platform site (cea-trust-platform.github.io, MIT), simulation renderings and the TRUST mark, resized to 1200 px wide.

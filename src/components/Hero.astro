@@ -17,6 +17,8 @@ const { lang } = Astro.props;
   </h1>
   <div class="hero-meta">
     <p>{t(lang, "hero.role")}</p>
-    <p class="hero-looking">{profile.looking[lang]}.</p>
+    <div class="hero-side">
+      <p class="hero-looking">{profile.looking[lang]}.</p>
+    </div>
   </div>
 </section>

@@ -13,4 +13,16 @@ const works = (await getCollection("works")).sort((a, b) => a.data.number - b.da
 <section class="works wrap" aria-labelledby="works-title">
   <h2 id="works-title" class="section-label">{t(lang, "works.title")}</h2>
   {works.map((work) => <Work id={work.id} work={work.data} lang={lang} />)}
+  <div class="reveal" aria-hidden="true">
+    <div class="reveal-pane">
+      {
+        works.map(
+          (work) =>
+            work.data.reveal && (
+              <img data-work={work.id} src={work.data.reveal.src} alt="" width={work.data.reveal.width} height={work.data.reveal.height} loading="lazy" decoding="async" />
+            ),
+        )
+      }
+    </div>
+  </div>
 </section>

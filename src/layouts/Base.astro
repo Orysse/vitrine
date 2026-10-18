@@ -32,16 +32,13 @@ const site = Astro.site ?? new URL("https://vitrine.abe.lc");
   <body>
     <a class="skip" href="#main">{t(lang, "nav.skip")}</a>
     <header class="bar wrap">
-      <a href={path(lang)}>{t(lang, "bar.site")}</a>
-      <nav>
-        <a class="cv" href={profile.cv[lang]}>{t(lang, "bar.cv")}</a>
-        <a
-          href={path(other)}
-          hreflang={other}
-          lang={other}
-          aria-label={t(lang, "lang.switch.label")}>{t(lang, "lang.switch")}</a
-        >
-      </nav>
+      <a
+        href={path(other)}
+        hreflang={other}
+        lang={other}
+        aria-label={t(lang, "lang.switch.label")}>{t(lang, "lang.switch")}</a
+      >
+      <a class="cv" href={profile.cv[lang]}>{t(lang, "bar.cv")}</a>
     </header>
     <slot />
     <script>

@@ -2,6 +2,7 @@
 # Images marked `placeholder: true` wait for photos from Abel.
 
 - id: forge
+  reveal: { src: /img/dc-ivry.jpg, width: 480, height: 640 }
   number: 1
   kind: pro
   org: "La Forge, EPITA"
@@ -52,6 +53,7 @@
 
 
 - id: cea
+  reveal: { src: /img/reveal-cea.jpg, width: 1200, height: 839 }
   number: 2
   kind: pro
   org: CEA Saclay
@@ -84,6 +86,7 @@
     height: 110
 
 - id: redpill
+  reveal: { src: /img/reveal-redpill.svg, width: 560, height: 700 }
   number: 3
   kind: pro
   org: RedPill Group
@@ -117,6 +120,7 @@
 
 
 - id: homelab
+  reveal: { src: /img/reveal-homelab.svg, width: 560, height: 700 }
   number: 4
   kind: perso
   org: Homelab
@@ -153,6 +157,7 @@
     - { label: config, url: "https://github.com/Orysse/config" }
 
 - id: atelier
+  reveal: { src: /img/reveal-atelier.svg, width: 560, height: 700 }
   number: 5
   kind: asso
   org: "L'Atelier, EPITA"
