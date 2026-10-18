@@ -2,6 +2,10 @@
 
 One entry per tag. Each tag publishes `ghcr.io/orysse/vitrine:X.Y.Z`.
 
+## 2.1.1 (2026-10-18)
+
+- Blob: moving quickly across rows no longer freezes a wipe or shows the bare backing; wipes stack and finish under the next one. Wipes are faster and the wave is gentler.
+
 ## 2.1.0 (2026-10-18)
 
 The works read as clickable.

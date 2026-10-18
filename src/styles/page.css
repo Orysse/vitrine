@@ -363,12 +363,8 @@ a {
   translate: var(--ix, 0) var(--iy, 0);
   opacity: 0;
 }
-.reveal img.leaving {
-  z-index: 1;
-  opacity: 1;
-}
+.reveal img.leaving,
 .reveal img.on {
-  z-index: 2;
   opacity: 1;
 }
 

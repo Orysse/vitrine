@@ -75,20 +75,22 @@ function outline(w: number, h: number, t: number): string {
   return `path("${d}Z")`;
 }
 
-const WIPE_MS = 520;
-let wipe: { pic: HTMLElement; from: 1 | -1; t0: number } | null = null;
+const WIPE_MS = 360;
+let layer = 0; // paint order of the pictures, always growing
+// Every wipe in progress. A wipe that is overtaken by the next one keeps going underneath it.
+const wipes: { pic: HTMLElement; from: 1 | -1; t0: number }[] = [];
 
 // The wiped-in region of a picture: everything past a wavy edge that travels across it.
 function wiped(pic: HTMLElement, from: 1 | -1, p: number, t: number): string {
   const w = pic.offsetWidth;
   const h = pic.offsetHeight;
-  const amp = h * 0.07;
+  const amp = h * 0.025;
   const e = p * p * (3 - 2 * p); // ease
   const base = from === 1 ? (h + amp * 2) * (1 - e) - amp : (h + amp * 2) * e - amp;
   let d = "";
   for (let i = 0; i <= 40; i++) {
     const x = (w * i) / 40;
-    const y = base + amp * (Math.sin(i * 0.55 + t * 5) + 0.6 * Math.sin(i * 1.3 - t * 7));
+    const y = base + amp * (Math.sin(i * 0.3 + t * 4) + 0.4 * Math.sin(i * 0.7 - t * 5));
     d += `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`;
   }
   d += from === 1 ? `L${w},${h + amp * 3}L0,${h + amp * 3}Z` : `L${w},${-amp * 3}L0,${-amp * 3}Z`;
@@ -111,15 +113,15 @@ function frame(now: number): void {
   reveal.style.setProperty("--ix", `${pos.ix}px`);
   reveal.style.setProperty("--iy", `${pos.iy}px`);
   pane.style.setProperty("--blob", outline(pane.offsetWidth, pane.offsetHeight, still ? 0 : now / 1000));
-  if (wipe) {
-    const p = Math.min((now - wipe.t0) / WIPE_MS, 1);
-    wipe.pic.style.setProperty("clip-path", p < 1 ? wiped(wipe.pic, wipe.from, p, now / 1000) : "none");
-    if (p === 1) {
-      for (const pic of pics) pic.classList.remove("leaving");
-      wipe = null;
-    }
+  for (const w of wipes) {
+    const p = Math.min((now - w.t0) / WIPE_MS, 1);
+    w.pic.style.setProperty("clip-path", p < 1 ? wiped(w.pic, w.from, p, now / 1000) : "none");
   }
-  const settled = !wipe && Math.hypot(pos.tx - pos.x, pos.ty - pos.y, jx - pos.ix, jy - pos.iy) < 0.1;
+  if (wipes.length && wipes.every((w) => now - w.t0 >= WIPE_MS)) {
+    for (const pic of pics) pic.classList.remove("leaving");
+    wipes.length = 0;
+  }
+  const settled = !wipes.length && Math.hypot(pos.tx - pos.x, pos.ty - pos.y, jx - pos.ix, jy - pos.iy) < 0.1;
   running = showing || !settled;
   if (running) requestAnimationFrame(frame);
 }
@@ -133,14 +135,24 @@ function show(id?: string): void {
   const next = pics.find((p) => p.dataset.work === id);
   const prev = pics.find((p) => p.classList.contains("on"));
   if (!next || next === prev) return;
-  for (const pic of pics) pic.classList.remove("leaving", "on");
+  // A picture still being wiped in keeps going under the new one, on top of the ones it was
+  // covering: nothing is dropped, so the pane never shows its bare backing.
+  const stack = !!prev && was && !still;
+  for (const pic of pics) {
+    if (pic === prev && stack) pic.classList.add("leaving");
+    else if (!stack || pic === next) pic.classList.remove("leaving");
+    pic.classList.remove("on");
+  }
   next.classList.add("on");
+  next.style.setProperty("z-index", String(++layer));
   next.style.setProperty("clip-path", "none");
-  if (prev && was && !still) {
-    prev.classList.add("leaving");
-    wipe = { pic: next, from: pics.indexOf(next) > pics.indexOf(prev) ? 1 : -1, t0: performance.now() };
-    next.style.setProperty("clip-path", wiped(next, wipe.from, 0, 0));
-  } else wipe = null;
+  const again = wipes.findIndex((w) => w.pic === next);
+  if (again >= 0) wipes.splice(again, 1);
+  if (stack && prev) {
+    const w = { pic: next, from: pics.indexOf(next) > pics.indexOf(prev) ? (1 as const) : (-1 as const), t0: performance.now() };
+    wipes.push(w);
+    next.style.setProperty("clip-path", wiped(next, w.from, 0, 0));
+  } else wipes.length = 0;
 }
 
 addEventListener("pointermove", (e) => {
